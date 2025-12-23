@@ -1,1 +1,55 @@
-/* You can add global styles to this file, and also import other style files */
+/* Variables */
+
+:root {
+
+}
+
+/* Generals */
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+*, *:after, *:before {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.75rem;
+
+}
+
+h1 {
+    font-size: 2rem;
+}
+h2 {
+    font-size: 1.5rem;
+}
+h3 {
+    font-size: 1.25rem;
+}
+h4 {
+    font-size: 1rem;
+}
+p {
+    font-size: 1rem;
+}
+
+nav {
+
+}
+ul {
+    list-style: none;
+}
+li {
+    
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+/* Ya iré expandiendo los elementos comunes*/
