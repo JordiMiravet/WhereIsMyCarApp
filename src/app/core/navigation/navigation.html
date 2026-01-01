@@ -12,3 +12,11 @@
         <a routerLink="/graphics" routerLinkActive="active" class="nav-link">Graphics</a>
     </li>
 </ul>
+<div class="header__auth" >
+    @if(this.isLogged()){
+        <a [routerLink]="['']" (click)="onLogout()">Logout</a>
+    } @else if (!this.isLogged()) {
+        <a [routerLink]="['/register']">Register</a>
+        <a [routerLink]="['/login']">Login</a>
+    }   
+</div>

@@ -1,0 +1,13 @@
+<form [formGroup]="formReg" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="emailRegister">Email</label>
+    <input type="email" id="emailRegister" formControlName="email" placeholder="Introduce tu email"/>
+  </div>
+
+  <div>
+    <label for="passwordRegister">Password</label>
+    <input type="password" id="passwordRegister" formControlName="password" placeholder="Introduce tu contraseña"/>
+  </div>
+
+  <button type="submit" [disabled]="formReg.invalid">Registrarse</button>
+</form>
