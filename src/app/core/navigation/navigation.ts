@@ -3,7 +3,7 @@ import { Router, RouterLink } from "@angular/router";
 import { AuthService } from '../auth/auth';
 
 @Component({
-  selector: 'nav[navigation]',
+  selector: 'header[navigation]',
   imports: [ RouterLink ],
   templateUrl: './navigation.html',
   styleUrls: ['./navigation.css'],
@@ -18,7 +18,7 @@ export class NavigationComponent {
   onLogout(){
     this.auth.logout()
     .then( () => {
-      this.router.navigate([''])
+      this.router.navigate(['register'])
     })
     .catch( error => console.error(error) );
   }

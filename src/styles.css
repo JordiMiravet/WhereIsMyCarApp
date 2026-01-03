@@ -2,6 +2,47 @@
 
 :root {
 
+    /* Colors */
+
+    --color-white: #fff;
+    --color-black: #000;
+    
+    --color-primary-light: #95b7ff;
+    --color-primary: #2e70ff;
+    --color-primary-dark: #125dff;
+
+    --color-text: #0f172a;
+    --color-text-muted: #64748b;
+    --color-bg: #ffffff;
+
+    /* Typo */
+
+    --font-family-base: Arial, Helvetica, sans-serif;
+
+    --font-size-xs: 1.25rem;
+    --font-size-sm: 1.5rem;
+    --font-size-base: 1.75rem;
+    --font-size-lg: 2rem;
+    --font-size-xl: 2.5rem;
+
+    /* Spacing */
+
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-ms: 1.25rem;
+    --space-md: 1.5rem;
+    --space-ml: 1.75rem;
+    --space-ls: 2rem;
+    --space-lm: 2.25rem;
+    --space-lg: 2.5rem;
+    --space-xl: 3.25rem;
+
+    /* Radius */
+
+    --radius-sm: 0.5rem;
+    --radius-md: 1rem;
+    --radius-lg: 1.25rem;
+
 }
 
 /* Generals */
@@ -16,8 +57,8 @@ html {
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.75rem;
+    font-family: var(--font-family-base);
+    font-size: var(--space-ml);
 
 }
 

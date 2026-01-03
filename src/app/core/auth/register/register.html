@@ -1,13 +1,14 @@
-<form [formGroup]="formReg" (ngSubmit)="onSubmit()">
-  <div>
+<form [formGroup]="formReg" (ngSubmit)="onSubmit()" class="form">
+  <legend>Register</legend>
+  <div class="form__group">
     <label for="emailRegister">Email</label>
     <input type="email" id="emailRegister" formControlName="email" placeholder="Introduce tu email"/>
   </div>
 
-  <div>
+  <div class="form__group">
     <label for="passwordRegister">Password</label>
     <input type="password" id="passwordRegister" formControlName="password" placeholder="Introduce tu contraseña"/>
   </div>
 
-  <button type="submit" [disabled]="formReg.invalid">Registrarse</button>
+  <button type="submit" [disabled]="formReg.invalid" class="btn__auth">Register</button>
 </form>

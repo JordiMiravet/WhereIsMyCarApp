@@ -1,12 +1,41 @@
 :host {
+    padding: 2rem;
+}
+
+.navbar {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    flex-direction: row;
 }
-ul {
+.navbar__links {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    gap: 1rem;
+
+}
+.nav-item {
+
+}
+.nav-item a {
+
+}
+.nav-item a:hover {
+
+}
+.nav-item a.active{
+    
+}
+
+.navbar__auth {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
+}
+.navbar_auth a {
+
 }

@@ -1,22 +1,25 @@
-<ul class="navbar-nav">
-    <li class="nav-item">
-        <a routerLink="" routerLinkActive="active" class="nav-link">Home</a>
-    </li>
-    <li class="nav-item">
-        <a routerLink="/map" routerLinkActive="active" class="nav-link">Map</a>
-    </li>
-    <li class="nav-item">
-        <a routerLink="/calendar" routerLinkActive="active" class="nav-link">Calendar</a>
-    </li>
-    <li class="nav-item">
-        <a routerLink="/graphics" routerLinkActive="active" class="nav-link">Graphics</a>
-    </li>
-</ul>
-<div class="header__auth" >
-    @if(this.isLogged()){
-        <a [routerLink]="['']" (click)="onLogout()">Logout</a>
-    } @else if (!this.isLogged()) {
-        <a [routerLink]="['/register']">Register</a>
-        <a [routerLink]="['/login']">Login</a>
-    }   
-</div>
+<nav class="navbar">
+    <ul class="navbar__links">
+        <li class="nav-item">
+            <a routerLink="" routerLinkActive="active">Home</a>
+        </li>
+        <li class="nav-item">
+            <a routerLink="/map" routerLinkActive="active">Map</a>
+        </li>
+        <li class="nav-item">
+            <a routerLink="/calendar" routerLinkActive="active">Calendar</a>
+        </li>
+        <li class="nav-item">
+            <a routerLink="/graphics" routerLinkActive="active">Graphics</a>
+        </li>
+    </ul>
+
+    <div class="navbar__auth" >
+        @if(this.isLogged()){
+            <a [routerLink]="['']" (click)="onLogout()">Logout</a>
+        } @else if (!this.isLogged()) {
+            <a [routerLink]="['/register']">Register</a>
+            <a [routerLink]="['/login']">Login</a>
+        }   
+    </div>
+</nav>
