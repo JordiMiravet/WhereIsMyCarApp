@@ -1,13 +1,28 @@
-<form [formGroup]="formlogin" (ngSubmit)="onSubmit()">
-  <div>
+<form [formGroup]="formLogin" (ngSubmit)="onSubmit()" class="form">
+  
+  <legend>Login</legend>
+  
+  <div class="form__group">
     <label for="emailRegister">Email</label>
     <input type="email" id="emailRegister" formControlName="email" placeholder="Introduce tu email"/>
+    <h4 class="form__error-text" [hidden]="formLogin.controls['email'].valid || !formLogin.controls['email'].touched">
+      {{ authMessage.invalidEmail }}
+    </h4>
   </div>
 
-  <div>
+  <div class="form__group">
     <label for="passwordRegister">Password</label>
     <input type="password" id="passwordRegister" formControlName="password" placeholder="Introduce tu contraseña"/>
+    <h4 class="form__error-text" [hidden]="formLogin.controls['password'].valid || !formLogin.controls['password'].touched">
+      {{ authMessage.invalidPassword }}
+    </h4>
   </div>
 
-  <button type="submit" [disabled]="formlogin.invalid">Registrarse</button>
+  <button type="submit" [disabled]="!formLogin.valid" class="btn__auth">Login</button>
+
+  @if(errorSubmit){ 
+    <h4 class="form__error-submit">{{ errorSubmit }}</h4>
+  }
+  
 </form>
+

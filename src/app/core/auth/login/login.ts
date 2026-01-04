@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth';
 import { Router } from '@angular/router';
 
@@ -12,26 +12,38 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   
-  formlogin: FormGroup;
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  constructor( 
-    private authService: AuthService, 
-    private router: Router
-  ) {
-    this.formlogin = new FormGroup({
-      email: new FormControl(),
-      password: new FormControl()
+  public authMessage = this.authService.errorMessages;
+  public errorSubmit: string = '';
+
+  formLogin: FormGroup;
+  
+  constructor() {
+    this.formLogin = new FormGroup({
+      email: new FormControl('', [
+        Validators.email, 
+        Validators.required,
+        Validators.pattern(/^[a-zA-Z0-9._-]+([a-zA-Z0-9_-]+)*@[a-zA-Z]{3,}\.[a-zA-Z]{2,}$/)
+      ]),
+      password: new FormControl('',[
+        Validators.minLength(6),
+        Validators.required
+      ])
     })
   }
 
   ngOnInit(): void {}
 
   onSubmit() {
-    this.authService.login(this.formlogin.value)
+    this.authService.login(this.formLogin.value)
     .then( response => {
-      console.log(response)
-      this.router.navigate(['map'])
+      this.router.navigate([''])
     })
-    .catch(error => console.log(error));
+    .catch(error => {
+      this.errorSubmit = this.authMessage.invalidCredentials
+      console.error('Error:', error)
+    });
   }
 }

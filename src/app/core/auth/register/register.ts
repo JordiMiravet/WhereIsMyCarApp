@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     this.authService.register(this.formReg.value)
     .then( response => {
-      this.router.navigate(['map'])
+      this.router.navigate([''])
     })
     .catch(error => {
       this.errorSubmit = this.authMessage.emailAlreadyExists
