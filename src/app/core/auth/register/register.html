@@ -1,14 +1,26 @@
 <form [formGroup]="formReg" (ngSubmit)="onSubmit()" class="form">
+
   <legend>Register</legend>
+
   <div class="form__group">
     <label for="emailRegister">Email</label>
     <input type="email" id="emailRegister" formControlName="email" placeholder="Introduce tu email"/>
+    <h4 class="form__error-text" [hidden]="formReg.controls['email'].valid || !formReg.controls['email'].touched">
+      {{ authMessage.invalidEmail }}
+    </h4>
   </div>
 
   <div class="form__group">
     <label for="passwordRegister">Password</label>
     <input type="password" id="passwordRegister" formControlName="password" placeholder="Introduce tu contraseña"/>
+    <h4 class="form__error-text" [hidden]="formReg.controls['password'].valid || !formReg.controls['password'].touched">
+      {{ authMessage.invalidPassword }}
+    </h4>
   </div>
 
-  <button type="submit" [disabled]="formReg.invalid" class="btn__auth">Register</button>
+  <button type="submit" [disabled]="!formReg.valid" class="btn__auth">Register</button>
+  @if(errorSubmit){ 
+    <h4 class="form__error-submit">{{ errorSubmit }}</h4>
+  }
 </form>
+

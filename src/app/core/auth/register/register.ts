@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth';
 import { Router } from '@angular/router';
 
@@ -11,15 +11,25 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
 
-  formReg: FormGroup;
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  constructor( 
-    private authService: AuthService, 
-    private router: Router
-  ) {
+  public authMessage = this.authService.errorMessages;
+  public errorSubmit: string = '';
+
+  formReg: FormGroup;
+  
+  constructor() {
     this.formReg = new FormGroup({
-      email: new FormControl(),
-      password: new FormControl()
+      email: new FormControl('', [
+        Validators.email, 
+        Validators.required,
+        Validators.pattern(/^[a-zA-Z0-9._-]+([a-zA-Z0-9_-]+)*@[a-zA-Z]{3,}\.[a-zA-Z]{2,}$/)
+      ]),
+      password: new FormControl('',[
+        Validators.minLength(6),
+        Validators.required
+      ])
     })
   }
 
@@ -28,9 +38,11 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     this.authService.register(this.formReg.value)
     .then( response => {
-      console.log(response)
       this.router.navigate(['map'])
     })
-    .catch(error => console.log(error));
+    .catch(error => {
+      this.errorSubmit = this.authMessage.emailAlreadyExists
+      console.error('Error:', error)
+    });
   }
 }
