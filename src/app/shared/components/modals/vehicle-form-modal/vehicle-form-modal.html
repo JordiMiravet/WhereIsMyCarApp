@@ -1,22 +1,40 @@
-<div class="modal">
-    <h2>{{ mode() === 'create' ? 'Crear vehículo' : 'Editar vehículo' }}</h2>
+<div class="modal" (click)="onCancel()">
+    <form 
+        [formGroup]="form" 
+        (keydown.enter)="$event.preventDefault(); onSubmit()" 
+        class="modal__form"
+        (click)="$event.stopPropagation()"
+    >
+        
+        <fieldset class="modal__fieldset">
+            <legend class="modal__legend">{{ mode() === 'create' ? 'Crear vehículo' : 'Editar vehículo' }}</legend>
 
-    <form [formGroup]="form" (keydown.enter)="$event.preventDefault(); onSubmit()">
+            <div class="modal__form-section">
+                <label for="createVehicleName" class="modal__label">Nombre</label>
+                <input type="text" id="createVehicleName" formControlName="name" class="modal__input" />
+            </div>
+            <div class="modal__form-section">
+                <label for="createVehicleModel" class="modal__label">Modelo</label>
+                <input type="text" id="createVehicleModel" formControlName="model" class="modal__input" />
+            </div>
+            <div class="modal__form-section">
+                <label for="createVehiclePlate" class="modal__label">Matrícula</label>
+                <input type="text" id="createVehiclePlate" formControlName="plate" class="modal__input" />
+            </div>
 
-        <label for="createVehicleName">Nombre</label>
-        <input type="text" id="createVehicleName" formControlName="name" />
+        </fieldset>
 
-        <label for="createVehicleModel">Modelo</label>
-        <input type="text" id="createVehicleModel" formControlName="model" />
-
-        <label for="createVehiclePlate">Plate</label>
-        <input type="text" id="createVehiclePlate" formControlName="plate" />
-
-        <div class="actions">
-            <button type="button" (click)="onCancel()">Cancelar</button>
-            <button type="button" (click)="onSubmit()" [disabled]="form.invalid">
-            {{ mode() === 'create' ? 'Crear' : 'Actualizar' }}
+        <div class="modal__actions">
+            <button 
+                type="button" 
+                class="modal__button modal__button--primary" 
+                (click)="onSubmit()" 
+                [disabled]="form.invalid"
+            >
+                {{ mode() === 'create' ? 'Crear' : 'Actualizar' }}
             </button>
+            <button type="button" class="modal__button" (click)="onCancel()">Cancelar</button>
+            
         </div>
 
     </form>
