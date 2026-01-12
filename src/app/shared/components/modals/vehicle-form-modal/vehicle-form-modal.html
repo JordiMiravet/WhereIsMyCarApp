@@ -1,0 +1,20 @@
+<div class="modal-backdrop">
+    <div class="modal">
+        <h2>{{ mode() === 'create' ? 'Crear vehículo' : 'Editar vehículo' }}</h2>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <label>Nombre<input type="text" formControlName="name" /></label>
+
+        <label>Modelo<input type="text" formControlName="model" /></label>
+
+        <div class="actions">
+            <button type="button" (click)="onCancel()">Cancelar</button>
+            <button type="submit" [disabled]="form.invalid">
+            {{ mode() === 'create' ? 'Crear' : 'Actualizar' }}
+            </button>
+        </div>
+
+        </form>
+    </div>
+</div>

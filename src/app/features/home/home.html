@@ -1,0 +1,28 @@
+<section class="nav-home">
+    <h2>Vehiculos</h2>
+    <button (click)="createVehicle()">Crear Coche (+)</button>
+</section>
+<section class="cards">
+    @for(vehicle of vehicles; track $index){
+        <div class="card">
+            <div class="card__info">
+                <h3>{{ vehicle.name }}</h3>
+                <h3>{{ vehicle.model }}</h3>
+                <h3>{{ vehicle.plate }}</h3>
+            </div>
+            <div class="card__buttons">
+                <button (click)="editVehicle(vehicle)">Edit</button>
+                <button (click)="deleteVehicle(vehicle)">Delete</button>
+            </div>
+        </div>
+    }
+</section>
+
+@if (isModalOpen) {
+    <app-vehicle-form-modal
+        [mode]="modalMode"
+        [vehicle]="selectedVehicle"
+        (submit)="saveVehicle($event)"
+        (cancel)="closeModal()"
+    ></app-vehicle-form-modal>
+}
