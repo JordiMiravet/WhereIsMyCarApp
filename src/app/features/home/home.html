@@ -1,19 +1,43 @@
-<section class="nav-home">
-    <h2>Vehiculos</h2>
-    <button (click)="createVehicle()">Crear Coche (+)</button>
+<section class="home__header">
+    <h2 class="home__title">Vehículos</h2>
+    <button class="home__button" (click)="createVehicle()">+</button>
 </section>
-<section class="cards">
-    @for(vehicle of vehicles; track $index){
-        <div class="card">
-            <div class="card__info">
-                <h3>{{ vehicle.name }}</h3>
-                <h3>{{ vehicle.model }}</h3>
-                <h3>{{ vehicle.plate }}</h3>
-            </div>
-            <div class="card__buttons">
-                <button (click)="editVehicle(vehicle)">Edit</button>
-                <button (click)="deleteVehicle(vehicle)">Delete</button>
-            </div>
+
+<section class="vehicle-table">
+    @if (vehicles.length === 0) {
+        <div class="empty-state">
+            <p>No hay vehículos registrados</p>
+            <button type="button" (click)="createVehicle()">Crear tu primer vehículo</button>
+        </div>
+    } @else {
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Modelo</th>
+                        <th>Matrícula</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(vehicle of vehicles; track vehicle.plate) {
+                        <tr>
+                            <td data-label="Nombre">{{ vehicle.name }}</td>
+                            <td data-label="Modelo">{{ vehicle.model }}</td>
+                            <td data-label="Matrícula">{{ vehicle.plate }}</td>
+                            <td data-label="Acciones" class="actions">
+                                <button type="button" (click)="editVehicle(vehicle)">
+                                    Editar
+                                </button>
+                                <button type="button" (click)="deleteVehicle(vehicle)">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     }
 </section>
@@ -24,5 +48,5 @@
         [vehicle]="selectedVehicle"
         (submit)="saveVehicle($event)"
         (cancel)="closeModal()"
-    ></app-vehicle-form-modal>
+    />
 }

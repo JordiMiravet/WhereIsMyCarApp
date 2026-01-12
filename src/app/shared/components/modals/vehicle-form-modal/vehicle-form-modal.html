@@ -1,20 +1,23 @@
-<div class="modal-backdrop">
-    <div class="modal">
-        <h2>{{ mode() === 'create' ? 'Crear vehículo' : 'Editar vehículo' }}</h2>
+<div class="modal">
+    <h2>{{ mode() === 'create' ? 'Crear vehículo' : 'Editar vehículo' }}</h2>
 
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form" (keydown.enter)="$event.preventDefault(); onSubmit()">
 
-        <label>Nombre<input type="text" formControlName="name" /></label>
+        <label for="createVehicleName">Nombre</label>
+        <input type="text" id="createVehicleName" formControlName="name" />
 
-        <label>Modelo<input type="text" formControlName="model" /></label>
+        <label for="createVehicleModel">Modelo</label>
+        <input type="text" id="createVehicleModel" formControlName="model" />
+
+        <label for="createVehiclePlate">Plate</label>
+        <input type="text" id="createVehiclePlate" formControlName="plate" />
 
         <div class="actions">
             <button type="button" (click)="onCancel()">Cancelar</button>
-            <button type="submit" [disabled]="form.invalid">
+            <button type="button" (click)="onSubmit()" [disabled]="form.invalid">
             {{ mode() === 'create' ? 'Crear' : 'Actualizar' }}
             </button>
         </div>
 
-        </form>
-    </div>
+    </form>
 </div>

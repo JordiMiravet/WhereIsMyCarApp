@@ -1,5 +1,6 @@
 :host {
     padding: 2rem;
+    border-bottom: 2px solid var(--gray-800);
 }
 
 .navbar {
@@ -7,6 +8,7 @@
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
+    
 }
 .navbar__links {
     display: flex;

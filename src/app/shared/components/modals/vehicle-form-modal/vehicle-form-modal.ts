@@ -1,5 +1,5 @@
-import { Component, effect, input, output } from '@angular/core';
-import { ReactiveFormsModule ,FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, input, output, OnChanges, SimpleChanges } from '@angular/core';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-vehicle-form-modal',
@@ -7,7 +7,8 @@ import { ReactiveFormsModule ,FormBuilder, FormGroup, Validators } from '@angula
   templateUrl: './vehicle-form-modal.html',
   styleUrl: './vehicle-form-modal.css',
 })
-export class VehicleFormModalComponent {
+
+export class VehicleFormModalComponent implements OnChanges {
 
   mode = input<'create' | 'edit'>('create');
   vehicle = input<any | null>(null);
@@ -21,9 +22,12 @@ export class VehicleFormModalComponent {
     this.form = this.fb.group({
       name: ['', Validators.required],
       model: ['', Validators.required],
+      plate: ['', Validators.required]
     });
+  }
 
-    effect(() => {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['vehicle'] || changes['mode']) {
       const vehicle = this.vehicle();
       const mode = this.mode();
 
@@ -32,13 +36,12 @@ export class VehicleFormModalComponent {
       } else {
         this.form.reset();
       }
-    });
+    }
   }
 
   onSubmit() {
     if (this.form.invalid) return;
-
-    this.submit.emit(this.form.value);
+    this.submit.emit({ ...this.form.value });
   }
 
   onCancel() {

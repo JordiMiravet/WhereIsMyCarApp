@@ -1,22 +1,15 @@
 import { Component } from '@angular/core';
 import { VehicleFormModalComponent } from "../../shared/components/modals/vehicle-form-modal/vehicle-form-modal";
 
-
 @Component({
   selector: 'app-home',
-  imports: [VehicleFormModalComponent],
+  imports: [ VehicleFormModalComponent ],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class HomeComponent {
 
-  vehicles : any[] = [
-    {
-      name: 'Coche Grande',
-      model: 'Mercedes',
-      plate: '12345-HVM',
-    }
-  ]
+  vehicles : any[] = []
 
   isModalOpen : boolean = false;
   modalMode: 'create' | 'edit' = 'create';
@@ -43,15 +36,17 @@ export class HomeComponent {
   }
 
   saveVehicle(vehicleData: any): void {
-    if (this.modalMode = 'create') {
-      this.vehicles.push({
-        ...vehicleData, 
-        plate: 'AUTO-' + Math.floor(Math.random() * 1000)
-      });
-    } else if ( this.modalMode === 'edit' && this.selectedVehicle) {
-      Object.assign(this.selectedVehicle, vehicleData)
+    if (this.modalMode === 'create') {
+      const newVehicle = { ...vehicleData };
+      this.vehicles = [...this.vehicles, newVehicle];
+    } else if (this.modalMode === 'edit' && this.selectedVehicle) {
+      this.vehicles = this.vehicles.map(v =>
+        v === this.selectedVehicle ? { ...v, ...vehicleData } : v
+      );
     }
 
     this.closeModal();
   }
+
+
 }
