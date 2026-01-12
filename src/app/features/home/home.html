@@ -1,13 +1,12 @@
 <section class="home__header">
-    <h2 class="home__title">Vehículos</h2>
+    <h2 class="home__title">Mis vehículos</h2>
     <button class="home__button" (click)="createVehicle()">+</button>
 </section>
 
 <section class="vehicle-table">
     @if (vehicles.length === 0) {
-        <div class="empty-state">
+        <div class="vehicle-table__empty">
             <p>No hay vehículos registrados</p>
-            <button type="button" (click)="createVehicle()">Crear tu primer vehículo</button>
         </div>
     } @else {
         <div class="table-container">
