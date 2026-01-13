@@ -1,37 +1,33 @@
 <section class="home__header">
-    <h2 class="home__title">Mis vehículos</h2>
+    <h2 class="home__title">My vehicles</h2>
     <button class="home__button" (click)="createVehicle()">+</button>
 </section>
 
 <section class="vehicle-table">
     @if (vehicles.length === 0) {
         <div class="vehicle-table__empty">
-            <p>No hay vehículos registrados</p>
+            <p>There are no registered vehicles</p>
         </div>
     } @else {
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Modelo</th>
-                        <th>Matrícula</th>
-                        <th>Acciones</th>
+                        <th>Name</th>
+                        <th>Model</th>
+                        <th>Plate</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @for(vehicle of vehicles; track vehicle.plate) {
                         <tr>
-                            <td data-label="Nombre">{{ vehicle.name }}</td>
-                            <td data-label="Modelo">{{ vehicle.model }}</td>
-                            <td data-label="Matrícula">{{ vehicle.plate }}</td>
-                            <td data-label="Acciones" class="actions">
-                                <button type="button" (click)="editVehicle(vehicle)">
-                                    Editar
-                                </button>
-                                <button type="button" (click)="deleteVehicle(vehicle)">
-                                    Eliminar
-                                </button>
+                            <td data-label="Name">{{ vehicle.name }}</td>
+                            <td data-label="Model">{{ vehicle.model }}</td>
+                            <td data-label="Plate">{{ vehicle.plate }}</td>
+                            <td data-label="Actions" class="actions">
+                                <button type="button" (click)="editVehicle(vehicle)">Edit</button>
+                                <button type="button" (click)="deleteVehicle(vehicle)">Delete</button>
                             </td>
                         </tr>
                     }

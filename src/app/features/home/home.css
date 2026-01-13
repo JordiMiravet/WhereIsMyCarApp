@@ -34,12 +34,7 @@
     transform: scale(0.95);
 }
 
-/* Table */
 
-.vehicle-table {
-    margin: 0 auto;
-    width: 90%;
-}
 
 /* Empty State */
 
@@ -68,7 +63,12 @@
     transform: scale(0.95);
 }
 
-/* Table Container */
+/* Table */
+
+.vehicle-table {
+    margin: 0 auto;
+    width: 95%;
+}
 
 .table-container {
     background-color: var( --gray-50);
@@ -107,9 +107,10 @@
     width: 25%;
 }
 
-/* Media Tablet */
+/* MediaQuery Tablet */
 
 @media(min-width: 576px) {
+
     .table-container th {
         background-color: var(--color-blue-light);
     }

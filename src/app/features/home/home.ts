@@ -9,7 +9,23 @@ import { VehicleFormModalComponent } from "../../shared/components/modals/vehicl
 })
 export class HomeComponent {
 
-  vehicles : any[] = []
+  vehicles : any[] = [
+    {
+      name: 'Coche Grande',
+      model: 'Range Rover',
+      plate: '3447VHZ'
+    },
+    {
+      name: 'Coche Pequeño',
+      model: 'Mini',
+      plate: '4973ZYL'
+    },
+    {
+      name: 'Harley',
+      model: 'Electra Glide',
+      plate: '5113LKG'
+    },
+  ]
 
   isModalOpen : boolean = false;
   modalMode: 'create' | 'edit' = 'create';
