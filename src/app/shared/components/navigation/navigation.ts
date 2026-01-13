@@ -1,6 +1,6 @@
 import { Component, inject, WritableSignal } from '@angular/core';
 import { Router, RouterLink } from "@angular/router";
-import { AuthService } from '../../../features/user/auth';
+import { AuthService } from '../../../features/auth/auth';
 
 @Component({
   selector: 'header[navigation]',

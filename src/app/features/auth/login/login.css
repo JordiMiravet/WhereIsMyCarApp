@@ -95,22 +95,24 @@
     border: none;
     border-radius: var(--radius-md);
 
-    background-color: var(--gray-800);
+    background-color: var(--color-blue-light);
     color: var(--color-white);
 
     font-weight: 700;
     font-size: var(--font-size-lg);
     cursor: pointer;
+    transition: background-color 0.25s ease;
 }
 
 .btn__auth:hover {
-    background-color: var(--gray-700);
+    background-color: var(--color-blue-dark);
 }
 
 .btn__auth[disabled] {
     pointer-events: none;
     opacity: 0.9;
-    background-color: var(--color-red-light);
+    background-color: var(--gray-200);
+    color: var(--gray-900);
 }
 
 /* Responsive */

@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
-import { RegisterComponent } from './features/user/register/register';
-import { LoginComponent } from './features/user/login/login';
+import { RegisterComponent } from './features/auth/register/register';
+import { LoginComponent } from './features/auth/login/login';
 
 import { HomeComponent } from './pages/home/home';
 import { MapComponent } from './pages/map/map';
