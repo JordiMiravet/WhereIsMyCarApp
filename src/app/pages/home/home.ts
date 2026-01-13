@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { VehicleFormModalComponent } from '../../features/vehicle/modals/vehicle-form-modal/vehicle-form-modal';
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
+import { ConfirmModal } from "../../shared/components/confirm-modal/confirm-modal";
 
 @Component({
   selector: 'app-home',
-  imports: [ VehicleFormModalComponent ],
+  imports: [VehicleFormModalComponent, ConfirmModal],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class HomeComponent {
+
+  /* To Do : Este array mas adelante debo cambiarlo a un servicio y luego manejarlo con backend, pero por ahora va bien de fake */
 
   vehicles : VehicleInterface[] = [
     {
@@ -28,28 +31,26 @@ export class HomeComponent {
     },
   ]
 
-  isModalOpen : boolean = false;
+  /* Edit/Create Modal */
+
+  isVehicleModalOpen : boolean = false;
   modalMode: 'create' | 'edit' = 'create';
   selectedVehicle: any | null = null;
 
   createVehicle(): void {
     this.modalMode = 'create';
     this.selectedVehicle = null;
-    this.isModalOpen = true;
+    this.isVehicleModalOpen = true;
   }
 
   editVehicle(vehicle : VehicleInterface): void {
     this.modalMode = 'edit';
     this.selectedVehicle = vehicle;
-    this.isModalOpen = true;
-  }
-
-  deleteVehicle(vehicle: VehicleInterface): void {
-    this.vehicles = this.vehicles.filter(v => v !== vehicle);
+    this.isVehicleModalOpen = true;
   }
 
   closeModal(): void {
-    this.isModalOpen = false;
+    this.isVehicleModalOpen = false;
   }
 
   saveVehicle(vehicleData: VehicleInterface): void {
@@ -63,5 +64,27 @@ export class HomeComponent {
     }
 
     this.closeModal();
+  }
+
+  /* Delete Modal */
+
+  isConfirmDeleteOpen = false;
+  vehicleToDelete: VehicleInterface | null = null;
+
+  openConfirmDelete(vehicle: VehicleInterface) {
+    this.vehicleToDelete = vehicle;
+    this.isConfirmDeleteOpen = true;
+  }
+
+  confirmDeleteVehicle() {
+    if (this.vehicleToDelete) {
+      this.vehicles = this.vehicles.filter(v => v !== this.vehicleToDelete);
+    }
+    this.closeConfirmModal();
+  }
+
+  closeConfirmModal() {
+    this.isConfirmDeleteOpen = false;
+    this.vehicleToDelete = null;
   }
 }

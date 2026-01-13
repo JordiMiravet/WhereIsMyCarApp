@@ -27,7 +27,7 @@
                             <td data-label="Plate">{{ vehicle.plate }}</td>
                             <td data-label="Actions" class="actions">
                                 <button type="button" (click)="editVehicle(vehicle)">Edit</button>
-                                <button type="button" (click)="deleteVehicle(vehicle)">Delete</button>
+                                <button type="button" (click)="openConfirmDelete(vehicle)">Delete</button>
                             </td>
                         </tr>
                     }
@@ -37,11 +37,20 @@
     }
 </section>
 
-@if (isModalOpen) {
+@if (isVehicleModalOpen) {
     <app-vehicle-form-modal
         [mode]="modalMode"
         [vehicle]="selectedVehicle"
         (submit)="saveVehicle($event)"
         (cancel)="closeModal()"
     />
+}
+
+@if (isConfirmDeleteOpen) {
+  <app-confirm-modal
+    [title]="'Delete vehicle?'"
+    [message]="'Are you sure you want to delete this vehicle? This action cannot be undone.'"
+    (confirm)="confirmDeleteVehicle()"
+    (cancel)="closeConfirmModal()"
+  />
 }

@@ -1,0 +1,16 @@
+
+<div class="modal" (click)="onCancel()">
+    <div class="modal__form" (click)="$event.stopPropagation()">
+        <h2 class="modal__title">{{ title() }}</h2>
+        <p class="modal__message">{{ message() }}</p>
+
+        <div class="modal__actions">
+        <button type="button" class="modal__button modal__button--danger" (click)="onConfirm()">
+            Confirm
+        </button>
+        <button type="button" class="modal__button" (click)="onCancel()">
+            Cancel
+        </button>
+        </div>
+    </div>
+</div>

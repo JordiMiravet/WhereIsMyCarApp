@@ -1,9 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, input, output, OnChanges, SimpleChanges } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-vehicle-form-modal',
-  imports: [ ReactiveFormsModule ],
+  imports: [ ReactiveFormsModule, CommonModule ],
   templateUrl: './vehicle-form-modal.html',
   styleUrl: './vehicle-form-modal.css',
 })
@@ -16,7 +17,18 @@ export class VehicleFormModalComponent implements OnChanges {
   submit = output<any>();
   cancel = output<void>();
 
-  form: FormGroup;
+  public form: FormGroup;
+
+  getFieldError( field: string ): string | null {
+    const control = this.form.get(field);
+    if (!control || !control.touched || control.valid) return null;
+
+    if (control.errors?.['required']) return `${field} is required`;
+    if (control.errors?.['minlength']) return `${field} must be at least ${control.errors['minlength'].requiredLength} characters long`;
+    if (control.errors?.['maxlength']) return `${field} cannot exceed ${control.errors['maxlength'].requiredLength} characters`;
+    
+    return null;
+  }
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -25,8 +37,16 @@ export class VehicleFormModalComponent implements OnChanges {
         Validators.maxLength(30), 
         Validators.minLength(3)
       ]],
-      model: ['', Validators.required],
-      plate: ['', Validators.required]
+      model: ['', [
+        Validators.required, 
+        Validators.maxLength(30), 
+        Validators.minLength(3)
+      ]],
+      plate: ['', [
+        Validators.required, 
+        Validators.maxLength(10), 
+        Validators.minLength(5)
+      ]],
     });
   }
 
