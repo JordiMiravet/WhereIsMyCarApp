@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { VehicleFormModalComponent } from "../../shared/components/modals/vehicle-form-modal/vehicle-form-modal";
+import { VehicleFormModalComponent } from '../../features/vehicle/modals/vehicle-form-modal/vehicle-form-modal';
+import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,7 @@ import { VehicleFormModalComponent } from "../../shared/components/modals/vehicl
 })
 export class HomeComponent {
 
-  vehicles : any[] = [
+  vehicles : VehicleInterface[] = [
     {
       name: 'Coche Grande',
       model: 'Range Rover',
@@ -37,13 +38,13 @@ export class HomeComponent {
     this.isModalOpen = true;
   }
 
-  editVehicle(vehicle : any): void {
+  editVehicle(vehicle : VehicleInterface): void {
     this.modalMode = 'edit';
     this.selectedVehicle = vehicle;
     this.isModalOpen = true;
   }
 
-  deleteVehicle(vehicle: any): void {
+  deleteVehicle(vehicle: VehicleInterface): void {
     this.vehicles = this.vehicles.filter(v => v !== vehicle);
   }
 
@@ -51,7 +52,7 @@ export class HomeComponent {
     this.isModalOpen = false;
   }
 
-  saveVehicle(vehicleData: any): void {
+  saveVehicle(vehicleData: VehicleInterface): void {
     if (this.modalMode === 'create') {
       const newVehicle = { ...vehicleData };
       this.vehicles = [...this.vehicles, newVehicle];

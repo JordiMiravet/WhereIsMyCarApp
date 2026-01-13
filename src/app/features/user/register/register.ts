@@ -3,25 +3,26 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from '../auth';
 import { Router } from '@angular/router';
 
-
 @Component({
-  selector: 'app-login',
-  imports: [ ReactiveFormsModule  ],
-  templateUrl: './login.html',
-  styleUrl: './login.css',
+  selector: 'app-register',
+  standalone: true,
+  imports: [ ReactiveFormsModule ],
+  templateUrl: './register.html',
+  styleUrl: './register.css',
 })
-export class LoginComponent implements OnInit {
-  
+
+export class RegisterComponent implements OnInit {
+
   private authService = inject(AuthService);
   private router = inject(Router);
 
   public authMessage = this.authService.errorMessages;
   public errorSubmit: string = '';
 
-  formLogin: FormGroup;
+  formReg: FormGroup;
   
   constructor() {
-    this.formLogin = new FormGroup({
+    this.formReg = new FormGroup({
       email: new FormControl('', [
         Validators.email, 
         Validators.required,
@@ -37,12 +38,12 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
-    this.authService.login(this.formLogin.value)
+    this.authService.register(this.formReg.value)
     .then( response => {
       this.router.navigate([''])
     })
     .catch(error => {
-      this.errorSubmit = this.authMessage.invalidCredentials
+      this.errorSubmit = this.authMessage.emailAlreadyExists
       console.error('Error:', error)
     });
   }

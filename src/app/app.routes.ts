@@ -1,12 +1,13 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './features/home/home';
-import { MapComponent } from './features/map/map';
-import { CalendarComponent } from './features/calendar/calendar';
-import { GraphicsComponent } from './features/graphics/graphics';
-import { RegisterComponent } from './core/auth/register/register';
-import { LoginComponent } from './core/auth/login/login';
 import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
+import { RegisterComponent } from './features/user/register/register';
+import { LoginComponent } from './features/user/login/login';
+
+import { HomeComponent } from './pages/home/home';
+import { MapComponent } from './pages/map/map';
+import { CalendarComponent } from './pages/calendar/calendar';
+import { GraphicsComponent } from './pages/graphics/graphics';
 
 export const routes: Routes = [
     {

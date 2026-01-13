@@ -20,7 +20,11 @@ export class VehicleFormModalComponent implements OnChanges {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      name: ['', Validators.required],
+      name: ['', [
+        Validators.required, 
+        Validators.maxLength(30), 
+        Validators.minLength(3)
+      ]],
       model: ['', Validators.required],
       plate: ['', Validators.required]
     });
