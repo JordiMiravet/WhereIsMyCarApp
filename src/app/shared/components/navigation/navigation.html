@@ -1,25 +1,28 @@
 <nav class="navbar">
-    <ul class="navbar__links">
-        <li class="nav-item">
-            <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-        </li>
-        <li class="nav-item">
-            <a routerLink="/map" routerLinkActive="active">Map</a>
-        </li>
-        <li class="nav-item">
-            <a routerLink="/calendar" routerLinkActive="active">Calendar</a>
-        </li>
-        <li class="nav-item">
-            <a routerLink="/graphics" routerLinkActive="active">Graphics</a>
-        </li>
-    </ul>
+    @if (this.isLogged()) {
+        <ul class="navbar__links">
+            <li class="nav-item">
+                <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+            </li>
+            <li class="nav-item">
+                <a routerLink="/map" routerLinkActive="active">Map</a>
+            </li>
+            <li class="nav-item">
+                <a routerLink="/calendar" routerLinkActive="active">Calendar</a>
+            </li>
+            <li class="nav-item">
+                <a routerLink="/graphics" routerLinkActive="active">Graphics</a>
+            </li>
+        </ul>
+    }
+    
 
     <div class="navbar__auth" >
         @if(this.isLogged()){
-            <a [routerLink]="['']" (click)="onLogout()">Logout</a>
+            <button [routerLink]="['']" routerLinkActive="active" (click)="onLogout()">Logout</button>
         } @else if (!this.isLogged()) {
-            <a [routerLink]="['/register']">Register</a>
-            <a [routerLink]="['/login']">Login</a>
+            <button [routerLink]="['/register']" routerLinkActive="active">Register</button>
+            <button [routerLink]="['/login']" routerLinkActive="active">Login</button>
         }   
     </div>
 </nav>
