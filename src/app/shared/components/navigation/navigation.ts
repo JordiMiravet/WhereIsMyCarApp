@@ -1,10 +1,10 @@
 import { Component, inject, WritableSignal } from '@angular/core';
-import { Router, RouterLink } from "@angular/router";
+import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { AuthService } from '../../../features/auth/auth';
 
 @Component({
   selector: 'header[navigation]',
-  imports: [ RouterLink ],
+  imports: [ RouterLink, RouterLinkActive ],
   templateUrl: './navigation.html',
   styleUrls: ['./navigation.css'],
 })
