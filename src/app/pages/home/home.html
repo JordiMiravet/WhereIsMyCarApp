@@ -9,7 +9,7 @@
             <p>There are no registered vehicles</p>
         </div>
     } @else {
-        <div class="table-container">
+        <div class="vehicle-table__container">
             <table>
                 <thead>
                     <tr>
@@ -21,11 +21,11 @@
                 </thead>
                 <tbody>
                     @for(vehicle of vehicles; track vehicle.plate) {
-                        <tr>
+                        <tr class="vehicle-table__row">
                             <td data-label="Name">{{ vehicle.name }}</td>
                             <td data-label="Model">{{ vehicle.model }}</td>
                             <td data-label="Plate">{{ vehicle.plate }}</td>
-                            <td data-label="Actions" class="actions">
+                            <td data-label="Actions" class="vehicle-table__actions">
                                 <app-edit-button (edit)="editVehicle(vehicle)"/>
                                 <app-delete-button (delete)="openConfirmDelete(vehicle)"/>
                             </td>

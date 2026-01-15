@@ -48,7 +48,5 @@
 /* MediaQuery - Tablet */
 
 @media(min-width: 768px){
-    .map__container {
-        padding: 1rem;
-    }
+
 }
