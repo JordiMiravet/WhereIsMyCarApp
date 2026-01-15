@@ -7,6 +7,7 @@ import * as L from 'leaflet';
   templateUrl: './map.html',
   styleUrls: ['./map.css'],
 })
+
 export class MapComponent implements OnInit {
 
   private map: any;
