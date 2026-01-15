@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-create-button',
@@ -8,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class CreateButton {
 
+  create = output<void>();
+
+  onClick(): void {
+    this.create.emit(); 
+  }
+  
 }

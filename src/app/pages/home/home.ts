@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { VehicleFormModalComponent } from '../../features/vehicle/modals/vehicle-form-modal/vehicle-form-modal';
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
 import { ConfirmModal } from "../../shared/components/confirm-modal/confirm-modal";
+import { CreateButton } from "../../shared/components/buttons/create-button/create-button";
 
 @Component({
   selector: 'app-home',
-  imports: [VehicleFormModalComponent, ConfirmModal],
+  imports: [VehicleFormModalComponent, ConfirmModal, CreateButton],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
