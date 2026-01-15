@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 
 @Component({
   selector: 'app-edit-button',
@@ -6,6 +6,12 @@ import { Component } from '@angular/core';
   templateUrl: './edit-button.html',
   styleUrl: './edit-button.css',
 })
-export class EditButton {
+export class EditButtonComponent {
+
+  readonly edit = output<void>()
+
+  onClick(): void {
+    this.edit.emit();
+  }
 
 }

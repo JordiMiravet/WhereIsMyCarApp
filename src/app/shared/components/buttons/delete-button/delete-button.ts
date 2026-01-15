@@ -6,11 +6,12 @@ import { Component, output } from '@angular/core';
   templateUrl: './delete-button.html',
   styleUrl: './delete-button.css',
 })
-export class DeleteButton {
+export class DeleteButtonComponent {
 
   readonly delete = output<void>();
 
   onClick(): void {
     this.delete.emit();
   }
+
 }

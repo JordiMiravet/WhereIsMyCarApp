@@ -7,9 +7,10 @@ import { Component, output } from '@angular/core';
   templateUrl: './create-button.html',
   styleUrl: './create-button.css',
 })
-export class CreateButton {
 
-  create = output<void>();
+export class CreateButtonComponent {
+
+  readonly create = output<void>();
 
   onClick(): void {
     this.create.emit(); 

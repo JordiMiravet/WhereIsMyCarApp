@@ -2,12 +2,19 @@ import { Component } from '@angular/core';
 import { VehicleFormModalComponent } from '../../features/vehicle/modals/vehicle-form-modal/vehicle-form-modal';
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
 import { ConfirmModal } from "../../shared/components/confirm-modal/confirm-modal";
-import { CreateButton } from "../../shared/components/buttons/create-button/create-button";
-import { DeleteButton } from "../../shared/components/buttons/delete-button/delete-button";
+import { CreateButtonComponent } from "../../shared/components/buttons/create-button/create-button";
+import { DeleteButtonComponent } from "../../shared/components/buttons/delete-button/delete-button";
+import { EditButtonComponent } from "../../shared/components/buttons/edit-button/edit-button";
 
 @Component({
   selector: 'app-home',
-  imports: [VehicleFormModalComponent, ConfirmModal, CreateButton, DeleteButton],
+  imports: [
+    VehicleFormModalComponent, 
+    ConfirmModal, 
+    CreateButtonComponent, 
+    DeleteButtonComponent, 
+    EditButtonComponent
+  ],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

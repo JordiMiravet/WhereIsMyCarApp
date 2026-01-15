@@ -1,3 +1,4 @@
+
 .delete-button {
     background: transparent;
     border: none;
@@ -6,6 +7,11 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+}
+.delete-button:focus-visible {
+    outline: 2px solid var(--color-blue-light);
+    outline-offset: 2px;
+    transition: outline 0.25s ease;
 }
 
 .delete-button__icon {
