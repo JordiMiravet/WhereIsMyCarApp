@@ -3,10 +3,11 @@ import { VehicleFormModalComponent } from '../../features/vehicle/modals/vehicle
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
 import { ConfirmModal } from "../../shared/components/confirm-modal/confirm-modal";
 import { CreateButton } from "../../shared/components/buttons/create-button/create-button";
+import { DeleteButton } from "../../shared/components/buttons/delete-button/delete-button";
 
 @Component({
   selector: 'app-home',
-  imports: [VehicleFormModalComponent, ConfirmModal, CreateButton],
+  imports: [VehicleFormModalComponent, ConfirmModal, CreateButton, DeleteButton],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

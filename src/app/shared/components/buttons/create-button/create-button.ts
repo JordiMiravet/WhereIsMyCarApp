@@ -1,7 +1,8 @@
-import { Component, EventEmitter, input, output } from '@angular/core';
+import { Component, output } from '@angular/core';
 
 @Component({
   selector: 'app-create-button',
+  standalone: true,
   imports: [],
   templateUrl: './create-button.html',
   styleUrl: './create-button.css',

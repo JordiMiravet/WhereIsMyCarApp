@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 
 @Component({
   selector: 'app-delete-button',
@@ -8,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class DeleteButton {
 
+  readonly delete = output<void>();
+
+  onClick(): void {
+    this.delete.emit();
+  }
 }
