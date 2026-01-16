@@ -20,9 +20,7 @@
                     [ngClass]="{'modal__input--error': form.controls['name'].invalid && form.controls['name'].touched}"
                 />
                 @if (getFieldError('name'); as error) {
-                    <h4 class="modal__form-text">
-                        {{ error }}
-                    </h4>
+                    <h4 class="modal__form-text">{{ error }}</h4>
                 }
             </div>
             <div class="modal__form-section">
@@ -35,9 +33,7 @@
                     [ngClass]="{'modal__input--error': form.controls['model'].invalid && form.controls['model'].touched}"
                  />
                 @if (getFieldError('model'); as error) {
-                    <h4 class="modal__form-text">
-                        {{ error }}
-                    </h4>
+                    <h4 class="modal__form-text">{{ error }}</h4>
                 }
             </div>
             <div class="modal__form-section">
@@ -50,9 +46,7 @@
                     [ngClass]="{'modal__input--error': form.controls['plate'].invalid && form.controls['plate'].touched}"
                 />
                 @if (getFieldError('plate'); as error) {
-                    <h4 class="modal__form-text">
-                        {{ error }}
-                    </h4>
+                    <h4 class="modal__form-text">{{ error }}</h4>
                 }
             </div>
 

@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, Signal, signal } from '@angular/core';
 import { VehicleFormModalComponent } from '../../features/vehicle/modals/vehicle-form-modal/vehicle-form-modal';
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
 import { ConfirmModal } from "../../shared/components/confirm-modal/confirm-modal";
 import { CreateButtonComponent } from "../../shared/components/buttons/create-button/create-button";
 import { DeleteButtonComponent } from "../../shared/components/buttons/delete-button/delete-button";
 import { EditButtonComponent } from "../../shared/components/buttons/edit-button/edit-button";
+import { VehicleService } from '../../features/vehicle/services/vehicle-service';
 
 @Component({
   selector: 'app-home',
@@ -20,56 +21,36 @@ import { EditButtonComponent } from "../../shared/components/buttons/edit-button
 })
 export class HomeComponent {
 
-  /* To Do : Este array mas adelante debo cambiarlo a un servicio y luego manejarlo con backend, pero por ahora va bien de fake */
-
-  vehicles : VehicleInterface[] = [
-    {
-      name: 'Coche Grande',
-      model: 'Range Rover',
-      plate: '3447VHZ'
-    },
-    {
-      name: 'Coche Pequeño',
-      model: 'Mini',
-      plate: '4973ZYL'
-    },
-    {
-      name: 'Harley',
-      model: 'Electra Glide',
-      plate: '5113LKG'
-    },
-  ]
+  private vehicleService = inject(VehicleService);
+  public vehicleList = this.vehicleService.vehiclesList;
 
   /* Edit/Create Modal */
 
-  isVehicleModalOpen : boolean = false;
-  modalMode: 'create' | 'edit' = 'create';
-  selectedVehicle: any | null = null;
+  isVehicleModalOpen = signal(false);
+  modalMode = signal<'create' | 'edit'>('create');
+  selectedVehicle = signal<any | null>(null);
 
   createVehicle(): void {
-    this.modalMode = 'create';
-    this.selectedVehicle = null;
-    this.isVehicleModalOpen = true;
+    this.modalMode.set('create');
+    this.selectedVehicle.set(null);
+    this.isVehicleModalOpen.set(true);
   }
 
   editVehicle(vehicle : VehicleInterface): void {
-    this.modalMode = 'edit';
-    this.selectedVehicle = vehicle;
-    this.isVehicleModalOpen = true;
+    this.modalMode.set('edit');
+    this.selectedVehicle.set(vehicle);
+    this.isVehicleModalOpen.set(true);
   }
 
   closeModal(): void {
-    this.isVehicleModalOpen = false;
+    this.isVehicleModalOpen.set(false);
   }
 
   saveVehicle(vehicleData: VehicleInterface): void {
-    if (this.modalMode === 'create') {
-      const newVehicle = { ...vehicleData };
-      this.vehicles = [...this.vehicles, newVehicle];
-    } else if (this.modalMode === 'edit' && this.selectedVehicle) {
-      this.vehicles = this.vehicles.map(v =>
-        v === this.selectedVehicle ? { ...v, ...vehicleData } : v
-      );
+    if (this.modalMode() === 'create') {
+      this.vehicleService.addVehicles(vehicleData)
+    } else if (this.modalMode() === 'edit' && this.selectedVehicle) {
+      this.vehicleService.updateVehicle(this.selectedVehicle()!, vehicleData);
     }
 
     this.closeModal();
@@ -77,23 +58,23 @@ export class HomeComponent {
 
   /* Delete Modal */
 
-  isConfirmDeleteOpen = false;
-  vehicleToDelete: VehicleInterface | null = null;
+  isConfirmDeleteOpen = signal(false);
+  vehicleToDelete = signal<VehicleInterface | null>(null);
 
   openConfirmDelete(vehicle: VehicleInterface) {
-    this.vehicleToDelete = vehicle;
-    this.isConfirmDeleteOpen = true;
+    this.vehicleToDelete.set(vehicle);
+    this.isConfirmDeleteOpen.set(true);
   }
 
   confirmDeleteVehicle() {
-    if (this.vehicleToDelete) {
-      this.vehicles = this.vehicles.filter(v => v !== this.vehicleToDelete);
+    if (this.vehicleToDelete()) {
+      this.vehicleService.deleteVehicle(this.vehicleToDelete()!)
     }
     this.closeConfirmModal();
   }
 
   closeConfirmModal() {
-    this.isConfirmDeleteOpen = false;
-    this.vehicleToDelete = null;
+    this.isConfirmDeleteOpen.set(false);
+    this.vehicleToDelete.set(null);
   }
 }
