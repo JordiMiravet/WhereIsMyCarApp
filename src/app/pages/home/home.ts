@@ -1,11 +1,12 @@
-import { Component, computed, inject, Signal, signal } from '@angular/core';
-import { VehicleFormModalComponent } from '../../features/vehicle/modals/vehicle-form-modal/vehicle-form-modal';
+
+import { Component, inject, signal } from '@angular/core';
+import { VehicleService } from '../../features/vehicle/services/vehicle-service';
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
+import { VehicleFormModalComponent } from '../../features/vehicle/modals/vehicle-form-modal/vehicle-form-modal';
 import { ConfirmModal } from "../../shared/components/confirm-modal/confirm-modal";
 import { CreateButtonComponent } from "../../shared/components/buttons/create-button/create-button";
 import { DeleteButtonComponent } from "../../shared/components/buttons/delete-button/delete-button";
 import { EditButtonComponent } from "../../shared/components/buttons/edit-button/edit-button";
-import { VehicleService } from '../../features/vehicle/services/vehicle-service';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +20,7 @@ import { VehicleService } from '../../features/vehicle/services/vehicle-service'
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
+
 export class HomeComponent {
 
   private vehicleService = inject(VehicleService);

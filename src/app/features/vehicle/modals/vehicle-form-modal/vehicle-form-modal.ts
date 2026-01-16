@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output, signal, Signal, effect } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { VehicleInterface } from '../../interfaces/vehicle';
 
 @Component({
   selector: 'app-vehicle-form-modal',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ ReactiveFormsModule, CommonModule ],
   templateUrl: './vehicle-form-modal.html',
   styleUrls: ['./vehicle-form-modal.css'],
 })
@@ -21,9 +21,21 @@ export class VehicleFormModalComponent {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      model: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      plate: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
+      name: ['', [
+        Validators.required, 
+        Validators.minLength(3), 
+        Validators.maxLength(30)
+      ]],
+      model: ['', [
+        Validators.required, 
+        Validators.minLength(3), 
+        Validators.maxLength(30)
+      ]],
+      plate: ['', [
+        Validators.required, 
+        Validators.minLength(5), 
+        Validators.maxLength(10)
+      ]],
     });
   }
 
@@ -51,6 +63,11 @@ export class VehicleFormModalComponent {
     this.cancel.emit();
   }
 
+  /* 
+    ToDo: A ver cuando tenga tiempo tengo que pensar que mas adelante los mensajes de esta parte 
+    irán en un service a parte que recoja todos los msg de error del programa, por ahora me lo dejo apuntao por aquí
+  */
+
   getFieldError(field: string): string | null {
     const control = this.form.get(field);
     if (!control || !control.touched || control.valid) return null;
@@ -61,4 +78,5 @@ export class VehicleFormModalComponent {
 
     return null;
   }
+
 }
