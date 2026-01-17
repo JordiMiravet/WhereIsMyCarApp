@@ -1,4 +1,4 @@
-import { Component, inject, WritableSignal } from '@angular/core';
+import { Component, inject, Signal, WritableSignal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { AuthService } from '../../../features/auth/auth';
 
@@ -13,7 +13,7 @@ export class NavigationComponent {
   private auth = inject(AuthService);
   private router =  inject(Router);
 
-  public isLogged : WritableSignal<boolean> = this.auth.isLogged;
+  public isLogged : Signal<boolean> = this.auth.isLogged;
 
   onLogout(){
     this.auth.logout()

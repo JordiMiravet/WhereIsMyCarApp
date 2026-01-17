@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from '@angular/fire/auth';
 
 
@@ -7,9 +7,13 @@ import { Auth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEma
 })
 
 export class AuthService {
-  auth = inject(Auth);
 
-  public isLogged = signal(false);
+  private auth = inject(Auth);
+
+  private userSignal = signal<User | null>(null);
+
+  readonly user = this.userSignal.asReadonly();
+  readonly isLogged = computed(() => !!this.userSignal());
 
   public errorMessages = {
     invalidEmail : 'Please enter a valid email',
@@ -20,16 +24,24 @@ export class AuthService {
 
   constructor() {
     onAuthStateChanged(this.auth, (user: User | null) => {
-      this.isLogged.set(!!user)
+      this.userSignal.set(user)
     });
   }
 
-  register({ email, password}: any) {
-    return createUserWithEmailAndPassword(this.auth, email, password);
+  register(credentials: { email: string, password: string}) {
+    return createUserWithEmailAndPassword(
+      this.auth, 
+      credentials.email, 
+      credentials.password
+    );
   }
 
-  login({ email, password}: any) {
-    return signInWithEmailAndPassword(this.auth, email, password)
+  login(credentials: { email: string, password: string}) {
+    return signInWithEmailAndPassword(
+      this.auth, 
+      credentials.email, 
+      credentials.password
+    );
   }
 
   logout() {
