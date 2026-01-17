@@ -3,7 +3,8 @@ import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { AuthService } from '../../../features/auth/auth';
 
 @Component({
-  selector: 'header[navigation]',
+  selector: 'app-navigation',
+  standalone: true,
   imports: [ RouterLink, RouterLinkActive ],
   templateUrl: './navigation.html',
   styleUrls: ['./navigation.css'],

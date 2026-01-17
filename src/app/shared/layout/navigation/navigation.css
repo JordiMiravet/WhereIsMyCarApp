@@ -1,15 +1,13 @@
-:host {
-    background-color: var(--color-blue-light);
-}
 
 /* Navbar */
 
 .navbar {
+    background-color: var(--color-blue-light);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
-    height: 10vh;
+    height: 7.5vh;
     padding: 2rem;
 }
 .navbar__links {
