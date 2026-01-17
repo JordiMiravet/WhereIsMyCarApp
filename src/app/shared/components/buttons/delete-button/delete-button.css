@@ -14,12 +14,16 @@
     transition: outline 0.25s ease;
 }
 
-.delete-button__icon {
+.delete-button i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 2.5rem;
     height: 2.5rem;
-    transition: fill 0.25s;
-    fill: var(--color-red-light);
+    font-size: 2rem;
+    color: var(--color-red-light);
+    transition: color 0.25s;
 }
-.delete-button__icon:hover {
-    fill: var(--color-red-dark);
+.delete-button i:hover {
+    color: var(--color-red-dark);
 }

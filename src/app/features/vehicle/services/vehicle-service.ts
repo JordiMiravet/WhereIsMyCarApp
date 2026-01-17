@@ -11,22 +11,57 @@ export class VehicleService {
 
   private vehicles = signal<VehicleInterface[]>([
     {
-      name: 'Coche Grande',
-      model: 'Range Rover',
+      name: 'Mercedes GLC Coupe',
+      model: 'GLC Coupe',
       plate: '3447VHZ'
     },
+
     {
-      name: 'Coche Pequeño',
-      model: 'Mini',
+      name: 'Mercedes S-Class',
+      model: 'S-Class',
       plate: '4973ZYL'
     },
     {
-      name: 'Harley-Davidson',
+      name: 'Mercedes SL 64',
+      model: 'SL 64 AMG Black Series',
+      plate: '8845JKL'
+    },
+    {
+      name: 'Porsche 911',
+      model: '911 Turbo',
+      plate: '9921PQR'
+    },
+    {
+      name: 'Nissan R34',
+      model: 'Skyline GTR R34',
+      plate: '3344XYZ'
+    },
+    {
+      name: 'Ducati Panigale',
+      model: 'Panigale R 1299',
+      plate: '6124DFG'
+    },
+
+    {
+      name: 'Harley-Davidson Electra',
       model: 'Electra Glide',
       plate: '5113LKG'
     },
+    {
+      name: 'Harley-Davidson Fat-Boy',
+      model: 'Fat Boy',
+      plate: '5566ABC'
+    },
+    {
+      name: 'Triumph Bonneville',
+      model: 'Bonneville Bobber 1200',
+      plate: '7832HJK'
+    },
+
+
 
   ]);
+
 
   vehiclesList = computed(() => this.vehicles());
 

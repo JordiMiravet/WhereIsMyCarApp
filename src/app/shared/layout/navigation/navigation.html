@@ -2,16 +2,28 @@
     @if (this.isLogged()) {
         <ul class="navbar__links">
             <li class="nav-item">
-                <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+                <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="pi pi-home"></i>
+                    <span class="nav-label">Home</span>
+                </a>
             </li>
             <li class="nav-item">
-                <a routerLink="/map" routerLinkActive="active">Map</a>
+                <a routerLink="/map" routerLinkActive="active">
+                    <i class="pi pi-map-marker"></i>
+                    <span class="nav-label">Map</span>
+                </a>
             </li>
             <li class="nav-item">
-                <a routerLink="/calendar" routerLinkActive="active">Calendar</a>
+                <a routerLink="/calendar" routerLinkActive="active">
+                    <i class="pi pi-calendar"></i>
+                    <span class="nav-label">Calendar</span>
+                </a>
             </li>
             <li class="nav-item">
-                <a routerLink="/graphics" routerLinkActive="active">Graphics</a>
+                <a routerLink="/graphics" routerLinkActive="active">
+                    <i class="pi pi-chart-bar"></i>
+                    <span class="nav-label">Graphics</span>
+                </a>
             </li>
         </ul>
     }

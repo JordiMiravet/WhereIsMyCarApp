@@ -14,13 +14,17 @@
     transition: outline 0.25s ease;
 }
 
-.edit-button__icon {
+.edit-button i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 2.5rem;
     height: 2.5rem;
-    transition: fill 0.25s;
-    fill: var(--color-blue-light);
+    font-size: 2rem;
+    color: var(--color-blue-light);
+    transition: color 0.25s ease;
 }
-.edit-button__icon:hover {
-    fill: var(--color-blue-dark);
+.edit-button i:hover {
+    color: var(--color-blue-dark);
 }
 

@@ -88,12 +88,11 @@
 /* Actions */
 
 .vehicle-table__actions {
-
-    margin: 0;
-    padding: 0;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    margin: 0;
+    padding: 0;
     gap: 1rem;
 }
 .vehicle-table__container td.vehicle-table__actions {

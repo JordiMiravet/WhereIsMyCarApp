@@ -1,6 +1,10 @@
 <div class="navbar__auth" >
     @if(this.isLogged()){
-        <button [routerLink]="['']" routerLinkActive="active" (click)="onLogout()">Logout</button>
+        <button [routerLink]="['']" routerLinkActive="active" (click)="onLogout()">
+            <i class="pi pi-sign-out"></i>
+            <span class="navbar__auth-label">Logout</span>
+            
+        </button>
     } @else if (!this.isLogged()) {
         <button [routerLink]="['/register']" routerLinkActive="active">Register</button>
         <button [routerLink]="['/login']" routerLinkActive="active">Login</button>
