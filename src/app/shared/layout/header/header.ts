@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { NavigationComponent } from "../navigation/navigation";
+import { AuthActionsComponent } from "../auth-actions/auth-actions";
 
 @Component({
-  selector: 'header[header]',
+  selector: 'app-header',
   standalone: true,
-  imports: [ NavigationComponent ],
+  imports: [NavigationComponent, AuthActionsComponent],
   templateUrl: './header.html',
-  styleUrl: './header.css',
+  styleUrls: ['./header.css'],
 })
 export class HeaderComponent {
-
+  
 }

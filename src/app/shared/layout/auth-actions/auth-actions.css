@@ -1,0 +1,26 @@
+
+.navbar__auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 0;
+    margin: 0;
+}
+.navbar__auth button {
+    background-color: transparent;
+    color: var(--color-white);
+    font-weight: 500;
+    font-size: var(--font-size-base);
+    padding: 1rem;
+    margin: 0;
+    border: none;
+}
+.navbar__auth button:hover {
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: var(--radius-md);
+}
+.navbar__auth button.active {
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: var(--radius-md);
+}
