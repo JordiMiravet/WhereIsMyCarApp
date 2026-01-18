@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthActions } from './auth-actions';
+import { AuthActionsComponent } from './auth-actions';
 
-describe('AuthActions', () => {
-  let component: AuthActions;
-  let fixture: ComponentFixture<AuthActions>;
+describe('AuthActionsComponent', () => {
+  let component: AuthActionsComponent;
+  let fixture: ComponentFixture<AuthActionsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuthActions]
+      imports: [AuthActionsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AuthActions);
+    fixture = TestBed.createComponent(AuthActionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
