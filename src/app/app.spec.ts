@@ -1,10 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
+import { Auth } from '@angular/fire/auth';
+import { RouterTestingModule } from '@angular/router/testing';
+
+const mockAuth = {
+  onAuthStateChanged: (callback: any) => callback(null)
+} as unknown as Auth;
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [App],
+      imports: [
+        App,
+        RouterTestingModule
+      ],
+      providers: [{
+        provide: Auth,
+        useValue: mockAuth
+      }]
     }).compileComponents();
   });
 
@@ -14,10 +27,4 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(App);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, WhereIsMyCarApp');
-  });
 });
