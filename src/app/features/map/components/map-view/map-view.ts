@@ -3,6 +3,7 @@ import * as L from 'leaflet';
 
 @Component({
   selector: 'app-map-view',
+  standalone: true,
   imports: [],
   templateUrl: './map-view.html',
   styleUrl: './map-view.css',

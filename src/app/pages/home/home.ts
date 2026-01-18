@@ -10,6 +10,7 @@ import { EditButtonComponent } from "../../shared/components/buttons/edit-button
 
 @Component({
   selector: 'app-home',
+  standalone: true,
   imports: [
     VehicleFormModalComponent, 
     ConfirmModalComponent, 

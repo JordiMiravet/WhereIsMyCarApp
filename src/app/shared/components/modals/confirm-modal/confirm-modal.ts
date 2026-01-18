@@ -3,6 +3,7 @@ import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-confirm-modal',
+  standalone: true,
   imports: [ CommonModule ],
   templateUrl: './confirm-modal.html',
   styleUrl: './confirm-modal.css',

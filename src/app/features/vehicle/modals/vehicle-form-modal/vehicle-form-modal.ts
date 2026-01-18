@@ -5,6 +5,7 @@ import { VehicleInterface } from '../../interfaces/vehicle';
 
 @Component({
   selector: 'app-vehicle-form-modal',
+  standalone: true,
   imports: [ ReactiveFormsModule, CommonModule ],
   templateUrl: './vehicle-form-modal.html',
   styleUrls: ['./vehicle-form-modal.css'],
