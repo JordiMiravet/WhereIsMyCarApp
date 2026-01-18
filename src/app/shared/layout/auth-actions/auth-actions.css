@@ -12,14 +12,15 @@
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin: 0;
     background-color: transparent;
     color: var(--color-white);
     font-weight: 500;
     font-size: var(--font-size-base);
-    padding: 1rem;
     transition: background-color 0.25s ease, color 0.25s ease;
-    margin: 0;
-    border: none;
     cursor: pointer;
 }
 
@@ -30,7 +31,7 @@
 .navbar__auth button:hover {
     color: var(--color-blue-light);
     background-color: var(--color-white);
-
+    border-radius: var(--radius-md);
 }
 .navbar__auth-label {
     display: none;
