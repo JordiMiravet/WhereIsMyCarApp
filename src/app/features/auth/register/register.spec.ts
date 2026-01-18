@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RegisterComponent } from './register';
-import { AuthService } from '../auth';
+import { AuthService } from '../services/auth';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;

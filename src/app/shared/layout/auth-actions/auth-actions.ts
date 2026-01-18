@@ -1,6 +1,6 @@
 import { Component, inject, Signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../../features/auth/auth';
+import { AuthService } from '../../../features/auth/services/auth';
 
 @Component({
   selector: 'app-auth-actions',
@@ -9,6 +9,7 @@ import { AuthService } from '../../../features/auth/auth';
   templateUrl: './auth-actions.html',
   styleUrls: ['./auth-actions.css'],
 })
+
 export class AuthActionsComponent {
   
   private auth = inject(AuthService);

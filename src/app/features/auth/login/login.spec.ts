@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginComponent } from './login';
-import { AuthService } from '../auth';
+import { AuthService } from '../services/auth';
 import { Auth } from '@angular/fire/auth';
 
 const mockAuth = {
