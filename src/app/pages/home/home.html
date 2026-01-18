@@ -6,7 +6,10 @@
 <section class="vehicle-table">
     @if (vehicleList().length === 0) {
         <div class="vehicle-table__empty">
-            <p>There are no registered vehicles</p>
+            <p class="vehicle-table__empty-message">There are no registered vehicles</p>
+            <button class="vehicle-table__empty-create" (click)="createVehicle()">
+                <h3 class="vehicle-table__empty-title">Create Vehicle</h3>
+            </button>
         </div>
     } @else {
         <div class="vehicle-table__container">
