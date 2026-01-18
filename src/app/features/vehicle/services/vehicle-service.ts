@@ -15,20 +15,19 @@ export class VehicleService {
       model: 'GLC Coupe',
       plate: '3447VHZ'
     },
-
     {
-      name: 'Mercedes S-Class',
-      model: 'S-Class',
+      name: 'Mercedes AMG S-65',
+      model: 'AMG S-65 Final Edition',
       plate: '4973ZYL'
     },
     {
-      name: 'Mercedes SL 64',
-      model: 'SL 64 AMG Black Series',
+      name: 'Mercedes AMG GT Black Series',
+      model: 'AMG GT Black Series',
       plate: '8845JKL'
     },
     {
       name: 'Porsche 911',
-      model: '911 Turbo',
+      model: '911 Turbo S',
       plate: '9921PQR'
     },
     {
@@ -38,13 +37,12 @@ export class VehicleService {
     },
     {
       name: 'Ducati Panigale',
-      model: 'Panigale R 1299',
+      model: 'Panigale R 1299 Final Edition',
       plate: '6124DFG'
     },
-
     {
-      name: 'Harley-Davidson Electra',
-      model: 'Electra Glide',
+      name: 'Harley-Davidson Electra-Glide',
+      model: 'Electra Glide 1700',
       plate: '5113LKG'
     },
     {
@@ -57,9 +55,6 @@ export class VehicleService {
       model: 'Bonneville Bobber 1200',
       plate: '7832HJK'
     },
-
-
-
   ]);
 
 
