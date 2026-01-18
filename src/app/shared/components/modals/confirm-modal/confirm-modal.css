@@ -50,7 +50,7 @@
     transition: background-color 0.25s ease;
 }
 
-.modal__button--danger {
+.modal__button--delete {
     background-color: var(--color-red-light);
     color: var(--color-white);
 }
@@ -59,7 +59,7 @@
     background-color: var(--color-blue-light);
 }
 
-.modal__button--danger:hover:not(:disabled) {
+.modal__button--delete:hover:not(:disabled) {
     background-color: var(--color-red-dark);
 }
 

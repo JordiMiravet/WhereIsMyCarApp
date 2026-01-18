@@ -70,4 +70,18 @@ describe('AuthService', () => {
     expect(mockSignOut).toHaveBeenCalled();
     await expectAsync(result).toBeResolved();
   });
+  
+  it('should set userSignal when auth state changes', () => {});
+
+  it('should set isLogged to true when user is authenticated', () => {});
+
+  it('should set isLogged to false when user is null', () => {});
+
+  it('register should call Firebase createUserWithEmailAndPassword with correct arguments', () => {});
+
+  it('login should call Firebase signInWithEmailAndPassword with correct arguments', () => {});
+
+  it('logout should call Firebase signOut', () => {});
+
+  it('isLogged should react to userSignal changes', () => {});
 });

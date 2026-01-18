@@ -20,4 +20,33 @@ describe('CreateButtonComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have a create output', () => {
+    expect(component.create).toBeTruthy();
+  });
+
+  it('should emit create event when onClick is called', () => {
+    spyOn(component.create, 'emit')
+    component.onClick();
+
+    expect(component.create.emit).toHaveBeenCalled();
+  });
+
+  it('should call onClick when button is clicked', () => {
+    spyOn(component, 'onClick');
+
+    const button = fixture.nativeElement.querySelector('button');
+    button.click();
+    fixture.detectChanges();
+
+    expect(component.onClick).toHaveBeenCalled()
+  });
+
+  it('should have aria-label for accessibility', () => {
+    const button = fixture.nativeElement.querySelector('button');
+
+    expect(button.getAttribute('Aria-label')).toBeTruthy();
+    expect(button.getAttribute('Aria-label')).toBe('Create vehicle');
+  });
+
 });

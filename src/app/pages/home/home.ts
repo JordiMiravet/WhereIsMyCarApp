@@ -64,6 +64,11 @@ export class HomeComponent {
   isConfirmDeleteOpen = signal(false);
   vehicleToDelete = signal<VehicleInterface | null>(null);
 
+  deleteConfirmation = {
+    title: 'Delete vehicle?',
+    message: 'Are you sure you want to delete this vehicle? This action cannot be undone.'
+  }
+
   openConfirmDelete(vehicle: VehicleInterface) {
     this.vehicleToDelete.set(vehicle);
     this.isConfirmDeleteOpen.set(true);

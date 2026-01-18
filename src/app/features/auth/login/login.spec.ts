@@ -8,7 +8,7 @@ const mockAuth = {
   onAuthStateChanged: () => {}
 };
 
-fdescribe('LoginComponent', () => {
+describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authService: AuthService;
