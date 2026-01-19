@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import * as L from 'leaflet';
+import { VehicleService } from '../../../vehicle/services/vehicle-service';
+import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
+
 
 @Component({
   selector: 'app-map-view',
   standalone: true,
   imports: [],
   templateUrl: './map-view.html',
-  styleUrl: './map-view.css',
+  styleUrls: ['./map-view.css'],
 })
 
 export class MapViewComponent implements OnInit {
   
   private map: any;
-  private userMarker: L.Marker<any> | undefined;
+  
 
   ngOnInit(): void {
       this.initMap();
@@ -20,19 +23,63 @@ export class MapViewComponent implements OnInit {
 
   private initMap() {
     this.map = L.map('map').setView([41.478, 2.310], 13);
-
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
   }
 
-  getlocation() {
+  // Vehicles
+
+  public myIcon = L.icon({
+    iconUrl: 'assets/icons/marker-icon.png',
+    iconSize: [50, 50],
+    iconRetinaUrl: 'assets/icons/marker-icon-2x.png',
+    shadowUrl: 'assets/icons/marker-shadow.png'
+  });
+
+  private vehicleService = inject(VehicleService)
+  public vehicleList = this.vehicleService.vehicles;
+  public selectedVehicle : VehicleInterface = this.vehicleList()[0];
+
+  private vehicleMarker: L.Marker | undefined;
+
+  showVehicle(selectedVehicle: VehicleInterface | undefined) {
+      
+    if(!selectedVehicle?.location) return;
+    
+    const coords : L.LatLngExpression  = [ selectedVehicle.location.lat, selectedVehicle.location.lng ];
+
+    if(this.vehicleMarker) {
+        this.map.removeLayer(this.vehicleMarker);
+    } 
+
+    this.vehicleMarker = L.marker(coords, {
+      draggable: true,
+
+    }).addTo(this.map)//.bindPopup(selectedVehicle.name).openPopup();
+
+    this.vehicleMarker.on('dragend', () => {
+      const position = this.vehicleMarker!.getLatLng();
+
+      this.vehicleService.updateVehicleLocation(
+        selectedVehicle,
+        { lat: position.lat, lng: position.lng }
+      )
+
+      console.log('A ver si va esto de una vez:', position.lat, position.lng)
+    });
+
+    this.map.setView(coords, 19);
+    this.selectedVehicle = selectedVehicle;
+  }
+
+  /*  Location de mi IP */
+
+  private userMarker: L.Marker<any> | undefined;
+  
+  getLocation() {
     if (navigator.geolocation) {
 
-      // const myIcon = L.icon({
-      //   iconUrl:'aqui va la url de la ruta del icono porque este no me funciona',
-      //   iconSize:[ 25,40 ]
-      // })
-
       navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position)
         const coords : [ number, number ] = [ position.coords.latitude, position.coords.longitude ];
 
         if (this.userMarker) {
@@ -62,5 +109,5 @@ export class MapViewComponent implements OnInit {
       alert("Geolocalización no soportada por el navegador");
     }
   }
-  
+
 }

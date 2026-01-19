@@ -21,22 +21,22 @@ export const routes: Routes = [
     {
         path: '',
         component: HomeComponent,
-        ...canActivate(() => redirectUnauthorizedTo(['/register']))
+        ...canActivate(() => redirectUnauthorizedTo(['/login']))
     },
     {
         path: 'map',
         component: MapComponent,
-        ...canActivate(() => redirectUnauthorizedTo(['/register']))
+        ...canActivate(() => redirectUnauthorizedTo(['/login']))
     },
     {
         path: 'calendar',
         component: CalendarComponent,
-        ...canActivate(() => redirectUnauthorizedTo(['/register']))
+        ...canActivate(() => redirectUnauthorizedTo(['/login']))
     },
     {
         path: 'graphics',
         component: GraphicsComponent,
-        ...canActivate(() => redirectUnauthorizedTo(['/register']))
+        ...canActivate(() => redirectUnauthorizedTo(['/login']))
     },
     {
         path: '**',

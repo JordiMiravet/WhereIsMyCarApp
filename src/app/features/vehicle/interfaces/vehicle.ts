@@ -1,5 +1,10 @@
 export interface VehicleInterface {
     name: string,
     model: string,
-    plate: string
+    plate: string,
+    location?: {
+        lat: number;
+        lng: number;
+    },
+    
 }
