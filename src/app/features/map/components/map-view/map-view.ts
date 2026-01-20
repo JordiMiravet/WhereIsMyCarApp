@@ -2,12 +2,13 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import * as L from 'leaflet';
 import { VehicleService } from '../../../vehicle/services/vehicle-service';
 import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
+import { UserLocationButton } from '../buttons/user-location-button/user-location-button';
 
 
 @Component({
   selector: 'app-map-view',
   standalone: true,
-  imports: [],
+  imports: [ UserLocationButton ],
   templateUrl: './map-view.html',
   styleUrls: ['./map-view.css'],
 })
@@ -31,13 +32,13 @@ export class MapViewComponent implements OnInit {
     iconUrl: '/assets/icons/marker-icon.png',
     iconSize: [25, 40],
     iconRetinaUrl: '/assets/icons/marker-icon-2x.png',
-    shadowUrl: '/assets/icons/marker-shadow.png'
-    
+    shadowUrl: '/assets/icons/marker-shadow.png',
+    shadowAnchor: [9, 19],
   });
 
   private vehicleService = inject(VehicleService)
-  public vehicleList = this.vehicleService.vehicles;
-  public selectedVehicle : VehicleInterface = this.vehicleList()[0];
+  public vehicleList = this.vehicleService.vehicles();
+  public selectedVehicle : VehicleInterface = this.vehicleList[0];
 
   private vehicleMarker: L.Marker | undefined;
 
@@ -71,68 +72,25 @@ export class MapViewComponent implements OnInit {
     this.selectedVehicle = selectedVehicle;
   }
 
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   /*  Location de mi IP */
 
   private userMarker: L.Marker<any> | undefined;
   
-  getLocation() {
-    if (navigator.geolocation) {
-
-      navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position)
-        const coords : [ number, number ] = [ position.coords.latitude, position.coords.longitude ];
-
-        if (this.userMarker) {
-          this.userMarker = L.marker(coords);
-        } else {
-          this.userMarker = L.marker(coords, {
-            draggable:true,
-            /* icon:myIcon, */
-          }).addTo(this.map).bindPopup('You vehicle are here').openPopup();
-
-          this.userMarker.on('dragend', (event) => {
-            const marker = event.target;
-            const position = marker.getLatLng();
-            marker.setLatLng(position).openPopup();
-            this.map.setView(position, 19);
-            console.log(`Marcador : ${position.lat}, ${position.lng}`)
-          })
-        }
-
-        this.map.setView(coords, 19);
-
-      }, () => {
-        alert('No se pudo obtener la geolocalización')
-      });
-
+  getUserLocation(coords: [ number, number ]) {
+    if (this.userMarker) {
+    this.userMarker.setLatLng(coords);
     } else {
-      alert("Geolocalización no soportada por el navegador");
-    }
-  }
+      this.userMarker = L.marker(coords, {
+        draggable: true,
+      }).addTo(this.map)//.bindPopup('You are here').openPopup();
 
+      this.userMarker.on('dragend', () => {
+        const position = this.userMarker!.getLatLng();
+        this.map.setView(position, 19);
+        console.log(`Marcador: ${position.lat}, ${position.lng}`);
+      });
+    }
+
+    this.map.setView(coords, 19);
+    }
 }
