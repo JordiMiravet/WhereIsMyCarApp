@@ -16,7 +16,6 @@ export class MapViewComponent implements OnInit {
   
   private map: any;
   
-
   ngOnInit(): void {
       this.initMap();
   }
@@ -29,10 +28,11 @@ export class MapViewComponent implements OnInit {
   // Vehicles
 
   public myIcon = L.icon({
-    iconUrl: 'assets/icons/marker-icon.png',
-    iconSize: [50, 50],
-    iconRetinaUrl: 'assets/icons/marker-icon-2x.png',
-    shadowUrl: 'assets/icons/marker-shadow.png'
+    iconUrl: '/assets/icons/marker-icon.png',
+    iconSize: [25, 40],
+    iconRetinaUrl: '/assets/icons/marker-icon-2x.png',
+    shadowUrl: '/assets/icons/marker-shadow.png'
+    
   });
 
   private vehicleService = inject(VehicleService)
@@ -53,7 +53,7 @@ export class MapViewComponent implements OnInit {
 
     this.vehicleMarker = L.marker(coords, {
       draggable: true,
-
+      icon: this.myIcon 
     }).addTo(this.map)//.bindPopup(selectedVehicle.name).openPopup();
 
     this.vehicleMarker.on('dragend', () => {
@@ -70,6 +70,31 @@ export class MapViewComponent implements OnInit {
     this.map.setView(coords, 19);
     this.selectedVehicle = selectedVehicle;
   }
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   /*  Location de mi IP */
 
