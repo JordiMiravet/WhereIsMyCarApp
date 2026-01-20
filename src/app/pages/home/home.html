@@ -52,7 +52,7 @@
 @if (isConfirmDeleteOpen()) {
   <app-confirm-modal
     [title]="deleteConfirmation.title"
-    [message]="deleteConfirmation.title"
+    [message]="deleteConfirmation.message"
     (confirm)="confirmDeleteVehicle()"
     (cancel)="closeConfirmModal()"
   />

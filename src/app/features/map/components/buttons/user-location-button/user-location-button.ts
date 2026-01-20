@@ -6,7 +6,7 @@ import { Component, output } from '@angular/core';
   templateUrl: './user-location-button.html',
   styleUrl: './user-location-button.css',
 })
-export class UserLocationButton {
+export class UserLocationButtonComponent {
 
     public locationFound = output<[number, number]>();
     

@@ -1,50 +1,13 @@
 
 :host {
     background-color: var(--gray-200);
-    position: relative;
-}
-
-/* Map Controls */
-.leaflet-default-icon-path {
-    background-image: url(https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png);
-}
-.map__controls {
-    position: absolute;
-    z-index: 1000;
-    right: 0.25rem;
-    top: 0.25rem;
-    display: flex;
-    margin: 0 auto;
-    padding: 1rem 1rem;
-}
-.map__button {
-    margin: 0;
-    padding: 1rem;
-    border: 1px solid rgba(0, 0, 0, 0.7);
-    background-color: var(--color-white);
-    border-radius: var(--radius-sm);
-    transition: background-color 0.25s ease;
-    cursor: pointer;
-}
-.map__button:hover {
-    background-color: var(--gray-100);
-}
-.map__button-icon {
-    width: 2rem;
-    height: 2rem;
-    margin: 0;
-    padding: 0;
-    color: var(--color-white);
-}
-
-.map__button-icon path {
-    transform: scale(1.15);
-    transform-origin: center;
+    
 }
 
 /* Map Container */
 
 .map__container {
+    position: relative;
     margin: 0;
     padding: 0;
 }
@@ -55,8 +18,14 @@
     height: 92.5vh;
 }
 
-/* MediaQuery - Tablet */
+/* Map Controls && Buttons */
 
-@media(min-width: 768px){
-
+.map__controls {
+    position: absolute;
+    z-index: 1000;
+    right: 0.25rem;
+    top: 0.25rem;
+    display: flex;
+    margin: 0 auto;
+    padding: 1rem 1rem;
 }

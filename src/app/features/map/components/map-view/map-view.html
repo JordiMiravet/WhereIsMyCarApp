@@ -1,13 +1,19 @@
-<button (click)="showVehicle(selectedVehicle)">
-    Mostrar vehículo
-</button>
-<section class="map__controls">
-    <app-user-location-button (locationFound)="getUserLocation($event)"/>
-</section>
-
+<button (click)="showVehicle(selectedVehicle)">Mostrar vehículo</button>
 
 <section class="map__container">
+    <section class="map__controls">
+        <app-user-location-button (locationFound)="getUserLocation($event)"/>
+    </section>
     <div id="map" class="map"></div>
 </section>
+
+@if(showConfirmModal){
+    <app-confirm-modal
+        [title]="'Change vehicle position'"
+        [message]="'Are you sure about changing the position of the vehicle?'"
+        (confirm)="onConfirmLocationChange()"
+        (cancel)="onCancelLocationChange()"
+    />
+}
 
 
