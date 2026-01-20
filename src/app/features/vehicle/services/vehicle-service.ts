@@ -110,10 +110,6 @@ export class VehicleService {
     );
   }
 
-  deleteVehicle(vehicle : VehicleInterface): void {
-    this.vehicles.update(list => list.filter(v => v !== vehicle));
-  }
-
   updateVehicleLocation(
     vehicle: VehicleInterface,
     location: { lat: number; lng: number }
@@ -127,5 +123,8 @@ export class VehicleService {
     );
   }
 
-  
+  deleteVehicle(vehicle : VehicleInterface): void {
+    this.vehicles.update(list => list.filter(v => v !== vehicle));
+  }
+
 }
