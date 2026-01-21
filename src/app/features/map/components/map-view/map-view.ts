@@ -6,17 +6,19 @@ import { UserLocationButtonComponent } from '../buttons/user-location-button/use
 import { ConfirmModalComponent } from "../../../../shared/components/modals/confirm-modal/confirm-modal";
 import { VehicleSelectorComponent } from "../../../../shared/components/vehicle-selector/vehicle-selector";
 
+
 @Component({
   selector: 'app-map-view',
   standalone: true,
   imports: [
     UserLocationButtonComponent,
     ConfirmModalComponent,
-    VehicleSelectorComponent
+    VehicleSelectorComponent, 
   ],
   templateUrl: './map-view.html',
   styleUrls: ['./map-view.css'],
 })
+
 export class MapViewComponent implements OnInit {
 
   private map!: L.Map;
@@ -70,8 +72,8 @@ export class MapViewComponent implements OnInit {
     this.vehicleMarker.on('dragend', () => {
       this.newPosition = this.vehicleMarker!.getLatLng();
 
-      // console.log('Anterioor posicioooon', vehicle.location);
-      // console.log('Siguienteeee posiciooon', this.newPosition);
+      console.log('Anterioor posicioooon', vehicle.location);
+      console.log('Siguienteeee posiciooon', this.newPosition);
 
       this.showConfirmModal = true;
     });
@@ -94,7 +96,7 @@ export class MapViewComponent implements OnInit {
     this.selectedVehicle = {
       ...this.selectedVehicle,
       location: this.newPosition,
-    }
+    };
     // console.log('A ver si ha cambiado de una vez !!!', this.selectedVehicle.location)
 
     this.showConfirmModal = false;

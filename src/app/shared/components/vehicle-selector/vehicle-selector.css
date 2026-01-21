@@ -1,11 +1,13 @@
 :host {
     width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .map__vehicle-select {
     width: 100%;
-    max-width: 30rem;
-    padding: 1rem 1rem;
+    min-width: 20rem;
+    padding: 0.75rem;
 
     font-size: 1rem;
     text-align: center;
@@ -13,7 +15,15 @@
     color: var(--color-white);
 
     border: 1px solid var(--gray-200);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     background-color: var(--color-blue-light);
     cursor: pointer;
+}
+
+/* @Media Tablet */
+
+@media (min-width: 578px) {
+    .map__vehicle-select {
+        max-width: 30rem;
+    }
 }

@@ -1,11 +1,12 @@
 
-<section class="map__actions">
+<section class="map__actions-container">
     @if (vehicleList().length) {
         <app-vehicle-selector
             [vehicles]="vehicleList()"
             (vehicleSelected)="showVehicle($event)"
         />
     } @else {
+        <!-- Aqui irá el <app-create-button/> o haré un componente para crear coches cuando no haya-->
         <h3 class="map__no-vehicle">You don't have vehicles</h3>
     }
 </section>

@@ -3,6 +3,19 @@
     background-color: var(--gray-200);
 }
 
+/* Map Actions */
+
+.map__actions-container {
+    width: 100%;
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background-color: var(--color-gray-200);
+    text-align: end;
+}
+
 /* Map Container */
 
 .map__container {
@@ -10,14 +23,6 @@
     margin: 0;
     padding: 0;
 }
-
-/* Map */
-
-#map {
-    height: 92.5vh;
-}
-
-/* Map Controls && Buttons */
 
 .map__controls {
     position: absolute;
@@ -29,37 +34,11 @@
     padding: 1rem 1rem;
 }
 
-/* Map Vehicle Select */
+/* Map */
 
-.map__actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 1rem;
-    width: 100%;
+#map {
+    height: 92.5vh;
 }
-
-.map__vehicle-select {
-    width: 100%;
-    max-width: 30rem;
-    padding: 1rem 1rem;
-
-    font-size: 1rem;
-    text-align: center;
-    font-size: var(--font-size-);
-    color: var(--color-white);
-
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius-md);
-    background-color: var(--color-blue-light);
-    cursor: pointer;
-}
-
-.map__vehicle-option {
-    cursor: pointer;
-    
-}
-
 
 /* Mensaje de error */
 

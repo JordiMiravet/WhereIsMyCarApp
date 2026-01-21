@@ -15,8 +15,8 @@ export class VehicleService {
       model: 'GLC Coupe',
       plate: '3447VHZ',
       location: {
-        lat: 41.486518762458214 ,  
-        lng: 2.3112702960051306,
+        lat: 41.486394600830806,  
+        lng: 2.3118222053234576,
       },
     },
     {
@@ -24,8 +24,8 @@ export class VehicleService {
       model: 'AMG S-65 Final Edition',
       plate: '4973ZYL',
       location: {
-        lat: 41.486413762458214 ,  
-        lng: 2.3112702960051306,
+        lat: 41.48640269148522, 
+        lng: 2.311292239335883
       },
     },
     {
@@ -33,8 +33,8 @@ export class VehicleService {
       model: 'AMG GT Black Series',
       plate: '8845JKL',
       location: {
-        lat: 41.486418722458214 ,  
-        lng: 2.3112702960051306,
+        lat: 41.48646299087552, 
+        lng: 2.3110505434182826,
       },
     },
     {
@@ -42,8 +42,8 @@ export class VehicleService {
       model: '911 Turbo S',
       plate: '9921PQR',
       location: {
-        lat: 41.481418762158214 ,  
-        lng: 2.3112702960051306,
+        lat: 41.48644688584013, 
+        lng: 2.3107555554463137,
       },
     },
     {
@@ -51,8 +51,8 @@ export class VehicleService {
       model: 'Skyline GTR R34',
       plate: '3344XYZ',
       location: {
-        lat: 41.476418762458214 ,  
-        lng: 2.3112702960051306,
+        lat: 41.48653535720899, 
+        lng: 2.31162985104779
       },
     },
     {
@@ -60,8 +60,8 @@ export class VehicleService {
       model: 'Panigale R 1299 Final Edition',
       plate: '6124DFG',
       location: {
-        lat: 41.486418762458214 ,  
-        lng: 2.3112702960051306,
+        lat: 41.48670822425964, 
+        lng: 2.3106223748280597
       },
     },
     {
@@ -69,8 +69,8 @@ export class VehicleService {
       model: 'Electra Glide 1700',
       plate: '5113LKG',
       location: {
-        lat: 41.486418762458214 ,  
-        lng: 2.3112702960051306,
+        lat: 41.48731124524427, 
+        lng: 2.310466966262244
       },
     },
     {
@@ -78,8 +78,8 @@ export class VehicleService {
       model: 'Fat Boy',
       plate: '5566ABC',
       location: {
-        lat: 41.486418762458214 ,  
-        lng: 2.3112702960051306,
+        lat: 41.48730721538785, 
+        lng: 2.3104556817274973
       },
     },
     {
@@ -87,8 +87,8 @@ export class VehicleService {
       model: 'Bonneville Bobber 1200',
       plate: '7832HJK',
       location: {
-        lat: 41.486418762458214 ,  
-        lng: 2.3112702960051306,
+        lat: 41.48739163788307, 
+        lng: 2.31035386232231
       },
     },
   ]);
