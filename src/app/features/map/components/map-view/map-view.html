@@ -1,4 +1,14 @@
-<button (click)="showVehicle(selectedVehicle)">Mostrar vehículo</button>
+
+<section class="map__actions">
+    @if (vehicleList().length) {
+        <app-vehicle-selector
+            [vehicles]="vehicleList()"
+            (vehicleSelected)="showVehicle($event)"
+        />
+    } @else {
+        <h3 class="map__no-vehicle">You don't have vehicles</h3>
+    }
+</section>
 
 <section class="map__container">
     <section class="map__controls">
@@ -15,5 +25,7 @@
         (cancel)="onCancelLocationChange()"
     />
 }
+
+
 
 

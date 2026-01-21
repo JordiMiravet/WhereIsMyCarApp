@@ -15,7 +15,7 @@ export class VehicleService {
       model: 'GLC Coupe',
       plate: '3447VHZ',
       location: {
-        lat: 41.486418762458214 ,  
+        lat: 41.486518762458214 ,  
         lng: 2.3112702960051306,
       },
     },
@@ -24,7 +24,7 @@ export class VehicleService {
       model: 'AMG S-65 Final Edition',
       plate: '4973ZYL',
       location: {
-        lat: 41.486418762458214 ,  
+        lat: 41.486413762458214 ,  
         lng: 2.3112702960051306,
       },
     },
@@ -33,7 +33,7 @@ export class VehicleService {
       model: 'AMG GT Black Series',
       plate: '8845JKL',
       location: {
-        lat: 41.486418762458214 ,  
+        lat: 41.486418722458214 ,  
         lng: 2.3112702960051306,
       },
     },
@@ -42,7 +42,7 @@ export class VehicleService {
       model: '911 Turbo S',
       plate: '9921PQR',
       location: {
-        lat: 41.486418762458214 ,  
+        lat: 41.481418762158214 ,  
         lng: 2.3112702960051306,
       },
     },
@@ -51,7 +51,7 @@ export class VehicleService {
       model: 'Skyline GTR R34',
       plate: '3344XYZ',
       location: {
-        lat: 41.486418762458214 ,  
+        lat: 41.476418762458214 ,  
         lng: 2.3112702960051306,
       },
     },

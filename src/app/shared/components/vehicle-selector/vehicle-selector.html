@@ -1,0 +1,13 @@
+
+<select class="map__vehicle-select" (change)="onVehicleChange($event)" >
+    <option class="map__vehicle-option" value="" disabled selected>-- Select a Vehicle --</option>
+    @for (vehicle of vehicles(); track vehicle.plate) {
+        <option 
+            class="map__vehicle-option" 
+            [value]="vehicle.plate" 
+            [selected]="vehicle.plate === selectedPlate()"
+        >
+            {{ vehicle.name }}
+        </option>
+    }
+</select>
