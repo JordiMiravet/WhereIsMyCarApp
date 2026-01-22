@@ -5,9 +5,7 @@
 
 <section class="vehicle-table">
     @if (vehicleList().length === 0) {
-        <app-vehicle-empty-state
-            (createVehicle)="vehicleModal.openCreate()"
-        />
+        <app-vehicle-empty-state (createVehicle)="vehicleModal.openCreate()"/>
     } @else {
         <div class="vehicle-table__container">
             <table>

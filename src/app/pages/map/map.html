@@ -2,8 +2,15 @@
     @if (vehicleList().length > 0) {
         <app-map-view/>
     } @else {
-        <!-- Aqui irá el <app-create-button/> o haré un componente para crear coches cuando no haya-->
-        <!-- O talvez haga un componente reutilizable y lo comparto con los demás -->
-        <app-vehicle-empty-state/>
+        <app-vehicle-empty-state (createVehicle)="vehicleModal.openCreate()"/>
     } 
+
+    @if (vehicleModal.isOpen()){
+        <app-vehicle-form-modal
+            [mode]="vehicleModal.mode()"
+            [vehicle]="vehicleModal.selectedVehicle()"
+            (submit)="saveVehicle($event)"
+            (cancel)="vehicleModal.close()"
+        />
+    }
 </main>
