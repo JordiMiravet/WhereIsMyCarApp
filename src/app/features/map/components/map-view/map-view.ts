@@ -44,7 +44,7 @@ export class MapViewComponent implements OnInit {
   // VEHICLES LOCATION
 
   private vehicleService = inject(VehicleService);
-  public vehicleList = signal<VehicleInterface[]>(this.vehicleService.getVehicles());
+  public vehicleList = signal<VehicleInterface[]>([]);
   
   public selectedVehicle?: VehicleInterface;
 
@@ -97,7 +97,7 @@ export class MapViewComponent implements OnInit {
       ...this.selectedVehicle,
       location: this.newPosition,
     };
-    // console.log('A ver si ha cambiado de una vez !!!', this.selectedVehicle.location)
+    console.log('A ver si ha cambiado de una vez !!!', this.selectedVehicle.location)
 
     this.showConfirmModal = false;
   }

@@ -5,7 +5,7 @@
 
 /* Map Actions */
 
-.map__actions-container {
+.map-view__actions {
     width: 100%;
     padding: 0.75rem;
     display: flex;
@@ -18,7 +18,7 @@
 
 /* Map Container */
 
-.map__container {
+.map-view__container {
     position: relative;
     margin: 0;
     padding: 0;

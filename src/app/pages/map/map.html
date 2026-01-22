@@ -1,3 +1,9 @@
 <main class="map__main">
-    <app-map-view/>
+    @if (vehicleList().length > 0) {
+        <app-map-view/>
+    } @else {
+        <!-- Aqui irá el <app-create-button/> o haré un componente para crear coches cuando no haya-->
+        <!-- O talvez haga un componente reutilizable y lo comparto con los demás -->
+        <h3 class="map__no-vehicle">You don't have vehicles</h3>
+    } 
 </main>

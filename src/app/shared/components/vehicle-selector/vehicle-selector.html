@@ -1,6 +1,8 @@
 
 <select class="map__vehicle-select" (change)="onVehicleChange($event)" >
-    <option class="map__vehicle-option" value="" disabled selected>-- Select a Vehicle --</option>
+    <option class="map__vehicle-option" value="" selected>-- Select a Vehicle --</option>
+    <!-- Este primer option en el futuro irá fuera, de momento se deja así, luego con el backend montado se verá -->
+    <!-- Estaba disabled, ahora ya no y funciona, tendré que mirar si genera errores en un futuro -->
     @for (vehicle of vehicles(); track vehicle.plate) {
         <option 
             class="map__vehicle-option" 

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MapViewComponent } from "../../features/map/components/map-view/map-view";
+import { VehicleService } from '../../features/vehicle/services/vehicle-service';
+
 @Component({
   selector: 'app-map',
   standalone: true,
@@ -10,4 +12,7 @@ import { MapViewComponent } from "../../features/map/components/map-view/map-vie
 
 export class MapComponent {
 
+  private vehicleService = inject(VehicleService)
+  public vehicleList = this.vehicleService.vehicles
+  
 }
