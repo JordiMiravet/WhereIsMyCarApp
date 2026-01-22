@@ -1,23 +1,26 @@
 
-import { Component, inject, signal } from '@angular/core';
-import { VehicleService } from '../../features/vehicle/services/vehicle-service';
+import { Component, Inject, inject, signal } from '@angular/core';
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
 import { VehicleFormModalComponent } from '../../features/vehicle/modals/vehicle-form-modal/vehicle-form-modal';
 import { ConfirmModalComponent } from "../../shared/components/modals/confirm-modal/confirm-modal";
 import { CreateButtonComponent } from "../../shared/components/buttons/create-button/create-button";
 import { DeleteButtonComponent } from "../../shared/components/buttons/delete-button/delete-button";
 import { EditButtonComponent } from "../../shared/components/buttons/edit-button/edit-button";
+import { VehicleService } from '../../features/vehicle/services/vehicle-service/vehicle-service';
+import { VehicleEmptyStateComponent } from "../../shared/components/vehicle-empty-state/vehicle-empty-state";
+import { VehicleModalStateService } from '../../features/vehicle/services/vehicle-modal-state-service/vehicle-modal-state-service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    VehicleFormModalComponent, 
-    ConfirmModalComponent, 
-    CreateButtonComponent, 
-    DeleteButtonComponent, 
-    EditButtonComponent
-  ],
+    VehicleFormModalComponent,
+    ConfirmModalComponent,
+    CreateButtonComponent,
+    DeleteButtonComponent,
+    EditButtonComponent,
+    VehicleEmptyStateComponent
+],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -26,37 +29,18 @@ export class HomeComponent {
 
   private vehicleService = inject(VehicleService);
   public vehicleList = this.vehicleService.vehiclesList;
+  public vehicleModal = inject(VehicleModalStateService);
 
   /* Edit/Create Modal */
 
-  isVehicleModalOpen = signal(false);
-  modalMode = signal<'create' | 'edit'>('create');
-  selectedVehicle = signal<any | null>(null);
-
-  createVehicle(): void {
-    this.modalMode.set('create');
-    this.selectedVehicle.set(null);
-    this.isVehicleModalOpen.set(true);
-  }
-
-  editVehicle(vehicle : VehicleInterface): void {
-    this.modalMode.set('edit');
-    this.selectedVehicle.set(vehicle);
-    this.isVehicleModalOpen.set(true);
-  }
-
-  closeModal(): void {
-    this.isVehicleModalOpen.set(false);
-  }
-
   saveVehicle(vehicleData: VehicleInterface): void {
-    if (this.modalMode() === 'create') {
+    if (this.vehicleModal.mode() === 'create') {
       this.vehicleService.addVehicles(vehicleData)
-    } else if (this.modalMode() === 'edit' && this.selectedVehicle) {
-      this.vehicleService.updateVehicle(this.selectedVehicle()!, vehicleData);
+    } else if (this.vehicleModal.mode() === 'edit' && this.vehicleModal.selectedVehicle()) {
+      this.vehicleService.updateVehicle(this.vehicleModal.selectedVehicle()!, vehicleData);
     }
 
-    this.closeModal();
+    this.vehicleModal.close();
   }
 
   /* Delete Modal */
