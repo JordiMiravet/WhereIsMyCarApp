@@ -4,6 +4,7 @@ import { VehicleInterface } from '../../interfaces/vehicle';
 @Injectable({
   providedIn: 'root',
 })
+
 export class VehicleModalStateService {
   
   isOpen = signal(false);

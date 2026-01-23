@@ -5,6 +5,7 @@ import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
 import { UserLocationButtonComponent } from '../buttons/user-location-button/user-location-button';
 import { ConfirmModalComponent } from "../../../../shared/components/modals/confirm-modal/confirm-modal";
 import { VehicleSelectorComponent } from "../../../../shared/components/vehicle-selector/vehicle-selector";
+import { GeolocationService } from '../../../../shared/services/geolocation/geolocation-service';
 
 @Component({
   selector: 'app-map-view',
@@ -115,6 +116,16 @@ export class MapViewComponent implements OnInit {
   // USER LOCATION
 
   private userMarker?: L.Marker;
+  private geo = inject(GeolocationService);
+  
+  async onUserLocationClick(): Promise<void> {
+    try {
+      const coords = await this.geo.getCurrentLocation();
+      this.getUserLocation(coords);
+    } catch {
+      alert('No se pudo obtener la geolocalización');
+    }
+  }
 
   getUserLocation(coords: [number, number]): void {
     if (this.userMarker) {

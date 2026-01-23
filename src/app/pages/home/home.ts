@@ -9,6 +9,7 @@ import { EditButtonComponent } from "../../shared/components/buttons/edit-button
 import { VehicleService } from '../../features/vehicle/services/vehicle-service/vehicle-service';
 import { VehicleEmptyStateComponent } from "../../shared/components/vehicle-empty-state/vehicle-empty-state";
 import { VehicleModalStateService } from '../../features/vehicle/services/vehicle-modal-state-service/vehicle-modal-state-service';
+import { GeolocationService } from '../../shared/services/geolocation/geolocation-service';
 
 @Component({
   selector: 'app-home',
@@ -27,17 +28,38 @@ import { VehicleModalStateService } from '../../features/vehicle/services/vehicl
 
 export class HomeComponent {
 
+  private geo = inject(GeolocationService);
+  
   private vehicleService = inject(VehicleService);
   public vehicleList = this.vehicleService.vehiclesList;
   public vehicleModal = inject(VehicleModalStateService);
 
   /* Edit/Create Modal */
 
-  saveVehicle(vehicleData: VehicleInterface): void {
+  async saveVehicle(vehicleData: VehicleInterface): Promise<void> {
+    let location = vehicleData.location;
+
+    if(!location) {
+      try {
+        const [lat, lng] = await this.geo.getCurrentLocation();
+        location = { lat, lng };
+      } catch {
+        location = { 
+          lat: 41.402, 
+          lng: 2.194 
+        }
+      }
+    }
+
+    const vehicle: VehicleInterface = { ...vehicleData, location }
+
     if (this.vehicleModal.mode() === 'create') {
-      this.vehicleService.addVehicles(vehicleData)
-    } else if (this.vehicleModal.mode() === 'edit' && this.vehicleModal.selectedVehicle()) {
-      this.vehicleService.updateVehicle(this.vehicleModal.selectedVehicle()!, vehicleData);
+      this.vehicleService.addVehicles(vehicle)
+    } else if (
+      this.vehicleModal.mode() === 'edit' && 
+      this.vehicleModal.selectedVehicle()
+    ) {
+      this.vehicleService.updateVehicle(this.vehicleModal.selectedVehicle()!, vehicle);
     }
 
     this.vehicleModal.close();

@@ -8,19 +8,6 @@ import { Component, output } from '@angular/core';
 })
 export class UserLocationButtonComponent {
 
-    public locationFound = output<[number, number]>();
-    
-    getLocation() {
-      if(!navigator.geolocation) return;
+  public click = output<void>();
 
-      navigator.geolocation.getCurrentPosition( (position) => {
-        this.locationFound.emit([
-          position.coords.latitude,
-          position.coords.longitude,
-        ]);
-      }, () => {
-        alert('No se pudo obtener la geolocalización');
-      }
-    );
-  }
 }

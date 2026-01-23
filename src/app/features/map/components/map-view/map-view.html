@@ -7,8 +7,8 @@
 </section>
 
 <section class="map-view__container">
-    <app-user-location-button 
-        (locationFound)="getUserLocation($event)" 
+    <app-user-location-button
+        (click)="onUserLocationClick()"
         class="map__controls"
     />
     <div id="map" class="map"></div>

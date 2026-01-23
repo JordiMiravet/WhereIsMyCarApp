@@ -5,6 +5,7 @@ import { VehicleEmptyStateComponent } from "../../shared/components/vehicle-empt
 import { VehicleModalStateService } from '../../features/vehicle/services/vehicle-modal-state-service/vehicle-modal-state-service';
 import { VehicleFormModalComponent } from "../../features/vehicle/modals/vehicle-form-modal/vehicle-form-modal";
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
+import { GeolocationService } from '../../shared/services/geolocation/geolocation-service';
 
 @Component({
   selector: 'app-map',
@@ -19,17 +20,34 @@ import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
 })
 
 export class MapComponent {
+
+  private geo = inject(GeolocationService);
   
   private vehicleService = inject(VehicleService);
   public vehicleList = this.vehicleService.vehicles;
   public vehicleModal = inject(VehicleModalStateService);
- 
-  // Me da error porque no tiene localizacion entonces cuando quiero ponerlo en el mapa no funciona
-  // Creo que probaré con el userLocation para que tenga una localizacion inicial y de ahí ya veremos 
   
-  saveVehicle(vehicleData: VehicleInterface):void {
+  async saveVehicle(vehicleData: VehicleInterface): Promise<void> {
+    let location = vehicleData.location;
+
+    if (!location) {
+      try {
+        const [lat, lng] = await this.geo.getCurrentLocation();
+        location = { lat, lng };
+      } catch {
+        location = { lat: 41.478, lng: 2.310 };
+      }
+    }
+
+    const vehicle: VehicleInterface = { ...vehicleData, location };
+
     if(this.vehicleModal.mode() === 'create'){
-      this.vehicleService.addVehicles(vehicleData);
+      this.vehicleService.addVehicles(vehicle);
+    } else if (
+      this.vehicleModal.mode() === 'edit' && 
+      this.vehicleModal.selectedVehicle()
+    ) {
+      this.vehicleService.updateVehicle(this.vehicleModal.selectedVehicle()!, vehicle);
     }
     this.vehicleModal.close();
   }
