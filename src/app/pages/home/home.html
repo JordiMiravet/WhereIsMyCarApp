@@ -3,35 +3,17 @@
     <app-create-button (create)="vehicleModal.openCreate()"/>
 </section>
 
-<section class="vehicle-table">
+<section class="table__container">
     @if (vehicleList().length === 0) {
-        <app-vehicle-empty-state (createVehicle)="vehicleModal.openCreate()"/>
+        <app-vehicle-empty-state 
+            (createVehicle)="vehicleModal.openCreate()"
+        />
     } @else {
-        <div class="vehicle-table__container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Model</th>
-                        <th>Plate</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for(vehicle of vehicleList(); track vehicle.plate) {
-                        <tr class="vehicle-table__row">
-                            <td data-label="Name">{{ vehicle.name }}</td>
-                            <td data-label="Model">{{ vehicle.model }}</td>
-                            <td data-label="Plate">{{ vehicle.plate }}</td>
-                            <td data-label="Actions" class="vehicle-table__actions">
-                                <app-edit-button (edit)="vehicleModal.openEdit(vehicle)"/>
-                                <app-delete-button (delete)="openConfirmDelete(vehicle)"/>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+        <app-vehicle-table
+            [vehicles]="vehicleList()"
+            [vehicleModal]="vehicleModal"
+            (deleteVehicle)="openConfirmDelete($event)"
+        />
     }
 </section>
 
@@ -46,9 +28,9 @@
 
 @if (isConfirmDeleteOpen()) {
   <app-confirm-modal
-    [title]="deleteConfirmation.title"
-    [message]="deleteConfirmation.message"
-    (confirm)="confirmDeleteVehicle()"
-    (cancel)="closeConfirmModal()"
+        [title]="deleteConfirmation.title"
+        [message]="deleteConfirmation.message"
+        (confirm)="confirmDeleteVehicle()"
+        (cancel)="closeConfirmModal()"
   />
 }

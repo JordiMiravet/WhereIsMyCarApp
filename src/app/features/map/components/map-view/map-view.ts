@@ -55,6 +55,7 @@ export class MapViewComponent implements OnInit {
 
   
   showVehicle(vehicle: VehicleInterface): void {
+    
     this.selectedVehicle = vehicle;
 
     if (this.vehicleMarker) this.map.removeLayer(this.vehicleMarker);

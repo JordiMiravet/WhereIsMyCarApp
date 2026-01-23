@@ -10,6 +10,7 @@ import { VehicleService } from '../../features/vehicle/services/vehicle-service/
 import { VehicleEmptyStateComponent } from "../../shared/components/vehicle-empty-state/vehicle-empty-state";
 import { VehicleModalStateService } from '../../features/vehicle/services/vehicle-modal-state-service/vehicle-modal-state-service';
 import { GeolocationService } from '../../shared/services/geolocation/geolocation-service';
+import { VehicleTableComponent } from "../../features/vehicle/components/vehicle-table/vehicle-table";
 
 @Component({
   selector: 'app-home',
@@ -18,10 +19,9 @@ import { GeolocationService } from '../../shared/services/geolocation/geolocatio
     VehicleFormModalComponent,
     ConfirmModalComponent,
     CreateButtonComponent,
-    DeleteButtonComponent,
-    EditButtonComponent,
-    VehicleEmptyStateComponent
-],
+    VehicleEmptyStateComponent,
+    VehicleTableComponent
+  ],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

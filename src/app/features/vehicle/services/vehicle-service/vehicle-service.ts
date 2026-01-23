@@ -111,7 +111,7 @@ export class VehicleService {
     newVehicle: VehicleInterface
   ): void {
     this.vehicles.update(list => 
-      list.map(v => (v === oldVehicle ? { ...newVehicle } : v))
+      list.map(v => (v.plate === oldVehicle.plate ? { ...newVehicle } : v))
     );
   }
 
@@ -121,7 +121,7 @@ export class VehicleService {
   ) {
     this.vehicles.update(list =>
       list.map(v =>
-        v === vehicle
+        v.plate === vehicle.plate
           ? { ...v, location }
           : v
       )
