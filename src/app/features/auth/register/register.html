@@ -1,26 +1,53 @@
 <form [formGroup]="formReg" (ngSubmit)="onSubmit()" class="form">
-  
-  <legend>Register</legend>
-  
-  <div class="form__group">
-    <label for="emailRegister">Email</label>
-    <input type="email" id="emailRegister" formControlName="email" placeholder="Enter your email"/>
-    <h4 class="form__error-text" [hidden]="formReg.controls['email'].valid || !formReg.controls['email'].touched">
-      {{ authMessage.invalidEmail }}
-    </h4>
-  </div>
+  <fieldset>
+    <legend>Register</legend>
+    
+    <div class="form__group">
+      <label for="emailRegister">Email</label>
+      <input 
+        type="email" 
+        id="emailRegister" 
+        formControlName="email" 
+        placeholder="Enter your email"
+        autocomplete="email"
+        [attr.aria-invalid]="formReg.controls['email'].invalid && formReg.controls['email'].touched"
+        aria-describedby="register-email-error"
+      />
+      <h4 
+        id="register-email-error"
+        class="form__error-text"
+        role="alert"
+        [hidden]="formReg.controls['email'].valid || !formReg.controls['email'].touched"
+      >
+        {{ authMessage.invalidEmail }}
+      </h4>
+    </div>
 
-  <div class="form__group">
-    <label for="passwordRegister">Password</label>
-    <input type="password" id="passwordRegister" formControlName="password" placeholder="Enter your password"/>
-    <h4 class="form__error-text" [hidden]="formReg.controls['password'].valid || !formReg.controls['password'].touched">
-      {{ authMessage.invalidPassword }}
-    </h4>
-  </div>
+    <div class="form__group">
+      <label for="passwordRegister">Password</label>
+      <input 
+        type="password" 
+        id="passwordRegister" 
+        formControlName="password" 
+        placeholder="Enter your password"
+        autocomplete="new-password"
+        [attr.aria-invalid]="formReg.controls['password'].invalid && formReg.controls['password'].touched"
+        aria-describedby="register-password-error"
+      />
+      <h4 
+        id="register-password-error"
+        class="form__error-text" 
+        role="alert"
+        [hidden]="formReg.controls['password'].valid || !formReg.controls['password'].touched"
+      >
+        {{ authMessage.invalidPassword }}
+      </h4>
+    </div>
 
-  <button type="submit" [disabled]="!formReg.valid" class="btn__auth">Register</button>
-  @if(errorSubmit){ 
-    <h4 class="form__error-submit">{{ errorSubmit }}</h4>
-  }
+    <button type="submit" [disabled]="!formReg.valid" class="btn__auth">Register</button>
+    @if(errorSubmit){ 
+      <h4 class="form__error-submit" role="alert">{{ errorSubmit }}</h4>
+    }
+  </fieldset>
 </form>
 
