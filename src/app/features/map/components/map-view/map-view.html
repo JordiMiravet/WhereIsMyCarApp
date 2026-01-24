@@ -11,7 +11,11 @@
         (click)="onUserLocationClick()"
         class="map__controls"
     />
-    <div id="map" class="map"></div>
+    <div 
+        id="map" 
+        class="map" 
+        aria-label="Interactive map showing vehicle positions. Visual only, drag points to move vehicles with mouse or touch"
+    ></div>
 </section>
 
 @if(showConfirmModal){
