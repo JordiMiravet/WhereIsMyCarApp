@@ -1,27 +1,27 @@
-<nav class="navbar">
+<nav class="navbar" role="navigation" aria-label="Main navigation">
     @if (this.isLogged()) {
         <ul class="navbar__links">
             <li class="nav-item">
                 <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                    <i class="pi pi-home"></i>
+                    <i class="pi pi-home" aria-hidden="true"></i>
                     <span class="nav-label">Home</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a routerLink="/map" routerLinkActive="active">
-                    <i class="pi pi-map-marker"></i>
+                    <i class="pi pi-map-marker" aria-hidden="true"></i>
                     <span class="nav-label">Map</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a routerLink="/calendar" routerLinkActive="active">
-                    <i class="pi pi-calendar"></i>
+                    <i class="pi pi-calendar" aria-hidden="true"></i>
                     <span class="nav-label">Calendar</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a routerLink="/graphics" routerLinkActive="active">
-                    <i class="pi pi-chart-bar"></i>
+                    <i class="pi pi-chart-bar" aria-hidden="true"></i>
                     <span class="nav-label">Graphics</span>
                 </a>
             </li>
