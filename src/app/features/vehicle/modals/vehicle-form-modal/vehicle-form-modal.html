@@ -1,4 +1,9 @@
-<div class="modal" (click)="onCancel()">
+<div 
+    class="modal" 
+    role="dialog"
+    aria-modal="true" 
+    aria-labelledby="modal-title"
+    (click)="onCancel()">
     <form 
         [formGroup]="form" 
         (keydown.enter)="$event.preventDefault(); onSubmit()" 
@@ -8,7 +13,9 @@
         
         <fieldset class="modal__fieldset">
             
-            <legend class="modal__legend">{{ mode() === 'create' ? 'Create Vehicle' : 'Edit Vehicle' }}</legend>
+            <legend id="modal-title" class="modal__legend">
+                {{ mode() === 'create' ? 'Create Vehicle' : 'Edit Vehicle' }}
+            </legend>
 
             <div class="modal__form-section">
                 <label for="createVehicleName" class="modal__label">Name</label>
@@ -18,9 +25,11 @@
                     formControlName="name" 
                     class="modal__input" 
                     [ngClass]="{'modal__input--error': form.controls['name'].invalid && form.controls['name'].touched}"
+                    [attr.aria-invalid]="form.controls['name'].invalid && form.controls['name'].touched"
+                    aria-describedby="createVehicleName-error"
                 />
                 @if (getFieldError('name'); as error) {
-                    <h4 class="modal__form-text">{{ error }}</h4>
+                    <h4 id="createVehicleName-error" class="modal__form-text" role="alert">{{ error }}</h4>
                 }
             </div>
             <div class="modal__form-section">
@@ -31,9 +40,11 @@
                     formControlName="model" 
                     class="modal__input"
                     [ngClass]="{'modal__input--error': form.controls['model'].invalid && form.controls['model'].touched}"
+                    [attr.aria-invalid]="form.controls['model'].invalid && form.controls['model'].touched"
+                    aria-describedby="createVehicleModel-error"
                  />
                 @if (getFieldError('model'); as error) {
-                    <h4 class="modal__form-text">{{ error }}</h4>
+                    <h4 id="createVehicleModel-error" class="modal__form-text" role="alert">{{ error }}</h4>
                 }
             </div>
             <div class="modal__form-section">
@@ -44,18 +55,28 @@
                     formControlName="plate" 
                     class="modal__input" 
                     [ngClass]="{'modal__input--error': form.controls['plate'].invalid && form.controls['plate'].touched}"
+                    [attr.aria-invalid]="form.controls['plate'].invalid && form.controls['plate'].touched"
+                    aria-describedby="createVehiclePlate-error"
                 />
                 @if (getFieldError('plate'); as error) {
-                    <h4 class="modal__form-text">{{ error }}</h4>
+                    <h4 id="createVehiclePlate-error" class="modal__form-text" role="alert">{{ error }}</h4>
                 }
             </div>
 
         </fieldset>
 
         <div class="modal__actions">
-            <button type="button" class="modal__button modal__button--primary" (click)="onSubmit()" [disabled]="form.invalid">
+
+            <button 
+                type="button" 
+                class="modal__button modal__button--primary" 
+                (click)="onSubmit()" 
+                [disabled]="form.invalid"
+                [attr.aria-disabled]="form.invalid"
+            >
                 {{ mode() === 'create' ? 'Create' : 'Update' }}
             </button>
+            
             <button type="button" class="modal__button" (click)="onCancel()">
                 Cancel
             </button>
