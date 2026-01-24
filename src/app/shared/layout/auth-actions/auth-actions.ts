@@ -24,4 +24,5 @@ export class AuthActionsComponent {
     })
     .catch( error => console.error(error) );
   }
+  
 }
