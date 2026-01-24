@@ -1,5 +1,5 @@
 <main class="map__main">
-    @if (vehicleList().length > 0) {
+    @if (vehicleList().length) {
         <app-map-view/>
     } @else {
         <app-vehicle-empty-state (createVehicle)="vehicleModal.openCreate()"/>

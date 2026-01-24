@@ -4,15 +4,15 @@
 </section>
 
 <section class="table__container">
-    @if (vehicleList().length === 0) {
-        <app-vehicle-empty-state 
-            (createVehicle)="vehicleModal.openCreate()"
-        />
-    } @else {
+    @if (vehicleList().length) {
         <app-vehicle-table
             [vehicles]="vehicleList()"
             [vehicleModal]="vehicleModal"
             (deleteVehicle)="openConfirmDelete($event)"
+        />
+    } @else {
+        <app-vehicle-empty-state 
+            (createVehicle)="vehicleModal.openCreate()"
         />
     }
 </section>
@@ -27,10 +27,10 @@
 }
 
 @if (isConfirmDeleteOpen()) {
-  <app-confirm-modal
+    <app-confirm-modal
         [title]="deleteConfirmation.title"
         [message]="deleteConfirmation.message"
         (confirm)="confirmDeleteVehicle()"
         (cancel)="closeConfirmModal()"
-  />
+    />
 }
