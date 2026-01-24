@@ -10,7 +10,7 @@ export class VehicleService {
   /* To Do : Este array mas adelante debo cambiarlo a ddbb */
 
   public vehicles = signal<VehicleInterface[]>([
-    /*
+    
     {
       name: 'Mercedes GLC Coupe',
       model: 'GLC Coupe',
@@ -92,7 +92,7 @@ export class VehicleService {
         lng: 2.31035386232231
       },
     },
-    */
+    
   ]);
 
 
