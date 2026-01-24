@@ -13,27 +13,20 @@
 }
 
 .vehicle-empty__create {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
     background-color: var(--color-blue-light);
+    color: var(--color-white);
+    font-weight: 700;
+    font-size: var(--font-size-base);
     padding: 1.5rem;
+    width: 95%;
+    margin: 0 auto;
     border-radius: var(--radius-sm);
     border: 2px solid transparent;
     cursor: pointer;
-    transition: background-color 0.25s ease;
-    width: 100%;
-    margin: 0 auto;
+    transition: background-color 0.25s ease; 
 }
 .vehicle-empty__create:hover {
     background-color: var(--color-blue-dark); 
-}
-.vehicle-empty__title {
-    font-weight: 700;
-    color: var(--color-white);
-    font-size: var(--font-size-base);
-    margin: 0;
 }
 
 @media (min-width: 578px) {
