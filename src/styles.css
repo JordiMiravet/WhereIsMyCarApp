@@ -66,6 +66,7 @@
 html {
     box-sizing: border-box;
     font-size: 62.5%;
+    scrollbar-width: none;
 }
 *, *:after, *:before {
     box-sizing: border-box;
@@ -75,30 +76,20 @@ body {
     padding: 0;
     font-family: var(--font-family-base);
     font-size: var(--space-ml);
-    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
-::-webkit-scrollbar {
+body::-webkit-scrollbar {
     display: none;
 }
 
-h1 {
-    font-size: 2rem;
-}
-h2 {
-    font-size: 1.5rem;
-}
-h3 {
-    font-size: 1.25rem;
-}
-h4 {
-    font-size: 1rem;
-}
-p {
-    font-size: 1rem;
-}
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1rem; }
+p { font-size: 1rem; }
 
-ul {
-    list-style: none;
+ul { 
+    list-style: none; 
 }
 
 a {
