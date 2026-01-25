@@ -37,7 +37,7 @@ export class MapViewComponent implements OnInit {
   }
 
   private initMap(): void {
-    this.map = L.map('map').setView([41.478, 2.310], 13);
+    this.map = L.map('map').setView([41.478, 2.310], 10);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
   }
 
@@ -53,12 +53,10 @@ export class MapViewComponent implements OnInit {
 
   public showConfirmModal = false;
 
-  
   showVehicle(vehicle: VehicleInterface): void {
-    
-    this.selectedVehicle = vehicle;
-
     if (this.vehicleMarker) this.map.removeLayer(this.vehicleMarker);
+
+    this.selectedVehicle = vehicle;
 
     const coords: L.LatLngExpression = [
       vehicle.location!.lat,
@@ -73,8 +71,8 @@ export class MapViewComponent implements OnInit {
     this.vehicleMarker.on('dragend', () => {
       this.newPosition = this.vehicleMarker!.getLatLng();
 
-      console.log('Anterioor posicioooon', vehicle.location);
-      console.log('Siguienteeee posiciooon', this.newPosition);
+      // console.log('Anterioor posicioooon', vehicle.location);
+      // console.log('Siguienteeee posiciooon', this.newPosition);
 
       this.showConfirmModal = true;
     });
@@ -98,7 +96,7 @@ export class MapViewComponent implements OnInit {
       ...this.selectedVehicle,
       location: this.newPosition,
     };
-    console.log('A ver si ha cambiado de una vez !!!', this.selectedVehicle.location)
+    // console.log('A ver si ha cambiado de una vez !!!', this.selectedVehicle.location)
 
     this.showConfirmModal = false;
   }
@@ -124,7 +122,7 @@ export class MapViewComponent implements OnInit {
       const coords = await this.geo.getCurrentLocation();
       this.getUserLocation(coords);
     } catch {
-      alert('No se pudo obtener la geolocalización');
+      alert('Could not obtain geolocation');
     }
   }
 
