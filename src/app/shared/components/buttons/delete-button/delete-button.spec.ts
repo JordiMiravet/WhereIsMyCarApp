@@ -34,15 +34,29 @@ describe('DeleteButtonComponent', () => {
 
   it('should call onClick when button is clicked', () => {
     const spyButton = spyOn(component, 'onClick');
+
     const button = fixture.nativeElement.querySelector('button');
     button.click();
+    
     fixture.detectChanges();
 
     expect(spyButton).toHaveBeenCalled();
   });
 
+  it('should emit delete event when button is clicked', () => {
+    spyOn(component.delete, 'emit'); 
+
+    const button = fixture.nativeElement.querySelector('button');
+    button.click();
+
+    fixture.detectChanges();
+
+    expect(component.delete.emit).toHaveBeenCalled();
+  });
+
   it('should have aria-label for accessibility', () => {
     const button = fixture.nativeElement.querySelector('button');
-    expect(button.getAttribute('aria-label')).toBeTruthy();
+
+    expect(button.getAttribute('aria-label')).toBe('Delete vehicle');
   });
 });

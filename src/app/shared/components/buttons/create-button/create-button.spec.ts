@@ -42,11 +42,21 @@ describe('CreateButtonComponent', () => {
     expect(component.onClick).toHaveBeenCalled()
   });
 
+  it('should emit create event when button is clicked', () => {
+    spyOn(component.create, 'emit');
+
+    const button = fixture.nativeElement.querySelector('button');
+    button.click();
+    fixture.detectChanges();
+
+    expect(component.create.emit).toHaveBeenCalled();
+  });
+
   it('should have aria-label for accessibility', () => {
     const button = fixture.nativeElement.querySelector('button');
 
-    expect(button.getAttribute('Aria-label')).toBeTruthy();
-    expect(button.getAttribute('Aria-label')).toBe('Create vehicle');
+    expect(button.getAttribute('aria-label')).toBeTruthy();
+    expect(button.getAttribute('aria-label')).toBe('Create vehicle');
   });
 
 });

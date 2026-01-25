@@ -28,6 +28,7 @@ describe('EditButtonComponent', () => {
   it('should emit edit event when onClick is called', () => {
     const spyEdit = spyOn(component.edit, 'emit');
     component.onClick();
+
     expect(spyEdit).toHaveBeenCalled();
   });
 
@@ -37,11 +38,23 @@ describe('EditButtonComponent', () => {
     button.click();
 
     fixture.detectChanges();
+
     expect(spyButton).toHaveBeenCalled();
+  });
+
+  it('should emit edit event when button is clicked', () => {
+    spyOn(component.edit, 'emit'); 
+
+    const button = fixture.nativeElement.querySelector('button');
+    button.click();
+
+    fixture.detectChanges();
+
+    expect(component.edit.emit).toHaveBeenCalled();
   });
 
   it('should have aria-label for accessibility', () => {
     const button = fixture.nativeElement.querySelector('button');
-    expect(button.getAttribute('aria-label')).toBeTruthy();
+    expect(button.getAttribute('aria-label')).toBe('Edit vehicle'); 
   });
 });

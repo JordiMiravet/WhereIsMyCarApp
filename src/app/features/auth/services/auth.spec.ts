@@ -71,17 +71,49 @@ describe('AuthService', () => {
     await expectAsync(result).toBeResolved();
   });
   
-  it('should set userSignal when auth state changes', () => {});
+  it('should set isLogged to true when user is authenticated', () => {
+    (service as any).userSignal.set({ uid: '123', email: 'test@test.com' } as any);
 
-  it('should set isLogged to true when user is authenticated', () => {});
+    expect(service.isLogged()).toBeTrue();
+  });
 
-  it('should set isLogged to false when user is null', () => {});
+  it('should set isLogged to false when user is null', () => {
+    (service as any).userSignal.set(null);
 
-  it('register should call Firebase createUserWithEmailAndPassword with correct arguments', () => {});
+    expect(service.isLogged()).toBeFalse();
+  });
 
-  it('login should call Firebase signInWithEmailAndPassword with correct arguments', () => {});
+  it('register should call Firebase createUserWithEmailAndPassword with correct arguments', async () => {
+    const email = 'testuser@gmail.com';
+    const password = '123456';
 
-  it('logout should call Firebase signOut', () => {});
+    await service.register({ email, password });
 
-  it('isLogged should react to userSignal changes', () => {});
+    expect(mockCreateUser).toHaveBeenCalledWith(email, password);
+  });
+
+  it('login should call Firebase signInWithEmailAndPassword with correct arguments', async () => {
+    const email = 'testuser@gmail.com';
+    const password = '123456';
+
+    await service.login({ email, password });
+
+    expect(mockSignIn).toHaveBeenCalledWith(email, password);
+  });
+
+  it('logout should call Firebase signOut', async () => {
+    await service.logout();
+    expect(mockSignOut).toHaveBeenCalled();
+  });
+
+  it('isLogged should react to userSignal changes', () => {
+    expect(service.isLogged()).toBeFalse();
+
+    (service as any).userSignal.set({ uid: 'abc', email: 'x@y.com' } as any);
+    expect(service.isLogged()).toBeTrue();
+
+    (service as any).userSignal.set(null);
+    expect(service.isLogged()).toBeFalse();
+  });
+
 });
