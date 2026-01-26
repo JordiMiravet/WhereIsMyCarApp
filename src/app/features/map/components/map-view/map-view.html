@@ -1,7 +1,7 @@
 
 <section class="map-view__actions">
     <app-vehicle-selector
-        [vehicles]="vehicleList()"
+        [vehicles]="vehicles()"
         (vehicleSelected)="showVehicle($event)"
     />
 </section>
@@ -18,7 +18,7 @@
     ></div>
 </section>
 
-@if(showConfirmModal){
+@if(showConfirmModal()){
     <app-confirm-modal
         [title]="'Change vehicle position'"
         [message]="'Are you sure about changing the position of the vehicle?'"

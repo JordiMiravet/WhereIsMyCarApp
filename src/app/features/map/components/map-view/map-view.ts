@@ -33,7 +33,6 @@ export class MapViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.initMap();
-    this.vehicleList.set(this.vehicleService.getVehicles());
   }
 
   private initMap(): void {
@@ -44,19 +43,19 @@ export class MapViewComponent implements OnInit {
   // VEHICLES LOCATION
 
   private vehicleService = inject(VehicleService);
-  public vehicleList = signal<VehicleInterface[]>([]);
+  public vehicles = this.vehicleService.vehicles;
   
-  public selectedVehicle?: VehicleInterface;
+  public selectedVehicle = signal<VehicleInterface | null>(null);
 
   private vehicleMarker?: L.Marker;
-  private newPosition?: L.LatLng;
+  public newPosition = signal<L.LatLng | null>(null);
 
-  public showConfirmModal = false;
+  public showConfirmModal = signal(false);
 
   showVehicle(vehicle: VehicleInterface): void {
     if (this.vehicleMarker) this.map.removeLayer(this.vehicleMarker);
 
-    this.selectedVehicle = vehicle;
+    this.selectedVehicle.set(vehicle);
 
     const coords: L.LatLngExpression = [
       vehicle.location!.lat,
@@ -69,53 +68,84 @@ export class MapViewComponent implements OnInit {
     }).addTo(this.map).bindPopup(vehicle.name).openPopup();
 
     this.vehicleMarker.on('dragend', () => {
-      this.newPosition = this.vehicleMarker!.getLatLng();
+      this.newPosition.set(this.vehicleMarker!.getLatLng());
 
-      // console.log('Anterioor posicioooon', vehicle.location);
-      // console.log('Siguienteeee posiciooon', this.newPosition);
+      console.log('Anterior posiciooon', vehicle.location);
+      console.log('Siguiente posiciooon', this.newPosition());
 
-      this.showConfirmModal = true;
+      this.showConfirmModal.set(true);
     });
 
     this.map.setView(coords, 19);
   }
 
   onConfirmLocationChange(): void {
-    if (!this.newPosition || !this.selectedVehicle) return;
+    const vehicle = this.selectedVehicle();
+    const position = this.newPosition();
 
-    // tengo que arreglar toda esta parte para no tener que hacer doble spread operator 
-    this.vehicleService.updateVehicleLocation(
-      this.selectedVehicle,
-      {
-        lat: this.newPosition.lat,
-        lng: this.newPosition.lng,
-      }
-    );
+  if (!position || !vehicle) return;
 
-    this.selectedVehicle = {
-      ...this.selectedVehicle,
-      location: this.newPosition,
-    };
-    // console.log('A ver si ha cambiado de una vez !!!', this.selectedVehicle.location)
+  const updateVehicle: VehicleInterface = {
+    ...vehicle,
+    location: position
+  };
 
-    this.showConfirmModal = false;
+  this.vehicleService.updateVehicleLocation(
+    updateVehicle,
+    {
+      lat: position.lat,
+      lng: position.lng,
+    }
+  );
+
+  this.selectedVehicle.set(updateVehicle);
+  this.showConfirmModal.set(false);
+
+  console.log('Cambios efectuados ? dime que si',this.selectedVehicle()?.location);
   }
 
   onCancelLocationChange(): void {
-    if (this.vehicleMarker && this.selectedVehicle) {
+
+    const vehicle = this.selectedVehicle();
+
+    if (this.vehicleMarker && vehicle?.location) {
       this.vehicleMarker.setLatLng([
-        this.selectedVehicle.location!.lat,
-        this.selectedVehicle.location!.lng
+        vehicle.location.lat,
+        vehicle.location.lng
       ]);
     }
 
-    this.showConfirmModal = false;
+    this.showConfirmModal.set(false);
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // USER LOCATION
 
-  private userMarker?: L.Marker;
   private geo = inject(GeolocationService);
+  private userMarker?: L.Marker;
   
   async onUserLocationClick(): Promise<void> {
     try {

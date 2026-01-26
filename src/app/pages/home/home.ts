@@ -1,11 +1,9 @@
 
-import { Component, Inject, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
 import { VehicleFormModalComponent } from '../../features/vehicle/modals/vehicle-form-modal/vehicle-form-modal';
 import { ConfirmModalComponent } from "../../shared/components/modals/confirm-modal/confirm-modal";
 import { CreateButtonComponent } from "../../shared/components/buttons/create-button/create-button";
-import { DeleteButtonComponent } from "../../shared/components/buttons/delete-button/delete-button";
-import { EditButtonComponent } from "../../shared/components/buttons/edit-button/edit-button";
 import { VehicleService } from '../../features/vehicle/services/vehicle-service/vehicle-service';
 import { VehicleEmptyStateComponent } from "../../shared/components/vehicle-empty-state/vehicle-empty-state";
 import { VehicleModalStateService } from '../../features/vehicle/services/vehicle-modal-state-service/vehicle-modal-state-service';

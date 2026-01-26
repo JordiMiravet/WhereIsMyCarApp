@@ -17,9 +17,10 @@ import { VehicleModalStateService } from '../../services/vehicle-modal-state-ser
   styleUrl: './vehicle-table.css',
 })
 export class VehicleTableComponent {
+  
   vehicles = input<VehicleInterface[]>([]);
-
   vehicleModal = input<any>();
 
   deleteVehicle = output<VehicleInterface>();
+  
 }
