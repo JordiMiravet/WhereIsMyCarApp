@@ -28,4 +28,17 @@ describe('UserLocationButtonComponent', () => {
     button.click();
     expect(component.click.emit).toHaveBeenCalled();
   });
+
+  it('should have correct aria-label', () => {
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+    
+    expect(button.getAttribute('aria-label')).toBe('Center map on current location');
+  });
+
+  it('should render the svg icon', () => {
+    const svg: SVGElement = fixture.nativeElement.querySelector('svg');
+
+    expect(svg).toBeTruthy();
+  });
+
 });

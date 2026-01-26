@@ -44,6 +44,18 @@ describe('AuthService', () => {
     expect(msg.emailAlreadyExists).toBe('This email already exists');
   });
 
+  it('user should be readonly', () => {
+    expect(service.user()).toBeNull();
+
+    (service as any).userSignal.set({
+      email: 'itacademy@gmail.com'
+    } as any);
+
+    expect(service.user()).toEqual({
+      email: 'itacademy@gmail.com'
+    } as any)
+  });
+
   it('register should call createUserWithEmailAndPassword', async () => {
     const result = service.register({
       email: 'IHateTestsXD@hotmail.com',

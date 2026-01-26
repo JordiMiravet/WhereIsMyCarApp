@@ -16,9 +16,12 @@
     margin: 0;
     padding: 0;
     color: var(--color-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .map__button-icon path {
-    transform: scale(1.15);
+    transform: scale(1.05);
     transform-origin: center;
 }
