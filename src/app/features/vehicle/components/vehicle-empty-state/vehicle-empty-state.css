@@ -12,7 +12,7 @@
     color: var(--color-blue-dark);
 }
 
-.vehicle-empty__create {
+.vehicle-empty__button {
     background-color: var(--color-blue-light);
     color: var(--color-white);
     font-weight: 700;
@@ -25,12 +25,12 @@
     cursor: pointer;
     transition: background-color 0.25s ease; 
 }
-.vehicle-empty__create:hover {
+.vehicle-empty__button:hover {
     background-color: var(--color-blue-dark); 
 }
 
 @media (min-width: 578px) {
-    .vehicle-empty__create {
+    .vehicle-empty__button {
         width: auto;
         padding: 1rem 1.5rem;
     }
