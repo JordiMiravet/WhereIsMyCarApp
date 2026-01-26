@@ -6,6 +6,7 @@ import { UserLocationButtonComponent } from '../buttons/user-location-button/use
 import { ConfirmModalComponent } from "../../../../shared/components/modals/confirm-modal/confirm-modal";
 import { VehicleSelectorComponent } from "../../../../shared/components/vehicle-selector/vehicle-selector";
 import { GeolocationService } from '../../../../shared/services/geolocation/geolocation-service';
+import { MapService } from '../../services/map-service';
 
 @Component({
   selector: 'app-map-view',
@@ -21,39 +22,34 @@ import { GeolocationService } from '../../../../shared/services/geolocation/geol
 
 export class MapViewComponent implements OnInit {
 
+  private mapService = inject(MapService);
+
   private map!: L.Map;
 
-  public locationIcon = L.icon({
-    iconUrl: '/assets/icons/marker-icon.png',
-    iconSize: [25, 40],
-    iconRetinaUrl: '/assets/icons/marker-icon-2x.png',
-    shadowUrl: '/assets/icons/marker-shadow.png',
-    shadowAnchor: [9, 19],
-  });
-
   ngOnInit(): void {
-    this.initMap();
+    this.map = this.mapService.initMap(
+      'map', 
+      [41.478, 2.310], 
+      10
+    );
   }
-
-  private initMap(): void {
-    this.map = L.map('map').setView([41.478, 2.310], 10);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
-  }
-
+  
   // VEHICLES LOCATION
 
   private vehicleService = inject(VehicleService);
   public vehicles = this.vehicleService.vehicles;
-  
-  public selectedVehicle = signal<VehicleInterface | null>(null);
 
+  public selectedVehicle = signal<VehicleInterface | null>(null);
   private vehicleMarker?: L.Marker;
+  
   public newPosition = signal<L.LatLng | null>(null);
 
   public showConfirmModal = signal(false);
 
   showVehicle(vehicle: VehicleInterface): void {
-    if (this.vehicleMarker) this.map.removeLayer(this.vehicleMarker);
+    if (this.vehicleMarker) {
+      this.mapService.removeLayer(this.vehicleMarker);
+    }
 
     this.selectedVehicle.set(vehicle);
 
@@ -62,10 +58,10 @@ export class MapViewComponent implements OnInit {
       vehicle.location!.lng
     ];
 
-    this.vehicleMarker = L.marker(coords, {
-      draggable: true,
-      icon: this.locationIcon,
-    }).addTo(this.map).bindPopup(vehicle.name).openPopup();
+    this.vehicleMarker = this.mapService.createMarker(
+      coords,
+      vehicle.name
+    );
 
     this.vehicleMarker.on('dragend', () => {
       this.newPosition.set(this.vehicleMarker!.getLatLng());
@@ -76,36 +72,35 @@ export class MapViewComponent implements OnInit {
       this.showConfirmModal.set(true);
     });
 
-    this.map.setView(coords, 19);
+    this.mapService.setView(coords);
   }
 
   onConfirmLocationChange(): void {
     const vehicle = this.selectedVehicle();
     const position = this.newPosition();
 
-  if (!position || !vehicle) return;
+    if (!position || !vehicle) return;
 
-  const updateVehicle: VehicleInterface = {
-    ...vehicle,
-    location: position
-  };
+    const updateVehicle: VehicleInterface = {
+      ...vehicle,
+      location: position
+    };
 
-  this.vehicleService.updateVehicleLocation(
-    updateVehicle,
-    {
-      lat: position.lat,
-      lng: position.lng,
-    }
-  );
+    this.vehicleService.updateVehicleLocation(
+      updateVehicle,
+      {
+        lat: position.lat,
+        lng: position.lng,
+      }
+    );
 
-  this.selectedVehicle.set(updateVehicle);
-  this.showConfirmModal.set(false);
+    this.selectedVehicle.set(updateVehicle);
+    this.showConfirmModal.set(false);
 
-  console.log('Cambios efectuados ? dime que si',this.selectedVehicle()?.location);
+    console.log('Cambios efectuados ? dime que si',this.selectedVehicle()?.location);
   }
 
   onCancelLocationChange(): void {
-
     const vehicle = this.selectedVehicle();
 
     if (this.vehicleMarker && vehicle?.location) {
@@ -117,29 +112,6 @@ export class MapViewComponent implements OnInit {
 
     this.showConfirmModal.set(false);
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   // USER LOCATION
@@ -160,19 +132,17 @@ export class MapViewComponent implements OnInit {
     if (this.userMarker) {
       this.userMarker.setLatLng(coords);
     } else {
-      this.userMarker = L.marker(coords, {
-        draggable: true,
-        icon: this.locationIcon
-      }).addTo(this.map).bindPopup('You').openPopup();
+      this.userMarker = this.mapService.createMarker(coords, "You");
 
       this.userMarker.on('dragend', () => {
         const position = this.userMarker!.getLatLng();
-        this.map.setView(position, 19);
+        this.mapService.setView(position);
+
         console.log(`Marcador: ${position.lat}, ${position.lng}`);
       });
     }
 
-    this.map.setView(coords, 19);
+    this.mapService.setView(coords, 19);
   }
 
 }
