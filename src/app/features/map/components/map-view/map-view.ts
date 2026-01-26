@@ -1,12 +1,16 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import * as L from 'leaflet';
-import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
-import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
-import { UserLocationButtonComponent } from '../buttons/user-location-button/user-location-button';
-import { ConfirmModalComponent } from "../../../../shared/components/modals/confirm-modal/confirm-modal";
-import { VehicleSelectorComponent } from "../../../../shared/components/vehicle-selector/vehicle-selector";
+
 import { GeolocationService } from '../../../../shared/services/geolocation/geolocation-service';
 import { MapService } from '../../services/map-service';
+import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
+
+import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
+
+import { VehicleSelectorComponent } from '../../../vehicle/components/vehicle-selector/vehicle-selector';
+import { UserLocationButtonComponent } from '../buttons/user-location-button/user-location-button';
+import { ConfirmModalComponent } from "../../../../shared/components/modals/confirm-modal/confirm-modal";
+
 
 @Component({
   selector: 'app-map-view',

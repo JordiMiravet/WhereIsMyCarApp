@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, output } from '@angular/core';
-import { VehicleInterface } from '../../../features/vehicle/interfaces/vehicle';
+import { VehicleInterface } from '../../interfaces/vehicle';
 
 @Component({
   selector: 'app-vehicle-selector',
