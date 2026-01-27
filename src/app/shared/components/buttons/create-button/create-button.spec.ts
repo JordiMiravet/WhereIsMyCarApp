@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CreateButtonComponent } from './create-button';
 
-fdescribe('CreateButtonComponent', () => {
+describe('CreateButtonComponent', () => {
   let component: CreateButtonComponent;
   let fixture: ComponentFixture<CreateButtonComponent>;
 
@@ -48,7 +48,8 @@ fdescribe('CreateButtonComponent', () => {
       const italic = fixture.nativeElement.querySelector('i');
 
       expect(italic).toBeTruthy();
-      expect(italic.classList.contains('pi','pi-plus')).toBeTrue();
+      expect(italic.classList.contains('pi')).toBeTrue();
+      expect(italic.classList.contains('pi-plus')).toBeTrue();
     });
 
     it('should call onClick when button is clicked', () => {
