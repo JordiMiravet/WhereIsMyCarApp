@@ -1,16 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Auth } from '@angular/fire/auth';
 import { NavigationComponent } from './navigation';
 import { isSignal, signal } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AuthService } from '../../../features/auth/services/auth';
 
-const mockAuth = {
-  onAuthStateChanged: jasmine.createSpy('onAuthStateChanged')
-} as unknown as Auth;
+class MockAuthService {
+  isLogged = signal(false);
+}
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
   let fixture: ComponentFixture<NavigationComponent>;
+  let authService: MockAuthService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -18,15 +19,16 @@ describe('NavigationComponent', () => {
         NavigationComponent,
         RouterTestingModule 
       ],
-      providers: [{
-        provide: Auth,
-        useValue: mockAuth
+      providers: [{ 
+        provide: AuthService, 
+        useClass: MockAuthService 
       }]
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(NavigationComponent);
     component = fixture.componentInstance;
+    authService = TestBed.inject(AuthService) as unknown as MockAuthService;
     fixture.detectChanges();
   });
 
@@ -43,7 +45,7 @@ describe('NavigationComponent', () => {
     });
 
     it('should render the links list when user is logged', () => {
-      component.isLogged = signal(true);
+      authService.isLogged.set(true);
       fixture.detectChanges();
 
       const unorderListElement = fixture.nativeElement.querySelector('.navbar__links');
@@ -51,7 +53,7 @@ describe('NavigationComponent', () => {
     });
 
     it('should NOT render links list when user is not logged', () => {
-      component.isLogged = signal(false);
+      authService.isLogged.set(false);
       fixture.detectChanges();
 
       const unorderListElement = fixture.nativeElement.querySelector('.navbar__links');
@@ -59,7 +61,7 @@ describe('NavigationComponent', () => {
     });
 
     it('should render all navigation links when user is logged', () => {
-      component.isLogged = signal(true);
+      authService.isLogged.set(true);
       fixture.detectChanges();
 
       const links = fixture.nativeElement.querySelectorAll('.navbar__links li a');
@@ -67,19 +69,21 @@ describe('NavigationComponent', () => {
     });
 
     it('should have correct routerLink for each navigation link', () => {
-      component.isLogged = signal(true);
+      authService.isLogged.set(true);
       fixture.detectChanges();
 
       const links = fixture.nativeElement.querySelectorAll('.navbar__links li a');
       const expectedLinks = ['/', '/map', '/calendar', '/graphics'];
 
       links.forEach((link: HTMLElement, index: number) => {
-        expect(link.getAttribute('ng-reflect-router-link') || link.getAttribute('href')).toBe(expectedLinks[index]);
+        expect(
+          link.getAttribute('ng-reflect-router-link') || link.getAttribute('href')
+        ).toBe(expectedLinks[index]);
       });
     });
 
     it('should render correct icons and labels for each link', () => {
-      component.isLogged = signal(true);
+      authService.isLogged.set(true);
       fixture.detectChanges();
 
       const links = fixture.nativeElement.querySelectorAll('.navbar__links li a');
@@ -107,13 +111,13 @@ describe('NavigationComponent', () => {
     });
 
     it('should react to isLogged changes', () => {
-      component.isLogged = signal(true);
+      authService.isLogged.set(true);
       fixture.detectChanges();
 
       let linksList = fixture.nativeElement.querySelector('.navbar__links');
       expect(linksList).toBeTruthy();
 
-      component.isLogged = signal(false);
+      authService.isLogged.set(false);
       fixture.detectChanges();
 
       linksList = fixture.nativeElement.querySelector('.navbar__links');
