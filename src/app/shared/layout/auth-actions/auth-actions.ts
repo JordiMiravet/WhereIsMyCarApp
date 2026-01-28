@@ -20,7 +20,7 @@ export class AuthActionsComponent {
   onLogout(){
     this.auth.logout()
     .then( () => {
-      this.router.navigate(['register'])
+      this.router.navigate(['login'])
     })
     .catch( error => console.error(error) );
   }
