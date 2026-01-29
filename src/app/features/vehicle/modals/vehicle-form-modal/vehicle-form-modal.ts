@@ -10,6 +10,7 @@ import { VehicleInterface } from '../../interfaces/vehicle';
   templateUrl: './vehicle-form-modal.html',
   styleUrls: ['./vehicle-form-modal.css'],
 })
+
 export class VehicleFormModalComponent {
 
   mode = input<'create' | 'edit'>('create');
