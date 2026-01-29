@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UserLocationButtonComponent } from './user-location-button';
 
 describe('UserLocationButtonComponent', () => {
@@ -17,28 +16,38 @@ describe('UserLocationButtonComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('Component creation', () => {
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
   });
 
-  it('should emit click event when button is clicked', () => {
-    spyOn(component.click, 'emit');
-    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+  describe('Button functionality', () => {
 
-    button.click();
-    expect(component.click.emit).toHaveBeenCalled();
+    it('should emit click event when button is clicked', () => {
+      spyOn(component.click, 'emit');
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+
+      button.click();
+      expect(component.click.emit).toHaveBeenCalled();
+    });
+
   });
 
-  it('should have correct aria-label', () => {
-    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
-    
-    expect(button.getAttribute('aria-label')).toBe('Center map on current location');
-  });
+  describe('Accessibility and template', () => {
 
-  it('should render the svg icon', () => {
-    const svg: SVGElement = fixture.nativeElement.querySelector('svg');
+    it('should have correct aria-label', () => {
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+      expect(button.getAttribute('aria-label')).toBe('Center map on current location');
+    });
 
-    expect(svg).toBeTruthy();
+    it('should render the svg icon', () => {
+      const svg: SVGElement = fixture.nativeElement.querySelector('svg');
+      expect(svg).toBeTruthy();
+    });
+
   });
 
 });
