@@ -6,5 +6,4 @@ export interface VehicleInterface {
         lat: number;
         lng: number;
     },
-    
 }

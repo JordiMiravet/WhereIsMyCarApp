@@ -3,7 +3,7 @@ import { VehicleFormModalComponent } from './vehicle-form-modal';
 import { VehicleInterface } from '../../interfaces/vehicle';
 import { signal } from '@angular/core';
 
-fdescribe('VehicleFormModalComponent', () => {
+describe('VehicleFormModalComponent', () => {
   let component: VehicleFormModalComponent;
   let fixture: ComponentFixture<VehicleFormModalComponent>;
 
