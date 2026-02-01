@@ -6,7 +6,7 @@ import { HeaderComponent } from './shared/layout/header/header';
   selector: 'app-root',
   imports: [ RouterOutlet, HeaderComponent ],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
 export class App {
   protected readonly title = signal('WhereIsMyCarApp');
