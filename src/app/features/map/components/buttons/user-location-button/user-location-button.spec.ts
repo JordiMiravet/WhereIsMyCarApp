@@ -34,9 +34,27 @@ describe('UserLocationButtonComponent', () => {
       expect(component.click.emit).toHaveBeenCalled();
     });
 
+    it('should emit click event only once per click', () => {
+      spyOn(component.click, 'emit');
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+
+      button.click();
+      expect(component.click.emit).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not be disabled by default', () => {
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+      expect(button.disabled).toBeFalse();
+    });
+
   });
 
   describe('Accessibility and template', () => {
+
+    it('should render a button element', () => {
+      const button = fixture.nativeElement.querySelector('button');
+      expect(button).not.toBeNull();
+    });
 
     it('should have correct aria-label', () => {
       const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
@@ -46,6 +64,14 @@ describe('UserLocationButtonComponent', () => {
     it('should render the svg icon', () => {
       const svg: SVGElement = fixture.nativeElement.querySelector('svg');
       expect(svg).toBeTruthy();
+    });
+
+    it('should have correct css classes', () => {
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+      const svg: SVGElement = fixture.nativeElement.querySelector('svg');
+
+      expect(button.classList.contains('map__button')).toBeTrue();
+      expect(svg.classList.contains('map__button-icon')).toBeTrue();
     });
 
   });
