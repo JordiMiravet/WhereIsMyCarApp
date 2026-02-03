@@ -1,4 +1,5 @@
 export interface VehicleInterface {
+    _id?: string;
     name: string,
     model: string,
     plate: string,

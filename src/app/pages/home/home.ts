@@ -29,8 +29,12 @@ export class HomeComponent {
   private geo = inject(GeolocationService);
   
   private vehicleService = inject(VehicleService);
-  public vehicleList = this.vehicleService.vehiclesList;
+  public vehicleList = this.vehicleService.vehicles;
   public vehicleModal = inject(VehicleModalStateService);
+
+  ngOnInit(): void {
+    this.vehicleService.loadVehicles();
+  }
 
   /* Edit/Create Modal */
 

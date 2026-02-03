@@ -26,6 +26,10 @@ export class MapComponent {
   private vehicleService = inject(VehicleService);
   public vehicleList = this.vehicleService.vehicles;
   public vehicleModal = inject(VehicleModalStateService);
+
+  ngOnInit(): void {
+    this.vehicleService.loadVehicles();
+  }
   
   async saveVehicle(vehicleData: VehicleInterface): Promise<void> {
     let location = vehicleData.location;

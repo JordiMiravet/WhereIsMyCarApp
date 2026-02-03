@@ -1,5 +1,6 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
 import { VehicleInterface } from '../../interfaces/vehicle';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -7,8 +8,71 @@ import { VehicleInterface } from '../../interfaces/vehicle';
 
 export class VehicleService {
   
-  /* To Do : Este array mas adelante debo cambiarlo a ddbb */
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000/vehicles';
 
+  public vehicles = signal<VehicleInterface[]>([]);
+
+  loadVehicles(): void {
+    this.http.get<VehicleInterface[]>(this.apiUrl)
+      .subscribe({
+        next: vehicles => this.vehicles.set(vehicles),
+        error: err => console.error('Load vehicles error', err)
+      })
+  }
+
+  addVehicles(vehicle: VehicleInterface): void {
+    this.http.post<VehicleInterface>(this.apiUrl, vehicle)
+      .subscribe( vehicleCreated => {
+        this.vehicles.update(list => [ ...list, vehicleCreated ]);
+      })
+  }
+
+  updateVehicle(oldVehicle: VehicleInterface, newVehicle: VehicleInterface): void {
+    this.http.put<VehicleInterface>(
+      `${this.apiUrl}/${oldVehicle.plate}`,
+      newVehicle
+    ).subscribe( updatedVehicle => {
+      this.vehicles.update( list => 
+        list.map( v => v.plate === oldVehicle.plate 
+          ? updatedVehicle
+          : v
+        )
+      )
+    })
+  }
+
+  updateVehicleLocation(
+    vehicle: VehicleInterface,
+    location: { lat: number; lng: number }
+  ): void {
+
+    const updatedLocation = { location }
+
+    this.http.put<VehicleInterface>(
+      `${this.apiUrl}/${vehicle.plate}`,
+      updatedLocation
+    ).subscribe(updatedVehicle => {
+      this.vehicles.update(list =>
+        list.map(v =>
+          v.plate === vehicle.plate ? updatedVehicle : v
+        )
+      );
+    });
+  }
+
+  deleteVehicle(vehicle: VehicleInterface): void {
+    this.http.delete<void>(`${this.apiUrl}/${vehicle.plate}`)
+      .subscribe(() => {
+        this.vehicles.update(list =>
+          list.filter(v => v.plate !== vehicle.plate)
+        );
+      });
+  }
+
+  /* Mantendré esto por ahora, (IMPORTANTE!!!): en un par de commits lo borro */
+
+  /*
   public vehicles = signal<VehicleInterface[]>([
     
     {
@@ -131,5 +195,5 @@ export class VehicleService {
   deleteVehicle(vehicle : VehicleInterface): void {
     this.vehicles.update(list => list.filter(v => v !== vehicle));
   }
-
+  */
 }
