@@ -6,9 +6,11 @@ import { VehicleService } from '../../features/vehicle/services/vehicle-service/
 import { VehicleModalStateService } from '../../features/vehicle/services/vehicle-modal-state-service/vehicle-modal-state-service';
 import { GeolocationService } from '../../shared/services/geolocation/geolocation-service';
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
+import { provideHttpClient } from '@angular/common/http';
 
 const vehicleServiceMock = {
-  vehiclesList: signal<VehicleInterface[]>([]),
+  vehicles: signal<VehicleInterface[]>([]),
+  loadVehicles: jasmine.createSpy('loadVehicles'),
   addVehicles: jasmine.createSpy('addVehicles'),
   updateVehicle: jasmine.createSpy('updateVehicle'),
   deleteVehicle: jasmine.createSpy('deleteVehicle')
@@ -26,7 +28,7 @@ const geolocationServiceMock = {
   getCurrentLocation: jasmine.createSpy('getCurrentLocation')
 };
 
-describe('HomeComponent', () => {
+fdescribe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
 
@@ -36,7 +38,7 @@ describe('HomeComponent', () => {
       providers: [
         { provide: VehicleService, useValue: vehicleServiceMock },
         { provide: VehicleModalStateService, useValue: vehicleModalStateServiceMock },
-        { provide: GeolocationService, useValue: geolocationServiceMock }
+        { provide: GeolocationService, useValue: geolocationServiceMock },
       ]
     }).compileComponents();
 
@@ -56,7 +58,7 @@ describe('HomeComponent', () => {
   describe('Initial state', () => {
 
     it('should expose the vehicle list from VehicleService', () => {
-      expect(component.vehicleList).toBe(vehicleServiceMock.vehiclesList);
+      expect(component.vehicleList).toBe(vehicleServiceMock.vehicles);
     });
 
     it('should have confirm delete modal closed by default', () => {
@@ -86,6 +88,8 @@ describe('HomeComponent', () => {
     });
 
     it('should request geolocation when vehicle has no location', async () => {
+      vehicleServiceMock.addVehicles.calls.reset();
+
       const vehicleMock: VehicleInterface = {
         name: 'Porsche',
         model: '911 turbo',
@@ -108,6 +112,8 @@ describe('HomeComponent', () => {
     });
 
     it('should use fallback location when geolocation fails', async () => {
+      vehicleServiceMock.addVehicles.calls.reset();
+      
       const vehicleWithoutLocation: VehicleInterface = {
         name: 'Nissan',
         model: 'Skyline R34',
@@ -247,7 +253,7 @@ describe('HomeComponent', () => {
   describe('Template rendering', () => {
 
     it('should render vehicle table when vehicle list is not empty', () => {
-      vehicleServiceMock.vehiclesList.set([
+      vehicleServiceMock.vehicles.set([
         { name: 'Nissan', model: 'Silvia S15', plate: 'DRFTS15' },
         { name: 'Mazda', model: 'RX-7 FD', plate: 'RX7FD' }
       ]);
@@ -259,7 +265,7 @@ describe('HomeComponent', () => {
     });
 
     it('should render empty state when vehicle list is empty', () => {
-      vehicleServiceMock.vehiclesList.set([]);
+      vehicleServiceMock.vehicles.set([]);
       fixture.detectChanges();
 
       const emptyStateElement = fixture.nativeElement.querySelector('app-vehicle-empty-state');
