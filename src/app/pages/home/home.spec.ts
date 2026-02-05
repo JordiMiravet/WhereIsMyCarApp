@@ -6,7 +6,6 @@ import { VehicleService } from '../../features/vehicle/services/vehicle-service/
 import { VehicleModalStateService } from '../../features/vehicle/services/vehicle-modal-state-service/vehicle-modal-state-service';
 import { GeolocationService } from '../../shared/services/geolocation/geolocation-service';
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
-import { provideHttpClient } from '@angular/common/http';
 
 const vehicleServiceMock = {
   vehicles: signal<VehicleInterface[]>([]),
@@ -28,7 +27,7 @@ const geolocationServiceMock = {
   getCurrentLocation: jasmine.createSpy('getCurrentLocation')
 };
 
-fdescribe('HomeComponent', () => {
+describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
 
@@ -89,6 +88,10 @@ fdescribe('HomeComponent', () => {
 
     it('should request geolocation when vehicle has no location', async () => {
       vehicleServiceMock.addVehicles.calls.reset();
+      geolocationServiceMock.getCurrentLocation.calls.reset();
+
+      vehicleModalStateServiceMock.mode.set('create');
+      vehicleModalStateServiceMock.selectedVehicle.set(null)
 
       const vehicleMock: VehicleInterface = {
         name: 'Porsche',
@@ -296,4 +299,5 @@ fdescribe('HomeComponent', () => {
     });
 
   });
+
 });
