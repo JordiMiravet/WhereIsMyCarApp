@@ -1,1 +1,19 @@
-<p>calendar works!</p>
+
+<section class="calendar__container">
+    <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+</section>
+
+@if (selectedDayEvents().length > 0) {
+    <section class="calendar__day-events">
+        <h2>Eventos del día : {{ selectedDate() }}</h2>
+        <ul>
+            @for (event of selectedDayEvents(); track $index) {
+                <li>{{ event.title }}</li>
+            }
+        </ul>
+    </section>
+} @else {
+    <section class="calendar__day-events-empty">
+        <p>No hay eventos para el día seleccionado</p>
+    </section>
+}
