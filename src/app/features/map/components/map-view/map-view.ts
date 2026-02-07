@@ -10,8 +10,7 @@ import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
 import { VehicleSelectorComponent } from '../../../vehicle/components/vehicle-selector/vehicle-selector';
 import { UserLocationButtonComponent } from '../buttons/user-location-button/user-location-button';
 import { ConfirmModalComponent } from "../../../../shared/components/modals/confirm-modal/confirm-modal";
-
-
+  
 @Component({
   selector: 'app-map-view',
   standalone: true,
