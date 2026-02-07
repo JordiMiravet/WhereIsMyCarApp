@@ -88,9 +88,19 @@
 }
 
 /* Eventos en el calendario */
-
 .calendar__container .fc-event.fc-daygrid-event {
     background-color: var(--color-blue-light);
+}
+
+.calendar__container .fc-daygrid-more-link {
+    background-color: var(--color-blue-dark);
+    width: calc(100% - .5rem);
+    text-align: center;
+    /* Este estilo es el del +2, tengo que retocarlo porque queda raro, aqui dejo el comentario para futuro*/
+}
+.calendar__container .fc-event.fc-daygrid-event,
+.calendar__container .fc-daygrid-more-link {
+    
     border: none;
     border-radius: var(--radius-sm);
     padding: 0.25rem 0.5rem;
@@ -98,7 +108,6 @@
     font-size: var(--font-size-xs);
     color: var(--color-white);
 }
-
 .calendar__container .fc-event.fc-daygrid-event:hover {
     background-color: var(--color-blue-dark);
 }
@@ -107,7 +116,7 @@
     color: var(--color-white);
 }
 
-/* Eventos del dia seleccionado */
+/* Eventos Modal del dia seleccionado */
 
 .calendar__day-events {
     margin: 2rem;
