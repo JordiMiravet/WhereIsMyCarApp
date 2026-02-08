@@ -7,10 +7,6 @@
     background-color: var(--color-white);
 }
 
-.calendar__container .fc {
-    border: none;
-}
-
 /* Titulo del mes */
 
 .calendar__container .fc-toolbar-title {
@@ -96,11 +92,9 @@
     background-color: var(--color-blue-dark);
     width: calc(100% - .5rem);
     text-align: center;
-    /* Este estilo es el del +2, tengo que retocarlo porque queda raro, aqui dejo el comentario para futuro*/
 }
 .calendar__container .fc-event.fc-daygrid-event,
-.calendar__container .fc-daygrid-more-link {
-    
+.calendar__container .fc-daygrid-more-link {  
     border: none;
     border-radius: var(--radius-sm);
     padding: 0.25rem 0.5rem;
@@ -116,9 +110,16 @@
     color: var(--color-white);
 }
 
+
+
+
+
+
+
+
 /* Eventos Modal del dia seleccionado */
 
-.calendar__day-events {
+.day-events {
     margin: 2rem;
     padding: 1.5rem;
     background-color: var(--color-white);
@@ -126,7 +127,7 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 
-.calendar__day-events h2 {
+.day-events__title {
     margin: 0 0 1rem 0;
     padding-bottom: 1rem;
     color: var(--color-blue-dark);
@@ -134,29 +135,87 @@
     border-bottom: 2px solid var(--gray-300);
 }
 
-.calendar__day-events ul {
+.day-events__list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.calendar__day-events li {
+.day-events__details {
     padding: 1rem;
     margin-bottom: 0.5rem;
     background-color: var(--gray-100);
     border-left: 3px solid var(--color-blue-light);
-    transition: all 0.2s;
+    transition: all 0.2s ease-in-out;
 }
-
-.calendar__day-events li:hover {
-    background-color: var(--gray-100);
+.day-events__details:hover,
+.day-events__details[open] {
     border-left-color: var(--color-blue-dark);
-    transform: translateX(5px);
+}
+.day-events__details[open] {
+    transform: translateX(0.5rem);
 }
 
-.calendar__day-events li:last-child {
-    margin-bottom: 0;
+.day-events__summary {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    cursor: pointer;
 }
+.day-events__event-title {
+    font-size: var(--font-size-lg);
+}
+.day-events__event-date {
+    letter-spacing: 0.1rem;
+}
+
+.day-events__time {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem auto;
+    font-size: var(--font-size-sm);
+}
+
+.day-events__time-label i {
+    margin: 0;
+    padding: 0;
+    font-size: 1.25rem;
+}
+.day-events__time-value {
+    
+}
+
+.day-events__comment {
+    margin: 0;
+    padding: 1rem;
+    font-size: var(--font-size-sm);
+}
+
+.day-events__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+
+}
+
+@media(min-width: 576px) {
+    .day-events {
+        margin: 2rem auto;
+        max-width: 70rem;
+        padding: 1.5rem;
+        background-color: var(--color-white);
+        border-left: 0.5rem solid var(--color-blue-light);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    }
+}
+
+
+
+
+
 
 /* Sin eventos */
 
@@ -172,7 +231,7 @@
     width: auto;
 }
 
-/* Elimina scroll */
+/* Elimina scroll lateral*/
 
 .calendar__container .fc-scroller,
 .calendar__container .fc-scroller-liquid-absolute {
