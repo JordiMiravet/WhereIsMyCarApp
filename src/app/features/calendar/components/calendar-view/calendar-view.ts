@@ -1,4 +1,5 @@
 import { Component, signal, ViewChild, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 import { EventInput } from '@fullcalendar/core/index.js';
@@ -7,10 +8,7 @@ import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
 import { CalendarEventInterface } from '../../interfaces/calendar-event';
-
-import { EditButtonComponent } from "../../../../shared/components/buttons/edit-button/edit-button";
-import { DeleteButtonComponent } from "../../../../shared/components/buttons/delete-button/delete-button";
-import { CommonModule } from '@angular/common';
+import { DayEventsModalComponent } from "../../modals/day-events-modal/day-events-modal";
 
 @Component({
   selector: 'app-calendar-view',
@@ -18,8 +16,7 @@ import { CommonModule } from '@angular/common';
   imports: [
     FullCalendarModule,
     CommonModule,
-    EditButtonComponent,
-    DeleteButtonComponent
+    DayEventsModalComponent
   ],
   templateUrl: './calendar-view.html',
   styleUrl: './calendar-view.css',
@@ -28,6 +25,11 @@ import { CommonModule } from '@angular/common';
 export class CalendarViewComponent {
   
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
+
+  selectedDayEvents = signal<CalendarEventInterface[]>([]);
+  selectedDate = signal<string>('');
+
+  isModalOpen = signal(false);
 
   calendarEvents: CalendarEventInterface[] = [
     {
@@ -42,34 +44,30 @@ export class CalendarViewComponent {
       date: '2026-02-11',
       hourStart: '16:00',
       hourEnd: '17:00',
-      comment: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+      comment: 'Ipsum dolor sit amet consectetur adipisicing elit. Quod aspernatur quas quidem, doloremque esse in porro dolorem inventore corporis ducimus! Hic nulla voluptatum tempore provident deserunt recusandae. Reprehenderit, molestias commodi.'
     },
     {
       title: 'Cita',
       date: '2026-02-11',
       hourStart: '18:00',
       hourEnd: '19:00',
-      comment: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco.'
+      comment: 'Ipsum dolor sit amet consectetur adipisicing elit. Quod aspernatur quas quidem, doloremque esse in porro dolorem inventore corporis ducimus! Hic nulla voluptatum tempore provident deserunt recusandae. Reprehenderit, molestias commodi.'
     },
     {
       title: 'Revisión',
       date: '2026-02-12',
       hourStart: '10:00',
       hourEnd: '11:00',
-      comment: 'Duis aute irure dolor in reprehenderit in voluptate velit esse.'
+      comment: 'Ipsum dolor sit amet consectetur adipisicing elit. Quod aspernatur quas quidem, doloremque esse in porro dolorem inventore corporis ducimus! Hic nulla voluptatum tempore provident deserunt recusandae. Reprehenderit, molestias commodi.'
     },
     {
       title: 'Mantenimiento',
       date: '2026-02-11',
       hourStart: '12:00',
       hourEnd: '13:30',
-      comment: 'Excepteur sint occaecat cupidatat non proident.'
+      comment: ''
     }
   ];
-
-  selectedDayEvents = signal<CalendarEventInterface[]>([]);
-  selectedDate = signal<string>('');
-  
   
   calendarOptions = {
     plugins: [ dayGridPlugin, interactionPlugin, timeGridPlugin ],
@@ -117,12 +115,12 @@ export class CalendarViewComponent {
   };
 
   handleDateClick(arg: DateClickArg) {
-    const eventsOfDay = this.calendarEvents.filter(
-      event => event.date === arg.dateStr
-    );
+    const eventsOfDay = this.calendarEvents.filter(event => event.date === arg.dateStr);
 
     this.selectedDayEvents.set(eventsOfDay);
     this.selectedDate.set(arg.dateStr);
+    
+    this.isModalOpen.set(eventsOfDay.length > 0);
   }
-
+  
 }

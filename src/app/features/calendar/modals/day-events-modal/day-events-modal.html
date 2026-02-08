@@ -1,0 +1,35 @@
+<div class="day-events-background" (click)="handleClose()">
+    <section class="day-events" (click)="$event.stopPropagation()">
+        <header class="day-events__header">
+            <h2 class="day-events__title">
+                <i class="pi pi-calendar"></i> Eventos del día: {{ date() }}
+            </h2>
+        </header>
+
+        <ul class="day-events__list">
+            @for (event of events(); track $index) {
+                <li>
+                    <details class="day-events__details">
+                        <summary class="day-events__summary" (click)="openDetails($index)">
+                            <span class="day-events__event-title">{{ event.title }}</span>
+                            <div class="day-events__time">
+                                <span class="day-events__time-value">{{ event.hourStart }} - {{ event.hourEnd }}</span>
+                                <span class="day-events__time-label"><i class="pi pi-clock"></i></span>
+                            </div>
+                        </summary>
+
+                        @if(event.comment!.length){
+                            <p class="day-events__comment">{{ event.comment }}</p>
+                        }
+
+                        <div class="day-events__actions">
+                            <app-edit-button></app-edit-button>
+                            <app-delete-button></app-delete-button>
+                        </div>
+                    </details>
+                </li>
+            }   
+        </ul>
+        
+    </section>
+</div>

@@ -1,0 +1,119 @@
+/* Background */
+
+.day-events-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal */
+
+.day-events {
+    width: 95%;
+    max-width: 60rem;
+    padding: 2rem;
+    background-color: var(--color-white);
+    border-left: 0.5rem solid var(--color-blue-light);
+    border-radius: 0 0.5rem 0.5rem 0 ;
+    max-height: 75vh;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+    overflow-y: auto;
+    position: relative;
+}
+
+.day-events__header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0 0 1rem 0;
+}
+.day-events__title {
+    width: 100%;
+    padding-bottom: 1rem;
+    color: var(--color-blue-dark);
+    font-size: var(--font-size-lg);
+    border-bottom: 2px solid var(--gray-300);
+}
+
+.day-events__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.day-events__details {
+    padding: 0;
+    margin-bottom: 0.5rem;
+    background-color: var(--gray-100);
+    border-left: 3px solid var(--color-blue-light);
+    transition: all 0.2s ease-in-out;
+}
+.day-events__details:hover,
+.day-events__details[open] {
+    border-left-color: var(--color-blue-dark);
+}
+.day-events__details[open] {
+    transform: translateX(0.5rem);
+}
+
+.day-events__summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.day-events__event-title {
+    font-size: var(--font-size-lg);
+}
+
+.day-events__time {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+    font-size: var(--font-size-sm);
+}
+.day-events__time-label i {
+    margin: 0;
+    padding: 0;
+    font-size: 1.25rem;
+}
+.day-events__time-value {
+    font-weight: 500;
+    font-size: var(--font-size-md);
+}
+
+.day-events__comment {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    font-size: var(--font-size-sm);
+}
+
+.day-events__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+@media(min-width: 576px) {
+    .day-events {
+        margin: 2rem auto;
+        max-width: 50rem;
+        padding: 1.5rem;
+        background-color: var(--color-white);
+        border-left: 0.5rem solid var(--color-blue-light);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    }
+}

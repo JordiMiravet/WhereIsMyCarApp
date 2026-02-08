@@ -6,34 +6,13 @@
     ></full-calendar>
 </section>
 
-@if (selectedDayEvents().length > 0) {
-    <section class="day-events">
-        <h2 class="day-events__title"><i class="pi pi-calendar"></i> Eventos del día : {{ selectedDate() }}</h2>
-
-        <ul class="day-events__list">
-            @for (event of selectedDayEvents(); track $index) {
-                <li>
-                    <details class="day-events__details">
-                        <summary class="day-events__summary">
-                            <span class="day-events__event-title">{{ event.title }}</span>
-                            <span class="day-events__event-date"> {{ event.date }} </span>
-                        </summary>
-                        <div class="day-events__time">
-                            <span class="day-events__time-value">{{ event.hourStart }} - {{ event.hourEnd }}</span>
-                            <span class="day-events__time-label"><i class="pi pi-clock"></i></span> 
-                        </div>
-                        
-                        <p class="day-events__comment">{{ event.comment }}</p>
-                        <div class="day-events__actions">
-                            <app-edit-button/>
-                            <app-delete-button/>
-                        </div>
-                    </details>
-
-                </li>
-            }
-        </ul>
-    </section>
+@if (isModalOpen()) {
+    <app-day-events-modal
+        [events]="selectedDayEvents()"
+        [date]="selectedDate()"
+        [isOpen]="isModalOpen()"
+        (closeModal)="isModalOpen.set(false)">
+    </app-day-events-modal>
 } @else {
     <section class="calendar__day-events-empty">
         <p>No hay eventos para el día seleccionado</p>
