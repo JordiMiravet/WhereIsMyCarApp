@@ -1,20 +1,24 @@
-
 <section class="calendar__container">
     <full-calendar
         #calendar
-        [options]="calendarOptions"
-    ></full-calendar>
+        [options]="calendarOptions">
+    </full-calendar>
 </section>
 
-@if (isModalOpen()) {
+@if (isEventModalOpen()) {
     <app-day-events-modal
         [events]="selectedDayEvents()"
         [date]="selectedDate()"
-        [isOpen]="isModalOpen()"
-        (closeModal)="isModalOpen.set(false)">
+        (closeModal)="isEventModalOpen.set(false)"
+        (deleteEvent)="requestDeleteEvent($event)">
     </app-day-events-modal>
-} @else {
-    <section class="calendar__day-events-empty">
-        <p>No hay eventos para el día seleccionado</p>
-    </section>
+}
+
+@if (isConfirmModalOpen()) {
+    <app-confirm-modal
+        title="Delete this event"
+        message="Are you sure you want to delete this event? This action cannot be undone"
+        (confirm)="confirmDeleteEvent()"
+        (cancel)="cancelDeleteEvent()">
+    </app-confirm-modal>
 }

@@ -15,7 +15,7 @@ export class GeolocationService {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           resolve([ position.coords.latitude, position.coords.longitude ]);
-        }, () => reject('Location error')
+        }, () => reject('Location error'),// estudiar esta posibilidad que me ha dicho joseAngel{ enableHighAccuracy: true, timeout: 5000, maximumAge: 0 } 
       );
     });
   }
