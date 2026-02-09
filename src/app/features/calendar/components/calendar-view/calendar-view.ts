@@ -3,7 +3,7 @@ import { Component, signal, computed, ViewChild, ViewEncapsulation } from '@angu
 import { CommonModule } from '@angular/common';
 
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
-import { EventInput } from '@fullcalendar/core';
+import { EventClickArg, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -35,28 +35,28 @@ export class CalendarViewComponent {
       date: '2026-02-11',
       hourStart: '09:00',
       hourEnd: '15:00',
-      comment: 'Ipsum dolor sit amet consectetur adipisicing elit...'
+      comment: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex similique asperiores quas fuga ad quis labore, iure, soluta eum sunt enim quasi tempore consectetur sint!',
     },
     {
       title: 'Barbero',
       date: '2026-02-11',
       hourStart: '16:00',
       hourEnd: '17:00',
-      comment: 'Ipsum dolor sit amet consectetur adipisicing elit...'
+      comment: '',
     },
     {
       title: 'Cita',
       date: '2026-02-11',
       hourStart: '18:00',
       hourEnd: '23:00',
-      comment: 'Ipsum dolor sit amet consectetur adipisicing elit...'
+      comment: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex similique asperiores quas fuga ad quis labore, iure, soluta eum sunt enim quasi tempore consectetur sint!',
     },
     {
       title: 'Revisión',
       date: '2026-02-14',
       hourStart: '10:00',
       hourEnd: '11:00',
-      comment: 'Ipsum dolor sit amet consectetur adipisicing elit...'
+      comment: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex similique asperiores quas fuga ad quis labore, iure, soluta eum sunt enim quasi tempore consectetur sint!',
     },
   ]);
   selectedDayEvents = computed(() => 
@@ -91,18 +91,15 @@ export class CalendarViewComponent {
     contentHeight: 'auto',
 
     dateClick: (arg: DateClickArg) => this.handleDateClick(arg),
-
-    eventDidMount: (info: any) => {
-      info.el.title = info.event.title;
-    },
-
+    eventClick: (info: EventClickArg) => this.handleEventClick(info),
     events: [],
 
     dayMaxEvents: 2,
     dayMaxEventRows: false,
     moreLinkContent: (arg: any) => `+ ${arg.num}`,
+    eventDidMount: (info: any) => { info.el.title = info.event.title },
 
-    eventDisplay: 'block',
+    eventDisplay: 'list-item',
     editable: false,
     timeZone: 'local',
   };
@@ -127,6 +124,13 @@ export class CalendarViewComponent {
 
   handleDateClick(arg: DateClickArg): void {
     this.selectedDate.set(arg.dateStr);
+    this.isEventModalOpen.set(true);
+  }
+
+  handleEventClick(info: EventClickArg) {
+    // Mas adelante ya cambiaré el evento para que cuando clique se abra solo ese evento especifico
+    // Por ahora lo dejo así para no marearlo mas
+    this.selectedDate.set(info.event.startStr.split('T')[0]);
     this.isEventModalOpen.set(true);
   }
 

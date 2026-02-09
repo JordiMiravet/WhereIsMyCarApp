@@ -84,14 +84,21 @@
 }
 
 /* Eventos en el calendario */
+
+.calendar__container .fc-daygrid-day-bottom {
+    padding: 0;
+    margin: 0;
+    
+}
 .calendar__container .fc-event.fc-daygrid-event {
     background-color: var(--color-blue-light);
 }
 
 .calendar__container .fc-daygrid-more-link {
-    background-color: var(--color-blue-dark);
-    width: calc(100% - .5rem);
+    background-color: var(--gray-500);
     text-align: center;
+    width: calc(100% - 0.5rem);
+    display: block; 
 }
 .calendar__container .fc-event.fc-daygrid-event,
 .calendar__container .fc-daygrid-more-link {  
@@ -104,6 +111,9 @@
 }
 .calendar__container .fc-event.fc-daygrid-event:hover {
     background-color: var(--color-blue-dark);
+}
+.calendar__container .fc-daygrid-more-link:hover {
+    background-color: var(--gray-700);
 }
 
 .calendar__container .fc-event-title {
