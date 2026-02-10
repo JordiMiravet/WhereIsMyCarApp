@@ -1,6 +1,6 @@
 /* Background */
 
-.day-events-background {
+.modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -16,16 +16,16 @@
 /* Modal */
 
 .day-events {
+    position: relative;
     width: 95%;
     max-width: 60rem;
     padding: 1.5rem;
     margin: 0;
     background-color: var(--color-white);
     border-left: 0.5rem solid var(--color-blue-light);
-    border-radius: 0 0.5rem 0.5rem 0 ;
+    border-radius: 0 0.5rem 0.5rem 0;
     max-height: 75vh;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
-    position: relative;
 }
 
 /* Header */
@@ -39,10 +39,11 @@
     margin: 0 0 1rem 0;
     border-bottom: 2px solid var(--gray-300);
 }
+
 .day-events__title {
     width: 100%; 
     color: var(--color-blue-dark);
-    font-size: var(--font-size-lg);
+    font-size: clamp(1.65rem, 2vw, var(--font-size-lg));
 }
 
 .day-events_icon-add {
@@ -63,6 +64,7 @@
 .day-events_icon-add:hover {
     background-color: var(--color-blue-dark);
 }
+
 /* Events List */
 
 .day-events__list {
@@ -96,7 +98,7 @@
 }
 
 .day-events__event-title {
-    font-size: var(--font-size-lg);
+    font-size: clamp(1.45rem, 1.5vw, var(--font-size-lg));
 }
 
 .day-events__time {
@@ -105,22 +107,22 @@
     align-items: center;
     gap: 1rem;
     margin: 0;
-    font-size: var(--font-size-sm);
+    font-size: clamp(1.25rem, 1.2vw, var(--font-size-sm));
 }
 .day-events__time-label i {
     margin: 0;
     padding: 0;
-    font-size: 1.25rem;
+    font-size: clamp(1.3rem, 2vw, 1.25rem);
 }
 .day-events__time-value {
     font-weight: 500;
-    font-size: var(--font-size-md);
+    font-size: clamp(1.25rem, 2vw, var(--font-size-md));
 }
 
 .day-events__comment {
     margin: 0;
     padding: 0.5rem 1rem;
-    font-size: var(--font-size-sm);
+    font-size: clamp(1.25rem, 1.2vw, var(--font-size-sm));
 }
 
 .day-events__actions {
@@ -151,7 +153,7 @@
     
     text-align: center;
     font-style: italic;
-    font-size: var(--font-size-md);
+    font-size: clamp(1.25rem, 1.2vw, var(--font-size-md));
 
     color: var(--color-text-muted);
     background-color: var(--gray-100);

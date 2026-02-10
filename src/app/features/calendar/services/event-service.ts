@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { EventInterface } from '../interfaces/calendar-event';
+import { EventInterface } from '../interfaces/event';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +47,6 @@ export class EventService {
   }
 
   addEvent(event: EventInterface) {
-
     const newEvent: EventInterface = {
       ...event,
       _id: this.generateId(),

@@ -1,1 +1,54 @@
-<p>event-form-modal works!</p>
+<section class="modal-overlay" (click)="handleClose()">
+
+    <form 
+        [formGroup]="formEvent" 
+        (ngSubmit)="onSubmit()" 
+        (click)="$event.stopPropagation()"
+        class="event-form"
+    >
+        <fieldset class="event-form__fieldset">
+            <legend class="event-form__legend"><i class="pi pi-calendar"></i> Add new Event</legend>
+
+            <div class="event-form__group">
+                <label class="event-form__label" for="inputEventTitle">Title</label>
+                <input class="event-form__input" type="text" formControlName="title" id="inputEventTitle" placeholder="Event Name*">
+            </div>
+
+            <div class="event-form__group">
+                <label class="event-form__label" for="inputEventDate">Date</label>
+                <input class="event-form__input" type="date" formControlName="date" id="inputEventDate">
+            </div>
+
+            <div class="event-form__time-group">
+                <div class="event-form__group">
+                    <label class="event-form__label" for="inputEventHourStart">Start Time</label>
+                    <input class="event-form__input" type="time" formControlName="hourStart" id="inputEventHourStart">
+                </div>
+
+                <div class="event-form__group">
+                    <label class="event-form__label" for="inputEventHourEnd">End Time</label>
+                    <input class="event-form__input" type="time" formControlName="hourEnd" id="inputEventHourEnd">
+                </div>
+                
+            </div>
+            
+            <div class="event-form__group">
+                <label class="event-form__label" for="inputEventComment">Comment</label>
+                <textarea 
+                    formControlName="comment" 
+                    id="inputEventComment" 
+                    class="event-form__textarea"
+                    placeholder="Type the note here..."
+                    rows="4"
+                >
+                </textarea>
+            </div>
+
+            <div class="event-form__actions">
+                <button class="event-form__button event-form__button--Cancel" type="button" (click)="handleClose()">Cancel</button>
+                <button class="event-form__button event-form__button--Save" type="submit" [disabled]="formEvent.invalid">Save</button>
+            </div>
+        </fieldset>
+    </form>
+
+</section>

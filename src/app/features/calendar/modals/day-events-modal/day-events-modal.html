@@ -1,12 +1,12 @@
 
-    <div class="day-events-background" (click)="handleClose()">
+    <div class="modal-overlay" (click)="handleClose()">
             <section class="day-events" (click)="$event.stopPropagation()">
 
                 <header class="day-events__header">
                     <h2 class="day-events__title">
-                        <i class="pi pi-calendar"></i> Eventos del día: <span>{{ date() }}</span>
+                        <i class="pi pi-calendar"></i> Events of the Day: <span>{{ date() }}</span>
                     </h2>
-                    <app-create-button (create)="onCreate()"/>
+                    <app-create-button (click)="onCreate()"/>
                     
                 </header>
                 @if( events().length > 0) {
@@ -35,7 +35,7 @@
                         }   
                     </ul>
                 } @else {
-                    <p class="day-events__empty" (create)="onCreate()">There are no events for the selected day</p>
+                    <p class="day-events__empty" (click)="onCreate()">There are no events for the selected day</p>
                 }
                 
             </section>

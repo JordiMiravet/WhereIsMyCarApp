@@ -6,6 +6,7 @@ import {
   ViewEncapsulation,
   inject,
   AfterViewInit,
+  effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -15,29 +16,39 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
-import { EventInterface } from '../../interfaces/calendar-event';
 import { DayEventsModalComponent } from '../../modals/day-events-modal/day-events-modal';
 import { ConfirmModalComponent } from '../../../../shared/components/modals/confirm-modal/confirm-modal';
 import { EventService } from '../../services/event-service';
+import { EventFormModalComponent } from "../../modals/event-form-modal/event-form-modal";
+import { CreateButtonComponent } from "../../../../shared/components/buttons/create-button/create-button";
 
 @Component({
   selector: 'app-calendar-view',
   standalone: true,
-  imports: [FullCalendarModule, CommonModule, DayEventsModalComponent, ConfirmModalComponent],
+  imports: [
+    FullCalendarModule,
+    CommonModule,
+    DayEventsModalComponent,
+    ConfirmModalComponent,
+    EventFormModalComponent,
+    CreateButtonComponent
+  ],
   templateUrl: './calendar-view.html',
   styleUrl: './calendar-view.css',
   encapsulation: ViewEncapsulation.None,
 })
+
 export class CalendarViewComponent implements AfterViewInit {
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
   private eventService = inject(EventService);
 
-  selectedDate = signal<string>('');
-  selectedEventId = signal<string | null>(null);
+  public selectedDate = signal<string>('');
+  private selectedEventId = signal<string | null>(null);
 
-  isEventModalOpen = signal(false);
-  isConfirmModalOpen = signal(false);
+  public isEventModalOpen = signal(false);
+  public isConfirmModalOpen = signal(false);
+  public isCreateModalOpen = signal(false);
 
   selectedDayEvents = computed(() => this.eventService.getEventsByDate(this.selectedDate()));
 
@@ -77,22 +88,18 @@ export class CalendarViewComponent implements AfterViewInit {
     timeZone: 'local',
   };
 
-  private getCalendarEvents(): EventInput[] {
-    return this.eventService.calendarEvents().map((event) => ({
-      title: event.title,
-      date: event.date,
-      extendedProps: {
-        hourStart: event.hourStart,
-        hourEnd: event.hourEnd,
-        comment: event.comment,
-      },
-    }));
+  constructor() {
+    effect(() => {
+      this.eventService.calendarEvents();
+      
+      if (this.calendarComponent) {
+        this.refreshCalendar();
+      }
+    });
   }
 
-  private refreshCalendar(): void {
-    const calendarApi = this.calendarComponent.getApi();
-    calendarApi.removeAllEvents();
-    calendarApi.addEventSource(this.getCalendarEvents());
+  ngAfterViewInit(): void {
+    this.refreshCalendar();
   }
 
   handleDateClick(arg: DateClickArg): void {
@@ -106,6 +113,16 @@ export class CalendarViewComponent implements AfterViewInit {
     this.isEventModalOpen.set(true);
   }
 
+  handleCreateEvent() {
+    // TODO: Estoy Aqui
+    if (!this.selectedDate()) {
+      const today = new Date().toISOString().split('T')[0];
+      this.selectedDate.set(today);
+    }
+    this.isCreateModalOpen.set(true);
+    this.isEventModalOpen.set(false);
+  }
+  
   requestDeleteEvent(id: string): void {
     this.selectedEventId.set(id);
     this.isEventModalOpen.set(false);
@@ -117,7 +134,6 @@ export class CalendarViewComponent implements AfterViewInit {
     if (id === null) return;
 
     this.eventService.deleteEvent(id);
-    this.refreshCalendar();
 
     this.isConfirmModalOpen.set(false);
     this.isEventModalOpen.set(true);
@@ -130,7 +146,23 @@ export class CalendarViewComponent implements AfterViewInit {
     this.selectedEventId.set(null);
   }
 
-  ngAfterViewInit(): void {
-    this.refreshCalendar();
+  public refreshCalendar(): void {
+    const calendarApi = this.calendarComponent.getApi();
+
+    calendarApi.removeAllEvents();
+    calendarApi.addEventSource(this.getCalendarEvents());
   }
+
+  private getCalendarEvents(): EventInput[] {
+    return this.eventService.calendarEvents().map((event) => ({
+      title: event.title,
+      date: event.date,
+      extendedProps: {
+        hourStart: event.hourStart,
+        hourEnd: event.hourEnd,
+        comment: event.comment,
+      },
+    }));
+  }
+
 }

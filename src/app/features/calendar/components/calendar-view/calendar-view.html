@@ -1,3 +1,6 @@
+
+<app-create-button (click)="handleCreateEvent()"/>
+
 <section class="calendar__container">
     <full-calendar
         #calendar
@@ -10,8 +13,16 @@
         [events]="selectedDayEvents()"
         [date]="selectedDate()"
         (closeModal)="isEventModalOpen.set(false)"
+        (createEvent)="handleCreateEvent()"
         (deleteEvent)="requestDeleteEvent($event)">
     </app-day-events-modal>
+}
+
+@if (isCreateModalOpen()) {
+    <app-event-form-modal
+        [preselectedDate]="selectedDate()"
+        (close)="isCreateModalOpen.set(false)">
+    </app-event-form-modal>
 }
 
 @if (isConfirmModalOpen()) {

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 
-import { EventInterface } from '../../interfaces/calendar-event';
+import { EventInterface } from '../../interfaces/event';
 import { EditButtonComponent } from '../../../../shared/components/buttons/edit-button/edit-button';
 import { DeleteButtonComponent } from '../../../../shared/components/buttons/delete-button/delete-button';
 import { CreateButtonComponent } from "../../../../shared/components/buttons/create-button/create-button";
@@ -28,8 +28,6 @@ export class DayEventsModalComponent {
   editEvent = output<string>();
   deleteEvent = output<string>();
   
-  
-
   closeModal = output<void>();
   
   onCreate() {
