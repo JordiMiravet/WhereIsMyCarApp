@@ -1,4 +1,5 @@
-export interface CalendarEventInterface {
+export interface EventInterface {
+  _id: string;
   title: string;
   date: string;
   hourStart?: string;

@@ -17,25 +17,25 @@
                                     <summary class="day-events__summary" (click)="openDetails($index)">
                                         <span class="day-events__event-title">{{ event.title }}</span>
                                         <div class="day-events__time">
-                                            <span class="day-events__time-value">{{ event.hourStart }} - {{ event.hourEnd }}</span>
+                                            <span class="day-events__time-value">{{ event.hourStart || '-- :--' }} - {{ event.hourEnd || '-- :--' }}</span>
                                             <span class="day-events__time-label"><i class="pi pi-clock"></i></span>
                                         </div>
                                     </summary>
 
-                                    @if(event.comment!.length){
+                                    @if(event.comment?.length){
                                         <p class="day-events__comment">{{ event.comment }}</p>
                                     }
 
                                     <div class="day-events__actions">
-                                        <app-edit-button (edit)="onEdit($index)"/>
-                                        <app-delete-button (delete)="onDelete($index)"/>
+                                        <app-edit-button (edit)="onEdit(event._id)"/>
+                                        <app-delete-button (delete)="onDelete(event._id)"/>
                                     </div>
                                 </details>
                             </li>
                         }   
                     </ul>
                 } @else {
-                    <p class="day-events__empty">There are no events for the selected day</p>
+                    <p class="day-events__empty" (create)="onCreate()">There are no events for the selected day</p>
                 }
                 
             </section>

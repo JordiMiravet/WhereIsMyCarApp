@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 
-import { CalendarEventInterface } from '../../interfaces/calendar-event';
+import { EventInterface } from '../../interfaces/calendar-event';
 import { EditButtonComponent } from '../../../../shared/components/buttons/edit-button/edit-button';
 import { DeleteButtonComponent } from '../../../../shared/components/buttons/delete-button/delete-button';
 import { CreateButtonComponent } from "../../../../shared/components/buttons/create-button/create-button";
@@ -21,12 +21,14 @@ import { CreateButtonComponent } from "../../../../shared/components/buttons/cre
 
 export class DayEventsModalComponent {
 
-  events = input<CalendarEventInterface[]>([]);
+  events = input<EventInterface[]>([]);
   date = input<string>('');
 
-  deleteEvent = output<number>();
-  editEvent = output<number>();
   createEvent = output<void>();
+  editEvent = output<string>();
+  deleteEvent = output<string>();
+  
+  
 
   closeModal = output<void>();
   
@@ -34,12 +36,12 @@ export class DayEventsModalComponent {
     this.createEvent.emit();
   }
 
-  onEdit(event: any): void {
-    this.editEvent.emit(event);
+  onEdit(id: string): void {
+    this.editEvent.emit(id);
   }
   
-  onDelete(index: number): void {
-    this.deleteEvent.emit(index);
+  onDelete(id: string): void {
+    this.deleteEvent.emit(id);
   }
 
   openDetails(index: number) {
