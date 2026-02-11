@@ -1,42 +1,62 @@
+<div 
+  class="modal-overlay" 
+  (click)="handleClose()"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="dayEventsTitle"
+>
+    <section class="day-events" (click)="$event.stopPropagation()">
 
-    <div class="modal-overlay" (click)="handleClose()">
-            <section class="day-events" (click)="$event.stopPropagation()">
+        <header class="day-events__header">
+            <h2 id="dayEventsTitle" class="day-events__title">
+                <i class="pi pi-calendar" aria-hidden="true"></i>
+                Events of the Day: <span>{{ date() }}</span>
+            </h2>
+            <app-create-button (click)="onCreate()"/>
+        </header>
 
-                <header class="day-events__header">
-                    <h2 class="day-events__title">
-                        <i class="pi pi-calendar"></i> Events of the Day: <span>{{ date() }}</span>
-                    </h2>
-                    <app-create-button (click)="onCreate()"/>
-                    
-                </header>
-                @if( events().length > 0) {
-                    <ul class="day-events__list">
-                        @for (event of events(); track $index) {
-                            <li>
-                                <details class="day-events__details">
-                                    <summary class="day-events__summary" (click)="openDetails($index)">
-                                        <span class="day-events__event-title">{{ event.title }}</span>
-                                        <div class="day-events__time">
-                                            <span class="day-events__time-value">{{ event.hourStart || '-- :--' }} - {{ event.hourEnd || '-- :--' }}</span>
-                                            <span class="day-events__time-label"><i class="pi pi-clock"></i></span>
-                                        </div>
-                                    </summary>
+        @if( events().length > 0) {
+            <ul class="day-events__list">
+                @for (event of events(); track $index) {
+                    <li>
+                        <details
+                            class="day-events__details"
+                            [attr.id]="'eventDetails' + $index"
+                        >
+                            <summary
+                                class="day-events__summary"
+                                (click)="openDetails($index)"
+                                [attr.aria-controls]="'eventDetails' + $index"
+                            >
+                                <span class="day-events__event-title">{{ event.title }}</span>
 
-                                    @if(event.comment?.length){
-                                        <p class="day-events__comment">{{ event.comment }}</p>
-                                    }
+                                <div class="day-events__time">
+                                    <span class="day-events__time-value">
+                                        {{ event.hourStart || '-- : --' }} - {{ event.hourEnd || '-- : --' }}
+                                    </span>
+                                    <span class="day-events__time-label">
+                                        <i class="pi pi-clock" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                            </summary>
 
-                                    <div class="day-events__actions">
-                                        <app-edit-button (edit)="onEdit(event._id)"/>
-                                        <app-delete-button (delete)="onDelete(event._id)"/>
-                                    </div>
-                                </details>
-                            </li>
-                        }   
-                    </ul>
-                } @else {
-                    <p class="day-events__empty" (click)="onCreate()">There are no events for the selected day</p>
-                }
-                
-            </section>
-    </div>
+                            @if(event.comment?.length){
+                                <p class="day-events__comment">{{ event.comment }}</p>
+                            }
+
+                            <div class="day-events__actions">
+                                <app-edit-button (edit)="onEdit(event._id)"/>
+                                <app-delete-button (delete)="onDelete(event._id)"/>
+                            </div>
+                        </details>
+                    </li>
+                }   
+            </ul>
+        } @else {
+            <button class="day-events__empty" (click)="onCreate()">
+                There are no events for the selected day
+            </button>
+        }
+
+    </section>
+</div>
