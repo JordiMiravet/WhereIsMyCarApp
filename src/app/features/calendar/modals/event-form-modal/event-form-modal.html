@@ -27,6 +27,7 @@
                     formControlName="title" 
                     id="inputEventTitle" 
                     placeholder="Event Name*"
+                    [ngClass]="{'event-form__input-error': formEvent.get('title')?.invalid && formEvent.get('title')?.touched}"
                     [attr.aria-invalid]="formEvent.get('title')?.invalid && formEvent.get('title')?.touched"
                     aria-describedby="titleError"
                 >
@@ -48,6 +49,7 @@
                     type="date" 
                     formControlName="date" 
                     id="inputEventDate"
+                    [ngClass]="{'event-form__input-error': formEvent.get('date')?.invalid && formEvent.get('date')?.touched}"
                     [attr.aria-invalid]="formEvent.get('date')?.invalid && formEvent.get('date')?.touched"
                     aria-describedby="dateError"
                 >
@@ -72,6 +74,7 @@
                         type="time" 
                         formControlName="hourStart" 
                         id="inputEventHourStart"
+                        [ngClass]="{'event-form__input-error': formEvent.get('hourStart')?.invalid && formEvent.get('hourStart')?.touched}"
                         [attr.aria-invalid]="formEvent.get('hourStart')?.invalid && formEvent.get('hourStart')?.touched"
                         aria-describedby="hourStartError invalidRangeError overlapError"
                     >
@@ -93,6 +96,7 @@
                         type="time" 
                         formControlName="hourEnd" 
                         id="inputEventHourEnd"
+                        [ngClass]="{'event-form__input-error': formEvent.get('hourEnd')?.invalid && formEvent.get('hourEnd')?.touched}"
                         [attr.aria-invalid]="formEvent.get('hourEnd')?.invalid && formEvent.get('hourEnd')?.touched"
                         aria-describedby="hourEndError invalidRangeError overlapError"
                     >
@@ -143,6 +147,7 @@
                 </button>
 
                 <button class="event-form__button event-form__button--Save" type="submit" [disabled]="formEvent.invalid">
+                    <i class="pi pi-save" aria-hidden="true"></i>
                     Save
                 </button>
             </div>

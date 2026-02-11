@@ -1,11 +1,13 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
-import { EventService } from '../../services/event-service';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+import { EventService } from '../../services/event-service';
 
 @Component({
   selector: 'app-event-form-modal',
   standalone: true,
-  imports: [ ReactiveFormsModule ],
+  imports: [ ReactiveFormsModule, CommonModule ],
   templateUrl: './event-form-modal.html',
   styleUrl: './event-form-modal.css',
 })
