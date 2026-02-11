@@ -1,9 +1,50 @@
+/* Calendar Actions */
+
+.calendar__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 70rem;
+    padding: 1rem;
+    margin: 0 auto;
+}
+
+.calendar__button-create {
+    flex: 0 0 auto;
+    background-color: var(--color-blue-light);
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 1rem 2rem;
+    margin: 0;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+}
+
+.calendar__actions app-vehicle-selector {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+@media (min-width: 768px) {
+    .calendar__actions {
+        justify-content: space-between;
+        padding: 1rem 0;
+    }
+
+    .calendar__actions app-vehicle-selector {
+        flex: 0 0 auto;
+        max-width: 30rem;
+    }
+}
+
 /* Container del calendario */
 
 .calendar__container {
     padding: 1.5rem;
     max-width: 70rem;
-    margin: 2rem auto;
+    margin: 0 auto 2rem auto;
     background-color: var(--color-white);
 }
 

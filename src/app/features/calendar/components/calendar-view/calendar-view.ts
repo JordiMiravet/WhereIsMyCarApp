@@ -20,7 +20,7 @@ import { DayEventsModalComponent } from '../../modals/day-events-modal/day-event
 import { ConfirmModalComponent } from '../../../../shared/components/modals/confirm-modal/confirm-modal';
 import { EventService } from '../../services/event-service';
 import { EventFormModalComponent } from "../../modals/event-form-modal/event-form-modal";
-import { CreateButtonComponent } from "../../../../shared/components/buttons/create-button/create-button";
+import { VehicleSelectorComponent } from "../../../vehicle/components/vehicle-selector/vehicle-selector";
 
 @Component({
   selector: 'app-calendar-view',
@@ -31,8 +31,8 @@ import { CreateButtonComponent } from "../../../../shared/components/buttons/cre
     DayEventsModalComponent,
     ConfirmModalComponent,
     EventFormModalComponent,
-    CreateButtonComponent
-  ],
+    VehicleSelectorComponent
+],
   templateUrl: './calendar-view.html',
   styleUrl: './calendar-view.css',
   encapsulation: ViewEncapsulation.None,
