@@ -1,3 +1,5 @@
+/* Overlay */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -11,6 +13,8 @@
     z-index: 1000;
 }
 
+/* Event Form */
+
 .event-form {
     position: absolute;
     width: 95%;
@@ -22,6 +26,7 @@
     border-left: 0.5rem solid var(--color-blue-light);
     background-color: var(--color-white);
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
 }
 
 .event-form__fieldset {
@@ -47,18 +52,29 @@
     flex-direction: column;
     gap: 0.5rem;
     margin-bottom: 1.25rem;
+    min-height: 7.5rem; 
 }
 
 .event-form__time-group {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
     gap: 1rem;
     width: 100%;
+    min-height: 7.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .event-form__time-group > .event-form__group {
     flex: 1;
+    min-width: 0;
+    min-height: auto;
+    margin-bottom: 0;
+}
+
+.event-form__time-group > .event-form__error {
+    flex-basis: 100%;
 }
 
 .event-form__label {
@@ -89,6 +105,20 @@
     resize: none;
     line-height: 1.25; 
 }
+
+/* Events error */
+
+.event-form__error {
+    margin: 0;
+    padding: 0 0.5rem;
+    width: 100%;
+    font-size: clamp(1.35rem, 1vw, 1.5rem);
+    color: var(--color-red-light);
+    min-height: 2rem;
+    line-height: 2rem;
+}
+
+/* Event Actions & Buttons */
 
 .event-form__actions {
     display: flex;

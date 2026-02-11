@@ -1,3 +1,4 @@
+
 /* Calendar Actions */
 
 .calendar__actions {
@@ -39,7 +40,7 @@
     }
 }
 
-/* Container del calendario */
+/* Calendar View */
 
 .calendar__container {
     padding: 1.5rem;
@@ -100,20 +101,27 @@
     background-color: var(--color-white);
     cursor: pointer;
     transition: background-color 0.2s;
+    border: 1px solid var(--gray-200);
+    
 }
 
 .calendar__container .fc-daygrid-day:hover {
     background-color: var(--gray-100);
 }
 
-/* Dia actual (hoy!) */
-
-.calendar__container .fc-daygrid-day.fc-day-today {
-    background-color: var(--gray-200);
-
+.calendar__container .fc-daygrid-day-frame{
+    padding: 0;
+    margin: 0;
 }
 
-/* Número del dia */
+.calendar__container .fc-daygrid-day-events {
+   
+}
+
+.calendar__container .fc-daygrid-day-bottom {
+    padding: 0;
+    margin-bottom: 0;
+}
 
 .calendar__container .fc-daygrid-day-number {
     width: 100%;
@@ -124,12 +132,17 @@
     font-weight: 700;
 }
 
+/* Dia actual (hoy!) */
+
+.calendar__container .fc-daygrid-day.fc-day-today {
+    background-color: var(--gray-200);
+}
+
 /* Eventos en el calendario */
 
 .calendar__container .fc-daygrid-day-bottom {
     padding: 0;
     margin: 0;
-    
 }
 .calendar__container .fc-event.fc-daygrid-event {
     background-color: var(--color-blue-light);
@@ -160,7 +173,6 @@
 .calendar__container .fc-event-title {
     color: var(--color-white);
 }
-
 
 /* Sin eventos */
 

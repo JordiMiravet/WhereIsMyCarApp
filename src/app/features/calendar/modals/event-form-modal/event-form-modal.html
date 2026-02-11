@@ -1,35 +1,129 @@
-<section class="modal-overlay" (click)="handleClose()">
-
+<section 
+  class="modal-overlay" 
+  (click)="handleClose()"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="eventFormTitle"
+>
     <form 
         [formGroup]="formEvent" 
         (ngSubmit)="onSubmit()" 
         (click)="$event.stopPropagation()"
         class="event-form"
+        novalidate
     >
+
         <fieldset class="event-form__fieldset">
-            <legend class="event-form__legend"><i class="pi pi-calendar"></i> Add new Event</legend>
+            <legend id="eventFormTitle" class="event-form__legend">
+                <i class="pi pi-calendar" aria-hidden="true"></i> 
+                Add new Event
+            </legend>
 
             <div class="event-form__group">
                 <label class="event-form__label" for="inputEventTitle">Title</label>
-                <input class="event-form__input" type="text" formControlName="title" id="inputEventTitle" placeholder="Event Name*">
+                <input 
+                    class="event-form__input" 
+                    type="text" 
+                    formControlName="title" 
+                    id="inputEventTitle" 
+                    placeholder="Event Name*"
+                    [attr.aria-invalid]="formEvent.get('title')?.invalid && formEvent.get('title')?.touched"
+                    aria-describedby="titleError"
+                >
+                <p 
+                    id="titleError"
+                    class="event-form__error" 
+                    role="alert"
+                    [hidden]="formEvent.get('title')?.valid || !formEvent.get('title')?.touched"
+                >
+                    <i class="pi pi-exclamation-circle" aria-hidden="true"></i> 
+                    This field is required
+                </p>
             </div>
 
             <div class="event-form__group">
                 <label class="event-form__label" for="inputEventDate">Date</label>
-                <input class="event-form__input" type="date" formControlName="date" id="inputEventDate">
+                <input 
+                    class="event-form__input" 
+                    type="date" 
+                    formControlName="date" 
+                    id="inputEventDate"
+                    [attr.aria-invalid]="formEvent.get('date')?.invalid && formEvent.get('date')?.touched"
+                    aria-describedby="dateError"
+                >
+
+                <p 
+                    id="dateError"
+                    class="event-form__error" 
+                    role="alert"
+                    [hidden]="formEvent.get('date')?.valid || !formEvent.get('date')?.touched"
+                >
+                    <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
+                    This field is required
+                </p>
             </div>
 
             <div class="event-form__time-group">
+
                 <div class="event-form__group">
                     <label class="event-form__label" for="inputEventHourStart">Start Time</label>
-                    <input class="event-form__input" type="time" formControlName="hourStart" id="inputEventHourStart">
+                    <input 
+                        class="event-form__input" 
+                        type="time" 
+                        formControlName="hourStart" 
+                        id="inputEventHourStart"
+                        [attr.aria-invalid]="formEvent.get('hourStart')?.invalid && formEvent.get('hourStart')?.touched"
+                        aria-describedby="hourStartError invalidRangeError overlapError"
+                    >
+                    <p 
+                        id="hourStartError"
+                        class="event-form__error" 
+                        role="alert"
+                        [hidden]="formEvent.get('hourStart')?.valid || !formEvent.get('hourStart')?.touched"
+                    >
+                        <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
+                        This field is required
+                    </p>
                 </div>
 
                 <div class="event-form__group">
                     <label class="event-form__label" for="inputEventHourEnd">End Time</label>
-                    <input class="event-form__input" type="time" formControlName="hourEnd" id="inputEventHourEnd">
+                    <input 
+                        class="event-form__input" 
+                        type="time" 
+                        formControlName="hourEnd" 
+                        id="inputEventHourEnd"
+                        [attr.aria-invalid]="formEvent.get('hourEnd')?.invalid && formEvent.get('hourEnd')?.touched"
+                        aria-describedby="hourEndError invalidRangeError overlapError"
+                    >
+                    <p 
+                        id="hourEndError"
+                        class="event-form__error" 
+                        role="alert"
+                        [hidden]="formEvent.get('hourEnd')?.valid || !formEvent.get('hourEnd')?.touched"
+                    >
+                        <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
+                        This field is required
+                    </p>
                 </div>
-                
+                <p 
+                    id="invalidRangeError"
+                    class="event-form__error" 
+                    role="alert"
+                    [hidden]="!formEvent.hasError('invalidTimeRange') || !formEvent.get('hourStart')?.touched || !formEvent.get('hourEnd')?.touched"
+                >
+                    <i class="pi pi-exclamation-circle" aria-hidden="true"></i> 
+                    Are you going back to the future, McFly? End time must be after start time                
+                </p>
+                <p 
+                    id="overlapError"
+                    class="event-form__error" 
+                    role="alert"
+                    [hidden]="!formEvent.hasError('timeOverlap') || formEvent.hasError('invalidTimeRange')"
+                >
+                    <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
+                    This time slot overlaps with another event on the same day
+                </p>
             </div>
             
             <div class="event-form__group">
@@ -40,15 +134,19 @@
                     class="event-form__textarea"
                     placeholder="Type the note here..."
                     rows="4"
-                >
-                </textarea>
+                ></textarea>
             </div>
 
             <div class="event-form__actions">
-                <button class="event-form__button event-form__button--Cancel" type="button" (click)="handleClose()">Cancel</button>
-                <button class="event-form__button event-form__button--Save" type="submit" [disabled]="formEvent.invalid">Save</button>
+                <button class="event-form__button event-form__button--Cancel" type="button" (click)="handleClose()">
+                    Cancel
+                </button>
+
+                <button class="event-form__button event-form__button--Save" type="submit" [disabled]="formEvent.invalid">
+                    Save
+                </button>
             </div>
         </fieldset>
-    </form>
 
+    </form>
 </section>
