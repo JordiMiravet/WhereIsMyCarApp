@@ -58,6 +58,18 @@ export class EventFormModalComponent implements OnInit {
         date: this.preselectedDate()
       });
     }
+
+    const event = this.preselectedEvent();
+    if(event) {
+      this.formEvent.patchValue({
+        title: event.title,
+        date: event.date,
+        hourStart: event.hourStart,
+        hourEnd: event.hourEnd,
+        vehicleId: event.vehicleId,
+        comment: event.comment
+      })
+    }
   }
 
   onVehicleSelected(vehicle: VehicleInterface | null) {
@@ -69,6 +81,19 @@ export class EventFormModalComponent implements OnInit {
     this.formEvent.patchValue({
       vehicleId: vehicle._id
     });
+
+    const event = this.preselectedEvent();
+    if (event) {
+      this.formEvent.patchValue({
+        title: event?.title,
+        date: event?.date,
+        hourStart: event?.hourStart,
+        hourEnd: event?.hourEnd,
+        vehicleId: event?.vehicleId,
+        comment: event?.comment
+      });
+    }
+
   }
 
   private timeRangeValidator(control: AbstractControl): ValidationErrors | null {
@@ -100,7 +125,15 @@ export class EventFormModalComponent implements OnInit {
 
   onSubmit(): void {
     if (!this.formEvent.valid) return;
-    this.eventService.addEvent(this.formEvent.value);
+
+    if (this.preselectedEvent()) {
+      this.eventService.updateEvent({
+        ...this.preselectedEvent(),
+        ...this.formEvent.value
+      });
+    } else {
+      this.eventService.addEvent(this.formEvent.value);
+    }
 
     this.handleClose();
   }

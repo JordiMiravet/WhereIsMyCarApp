@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-create-button',
@@ -10,6 +10,7 @@ import { Component, output } from '@angular/core';
 
 export class CreateButtonComponent {
 
+  readonly createText = input<string | null>(null);
   readonly create = output<void>();
 
   onClick(): void {

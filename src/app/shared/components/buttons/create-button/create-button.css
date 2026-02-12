@@ -1,29 +1,29 @@
-
-.create__button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.create-button {
     background-color: var(--color-blue-light);
     color: var(--color-white);
-    height: 3rem;
-    width: 3rem;
+
+    padding: 1rem 1rem;
     border: none;
     border-radius: var(--radius-sm);
+
     cursor: pointer;
     transition: background-color 0.25s ease;
 }
 
-.create__button:hover {
+.create-button:hover {
     background-color: var(--color-blue-dark);
 }
 
-.create__button:focus-visible {
-    outline: 2px solid var(--color-blue-light);
+.create-button:focus-visible {
+    outline: 2px solid var(--color-blue-dark);
     outline-offset: 2px;
-    transition: outline 0.25s ease;
 }
 
-.create__button i {
-    font-size: 2rem;
+.create-button__text {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
 }
 
+.create-button i {
+    font-size: 1.6rem;
+}

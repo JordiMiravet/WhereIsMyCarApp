@@ -1,6 +1,12 @@
 <section class="home__header">
-    <h2 class="home__title">My vehicles</h2>
-    <app-create-button (create)="vehicleModal.openCreate()"/>
+    <h2 class="home__title">
+        <i class="pi pi-car" aria-hidden="true"></i>
+        My Garage
+    </h2>
+    <app-create-button 
+        (create)="vehicleModal.openCreate()"
+        [createText]="'Vehicle'"
+    />
 </section>
 
 <section class="table__container">

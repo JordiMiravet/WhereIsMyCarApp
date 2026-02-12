@@ -30,6 +30,7 @@
                     [ngClass]="{'event-form__input-error': formEvent.get('title')?.invalid && formEvent.get('title')?.touched}"
                     [attr.aria-invalid]="formEvent.get('title')?.invalid && formEvent.get('title')?.touched"
                     aria-describedby="titleError"
+                    aria-required="true"
                 >
                 <p 
                     id="titleError"
@@ -52,6 +53,7 @@
                     [ngClass]="{'event-form__input-error': formEvent.get('date')?.invalid && formEvent.get('date')?.touched}"
                     [attr.aria-invalid]="formEvent.get('date')?.invalid && formEvent.get('date')?.touched"
                     aria-describedby="dateError"
+                    aria-required="true"
                 >
 
                 <p 
@@ -76,6 +78,7 @@
                         [ngClass]="{'event-form__input-error': formEvent.get('hourStart')?.invalid && formEvent.get('hourStart')?.touched}"
                         [attr.aria-invalid]="formEvent.get('hourStart')?.invalid && formEvent.get('hourStart')?.touched"
                         aria-describedby="hourStartError invalidRangeError overlapError"
+                        aria-required="true"
                     >
                     <p 
                         id="hourStartError"
@@ -98,6 +101,7 @@
                         [ngClass]="{'event-form__input-error': formEvent.get('hourEnd')?.invalid && formEvent.get('hourEnd')?.touched}"
                         [attr.aria-invalid]="formEvent.get('hourEnd')?.invalid && formEvent.get('hourEnd')?.touched"
                         aria-describedby="hourEndError invalidRangeError overlapError"
+                        aria-required="true"
                     >
                     <p 
                         id="hourEndError"
@@ -131,14 +135,16 @@
             
             <div class="event-form__group">
                 <label class="event-form__label" for="vehicleSelect">Vehicle</label>
-
                 <select
                     id="vehicleSelect"
                     class="event-form__input"
                     formControlName="vehicleId"
                     [ngClass]="{'event-form__input-error': formEvent.get('vehicleId')?.invalid && formEvent.get('vehicleId')?.touched}"
+                    [attr.aria-invalid]="formEvent.get('vehicleId')?.invalid && formEvent.get('vehicleId')?.touched"
+                    aria-describedby="vehicleError"
+                    aria-required="true"
                 >
-                    <option value="" selected disabled>Select vehicle*</option>
+                    <option value="" hidden>Select vehicle*</option>
                     @for (vehicle of vehicles(); track vehicle._id) {
                         <option [value]="vehicle._id">
                             {{ vehicle.name }}
@@ -167,11 +173,21 @@
             </div>
 
             <div class="event-form__actions">
-                <button class="event-form__button event-form__button--Cancel" type="button" (click)="handleClose()">
+                <button 
+                    class="event-form__button event-form__button--Cancel" 
+                    type="button" 
+                    (click)="handleClose()" 
+                    aria-label="Cancel adding event"
+                >
                     Cancel
                 </button>
 
-                <button class="event-form__button event-form__button--Save" type="submit" [disabled]="formEvent.invalid">
+                <button 
+                    class="event-form__button event-form__button--Save" 
+                    type="submit" 
+                    [disabled]="formEvent.invalid"
+                    aria-label="Save event"
+                >
                     <i class="pi pi-save" aria-hidden="true"></i>
                     Save
                 </button>

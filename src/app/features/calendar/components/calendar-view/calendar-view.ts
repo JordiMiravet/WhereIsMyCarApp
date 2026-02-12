@@ -140,6 +140,12 @@ export class CalendarViewComponent implements AfterViewInit {
 
   handleEditEvent(id: string) {
     // TODO: Hacer la logica de editar para pasar la info del evento al modal de formulario
+    const event = this.eventService.getEventById(id);
+    if(!event) return;
+    
+    this.editingEvent.set(event);
+    this.isCreateModalOpen.set(true);
+    this.isEventModalOpen.set(false)
   }
 
   // Logica del Delete 
