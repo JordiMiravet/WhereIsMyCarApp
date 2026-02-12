@@ -14,16 +14,16 @@ import { CreateButtonComponent } from "../../../../shared/components/buttons/cre
     EditButtonComponent,
     DeleteButtonComponent,
     CreateButtonComponent
-],
+  ],
   templateUrl: './day-events-modal.html',
   styleUrl: './day-events-modal.css',
 })
 
 export class DayEventsModalComponent {
 
-  events = input<EventInterface[]>([]);
   date = input<string>('');
-
+  events = input<EventInterface[]>([]);
+  
   createEvent = output<void>();
   editEvent = output<string>();
   deleteEvent = output<string>();

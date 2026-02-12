@@ -2,13 +2,9 @@
   type="button"
   class="create-button"
   (click)="onClick()"
-  [attr.aria-label]="createText() ? 'Add ' + createText() : 'Create item'"
+  [attr.aria-label]="'Add ' + createText()"
 >
-  @if (createText()) {
     <span class="create-button__text">
       Add {{ createText() }}
     </span>
-  } @else {
-    <i class="pi pi-plus" aria-hidden="true"></i>
-  }
 </button>

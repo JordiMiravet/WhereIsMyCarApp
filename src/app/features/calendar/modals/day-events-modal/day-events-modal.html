@@ -8,21 +8,22 @@
     <section class="day-events" (click)="$event.stopPropagation()">
 
         <header class="day-events__header">
-            <h2 id="dayEventsTitle" class="day-events__title">
+            <h2 id="dayEventsTitle" class="day-events__title" [attr.aria-label]="'Events of the Day' + date()">
                 <i class="pi pi-calendar" aria-hidden="true"></i>
                 Events of the Day: <span>{{ date() }}</span>
             </h2>
-            <app-create-button (click)="onCreate()"/>
+            <app-create-button 
+                (click)="onCreate()"
+                [createText]="'Event'"
+                [attr.aria-label]="'Create a new event for' + date()"
+            />
         </header>
 
         @if( events().length > 0) {
             <ul class="day-events__list">
                 @for (event of events(); track $index) {
                     <li>
-                        <details
-                            class="day-events__details"
-                            [attr.id]="'eventDetails' + $index"
-                        >
+                        <details class="day-events__details" [attr.id]="'eventDetails' + $index">
                             <summary
                                 class="day-events__summary"
                                 (click)="openDetails($index)"
@@ -45,15 +46,25 @@
                             }
 
                             <div class="day-events__actions">
-                                <app-edit-button (edit)="onEdit(event._id)"/>
-                                <app-delete-button (delete)="onDelete(event._id)"/>
+                                <app-edit-button 
+                                    (edit)="onEdit(event._id)"
+                                    [attr.aria-label]="'Edit ' + event.title"
+                                ></app-edit-button>
+                                <app-delete-button 
+                                    (delete)="onDelete(event._id)"
+                                    [attr.aria-label]="'Delete ' + event.title"
+                                ></app-delete-button>
                             </div>
                         </details>
                     </li>
                 }   
             </ul>
         } @else {
-            <button class="day-events__empty" (click)="onCreate()">
+            <button 
+                class="day-events__empty" 
+                (click)="onCreate()"
+                [attr.aria-label]="'Create a new event for ' + date()"
+            >
                 There are no events for the selected day
             </button>
         }

@@ -6,23 +6,14 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    max-width: 70rem;
+    max-width: 75rem;
     padding: 1rem;
     margin: 0 auto;
 }
 
-.calendar__button-create {
+.calendar__actions app-create-button {
     flex: 0 0 auto;
-    background-color: var(--color-blue-light);
-    color: var(--color-white);
-    border: none;
-    border-radius: var(--radius-sm);
-    padding: 1rem 2rem;
-    margin: 0;
-    font-size: var(--font-size-sm);
-    font-weight: 500;
 }
-
 .calendar__actions app-vehicle-selector {
     flex: 1 1 auto;
     min-width: 0;
@@ -40,16 +31,16 @@
     }
 }
 
-/* Calendar View */
+/* Calendar: View */
 
 .calendar__container {
     padding: 1.5rem;
-    max-width: 70rem;
+    max-width: 75rem;
     margin: 0 auto 2rem auto;
     background-color: var(--color-white);
 }
 
-/* Titulo del mes */
+/* Calendar: Month Title */
 
 .calendar__container .fc-toolbar-title {
     font-size: var(--font-size-xl);
@@ -57,7 +48,7 @@
     font-weight: 600;
 }
 
-/* Botones de navegación */
+/* Calendar: Navigation Buttons */
 
 .calendar__container .fc-button-group {
     gap: 1rem;
@@ -81,7 +72,7 @@
     cursor: not-allowed;
 }
 
-/* Cabecera de los dias de la semana */
+/* Calendar: Weekly Header */
 
 .calendar__container .fc-col-header-cell {
     background-color: var(--color-blue-light);
@@ -95,14 +86,13 @@
     font-size: var(--font-size-xs);
 }
 
-/* Celdas de los dias */
+/* Calendar: Day Cells */
 
 .calendar__container .fc-daygrid-day {
     background-color: var(--color-white);
     cursor: pointer;
     transition: background-color 0.2s;
     border: 1px solid var(--gray-200);
-    
 }
 
 .calendar__container .fc-daygrid-day:hover {
@@ -112,10 +102,6 @@
 .calendar__container .fc-daygrid-day-frame{
     padding: 0;
     margin: 0;
-}
-
-.calendar__container .fc-daygrid-day-events {
-   
 }
 
 .calendar__container .fc-daygrid-day-bottom {
@@ -132,13 +118,13 @@
     font-weight: 700;
 }
 
-/* Dia actual (hoy!) */
+/* Calendar: Today */
 
 .calendar__container .fc-daygrid-day.fc-day-today {
     background-color: var(--gray-200);
 }
 
-/* Eventos en el calendario */
+/* Calendar: Day Events */
 
 .calendar__container .fc-daygrid-day-bottom {
     padding: 0;
@@ -174,7 +160,7 @@
     color: var(--color-white);
 }
 
-/* Sin eventos */
+/* Calendar: Empty Events */
 
 .calendar__day-events-empty {
     margin: 2rem auto;
@@ -188,7 +174,7 @@
     width: auto;
 }
 
-/* Elimina scroll lateral*/
+/* Calendar: Remove Vertical Scroll */
 
 .calendar__container .fc-scroller,
 .calendar__container .fc-scroller-liquid-absolute {

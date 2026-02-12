@@ -1,37 +1,37 @@
-
 .vehicle-empty__container {
     display: flex;
     flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    gap: 1rem;
     text-align: center;
-    margin: 30vh auto;
+    padding: 1rem;
+    border-left: 0.5rem solid var(--color-blue-light);
+    border-radius: 0 0.5rem 0.5rem 0;
+    background-color: var(--color-white);
+    box-shadow: 0 0.5rem 2.5rem rgba(0, 0, 0, 0.25);
 }
 
-.vehicle-empty__message {
-    font-size: var(--font-size-lg);
-    font-weight: 500;
+.vehicle-empty__text {
+    font-size: var(--font-size-md);
+    font-weight: 00;
+    font-style: italic;
     color: var(--color-blue-dark);
+    opacity: 0.75;
+    padding: 0.75rem;
+    margin: 0;
 }
 
-.vehicle-empty__button {
-    background-color: var(--color-blue-light);
-    color: var(--color-white);
-    font-weight: 700;
-    font-size: var(--font-size-base);
-    padding: 1.5rem;
-    width: 95%;
-    margin: 0 auto;
-    border-radius: var(--radius-sm);
-    border: 2px solid transparent;
-    cursor: pointer;
-    transition: background-color 0.25s ease; 
-}
-.vehicle-empty__button:hover {
-    background-color: var(--color-blue-dark); 
+.vehicle-empty__container app-create-button {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
 }
 
-@media (min-width: 578px) {
-    .vehicle-empty__button {
+@media (min-width: 576px) {
+    .vehicle-empty__container app-create-button {
+        flex: 0 0 auto;
         width: auto;
-        padding: 1rem 1.5rem;
+        margin-bottom: 1rem;
     }
 }

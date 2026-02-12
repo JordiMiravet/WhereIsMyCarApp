@@ -24,6 +24,7 @@ import { VehicleSelectorComponent } from "../../../vehicle/components/vehicle-se
 import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
 import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
 import { EventInterface } from '../../interfaces/event';
+import { CreateButtonComponent } from "../../../../shared/components/buttons/create-button/create-button";
 
 @Component({
   selector: 'app-calendar-view',
@@ -34,7 +35,8 @@ import { EventInterface } from '../../interfaces/event';
     DayEventsModalComponent,
     ConfirmModalComponent,
     EventFormModalComponent,
-    VehicleSelectorComponent
+    VehicleSelectorComponent,
+    CreateButtonComponent
 ],
   templateUrl: './calendar-view.html',
   styleUrl: './calendar-view.css',
@@ -53,8 +55,13 @@ export class CalendarViewComponent implements AfterViewInit {
   public editingEvent = signal<EventInterface | null>(null);
 
   public isEventModalOpen = signal(false);
+  public isEventFormModalOpen = signal(false);
   public isConfirmModalOpen = signal(false);
-  public isCreateModalOpen = signal(false);
+
+  public confirmModalMsg = signal({
+    title: 'Delete this event',
+    message: 'Are you sure you want to delete this event? This action cannot be undone'
+  })
 
   selectedDayEvents = computed(() => this.eventService.getEventsByDate(this.selectedDate()));
 
@@ -128,24 +135,25 @@ export class CalendarViewComponent implements AfterViewInit {
   // Logica del Create
 
   handleCreateEvent() {
+    // TODO: Tengo que añadirle la logica del modal de isconfirmModal 
     const today = new Date().toISOString().split('T')[0];
     this.selectedDate.set(this.selectedDate() || today);
 
     this.editingEvent.set(null);
-    this.isCreateModalOpen.set(true);
+    this.isEventFormModalOpen.set(true);
     this.isEventModalOpen.set(false);
   }
   
   // Logica del Edit
 
   handleEditEvent(id: string) {
-    // TODO: Hacer la logica de editar para pasar la info del evento al modal de formulario
+    // TODO: Tengo que añadirle la logica del modal de isconfirmModal 
     const event = this.eventService.getEventById(id);
     if(!event) return;
     
     this.editingEvent.set(event);
-    this.isCreateModalOpen.set(true);
-    this.isEventModalOpen.set(false)
+    this.isEventFormModalOpen.set(true);
+    this.isEventModalOpen.set(false);
   }
 
   // Logica del Delete 

@@ -9,6 +9,8 @@
     /* Colors */
 
     --color-white: #fff;
+    --color-black: #000;
+
     --gray-50:  #f8f9fa;
     --gray-100: #e9ecef;
     --gray-200: #dee2e6;
@@ -19,7 +21,6 @@
     --gray-700: #343a40;
     --gray-800: #212529;
     --gray-900: #000000;
-    --color-black: #000;
     
     --color-blue-light: #669bbc;
     --color-blue-dark: #003049;
@@ -27,11 +28,10 @@
     --color-red-light: #c1121f;
     --color-red-dark: #780000;
 
-    --color-text: #0f172a;
-    --color-text-muted: #64748b;
     --color-bg: #ffffff;
+    --color-modal-overlay: rgba(0, 0, 0, 0.5);
 
-    /* Typo */
+    /* Typography */
 
     --font-family-base: Arial, Helvetica, sans-serif;
 
@@ -44,7 +44,8 @@
     /* Spacing */
 
     --space-xs: 0.5rem;
-    --space-sm: 1rem;
+    --space-sm: 0.75rem;
+    --space-sd: 1rem;
     --space-ms: 1.25rem;
     --space-md: 1.5rem;
     --space-ml: 1.75rem;

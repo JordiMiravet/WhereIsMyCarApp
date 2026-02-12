@@ -5,7 +5,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 2rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
     background-color: var(--gray-50);
 }
 .home__title {
@@ -19,9 +19,26 @@
     margin: 0;
 }
 
-/* Table Container*/
+/* Table Container */
 
 .table__container {
-    margin: 1rem auto 2rem auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0 auto;
     width: 95%;
+}
+
+.table__container app-vehicle-table {
+    margin: 1rem auto 2rem auto;
+}
+.table__container app-vehicle-empty-state {
+    width: 100%;
+    margin: 30vh auto;
+}
+
+@media(min-width: 576px) {
+    .table__container {
+        max-width: 75rem;
+    }
 }

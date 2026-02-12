@@ -1,5 +1,23 @@
 
-.map__main {
+.map__section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0 auto;
     background-color: var(--gray-200);
-    position: relative;
+}
+
+.map__section app-map-view {
+    margin: 0 auto;
+    width: 100%;
+}
+.map__section app-vehicle-empty-state {
+    width: 100%;
+    margin: 30vh 1rem;
+}
+
+@media(min-width: 768px) {
+    .map__section app-vehicle-empty-state {
+        max-width: 75rem;
+    }
 }

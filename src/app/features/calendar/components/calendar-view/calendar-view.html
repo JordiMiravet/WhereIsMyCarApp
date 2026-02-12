@@ -1,42 +1,45 @@
 <section class="calendar__actions">
-    <button (click)="handleCreateEvent()" class="calendar__button-create">Add Event</button>
+    <app-create-button
+        (click)="handleCreateEvent()"
+        [createText]="'Event'"
+    ></app-create-button>
     <app-vehicle-selector
         [vehicles]="vehicleService.vehicles()"
         (vehicleSelected)="handleVehicleSelected($event)"
-    />
+    ></app-vehicle-selector>
 </section>
 
 <section class="calendar__container">
     <full-calendar
         #calendar
-        [options]="calendarOptions">
-    </full-calendar>
+        [options]="calendarOptions"
+    ></full-calendar>
 </section>
 
 @if (isEventModalOpen()) {
     <app-day-events-modal
         [events]="selectedDayEvents()"
         [date]="selectedDate()"
-        (closeModal)="isEventModalOpen.set(false)"
         (createEvent)="handleCreateEvent()"
         (editEvent)="handleEditEvent($event)"
-        (deleteEvent)="handleDeleteEvent($event)">
-    </app-day-events-modal>
+        (deleteEvent)="handleDeleteEvent($event)"
+        (closeModal)="isEventModalOpen.set(false)"
+    ></app-day-events-modal>
 }
 
-@if (isCreateModalOpen()) {
+@if (isEventFormModalOpen()) {
     <app-event-form-modal
         [preselectedDate]="selectedDate()"
         [preselectedEvent]="editingEvent()"
-        (close)="isCreateModalOpen.set(false)">
-    </app-event-form-modal>
+        (close)="isEventFormModalOpen.set(false)"
+    ></app-event-form-modal>
 }
 
 @if (isConfirmModalOpen()) {
     <app-confirm-modal
-        title="Delete this event"
-        message="Are you sure you want to delete this event? This action cannot be undone"
+        [title]="confirmModalMsg().title"
+        [message]="confirmModalMsg().message"
         (confirm)="confirmDeleteEvent()"
-        (cancel)="cancelDeleteEvent()">
-    </app-confirm-modal>
+        (cancel)="cancelDeleteEvent()"
+    ></app-confirm-modal>
 }

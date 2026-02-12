@@ -1,12 +1,9 @@
 <section class="vehicle-empty__container">
-  <p class="vehicle-empty__message">There are no registered vehicles</p>
-  @if (actionState()){
-    <button 
-      class="vehicle-empty__button" 
-      (click)="onClick()" 
-      aria-label="Create Vehicle"
-    >
-      Create Vehicle
-    </button>
-  } 
+  <p class="vehicle-empty__text">
+    There are no registered vehicles
+  </p>
+  <app-create-button
+    (click)="onClick()" 
+    [createText]="'Your First Vehicle'"
+  ></app-create-button>
 </section>
