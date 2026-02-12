@@ -3,11 +3,18 @@ import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validatio
 import { CommonModule } from '@angular/common';
 
 import { EventService } from '../../services/event-service';
+import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
+import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
+import { EventInterface } from '../../interfaces/event';
+
 
 @Component({
   selector: 'app-event-form-modal',
   standalone: true,
-  imports: [ ReactiveFormsModule, CommonModule ],
+  imports: [ 
+    ReactiveFormsModule, 
+    CommonModule 
+  ],
   templateUrl: './event-form-modal.html',
   styleUrl: './event-form-modal.css',
 })
@@ -15,19 +22,24 @@ import { EventService } from '../../services/event-service';
 export class EventFormModalComponent implements OnInit {
 
   public eventService = inject(EventService);
+  public vehicleService = inject(VehicleService);
+
+  public vehicles = this.vehicleService.vehicles;
 
   public preselectedDate = input<string>('');
-  public close = output<void>();
+  public preselectedEvent = input<EventInterface | null>(null);
   
+  public close = output<void>();
+
   public formEvent: FormGroup;
 
   constructor(){
-    // TODO: Tengo que añadirle mas validaciones
     this.formEvent = new FormGroup({
       title: new FormControl('', [ Validators.required ]),
       date: new FormControl('', [ Validators.required ]),
       hourStart: new FormControl('', [ Validators.required ]),
-      hourEnd: new FormControl('', [ Validators.required]),
+      hourEnd: new FormControl('', [ Validators.required ]),
+      vehicleId: new FormControl('', [ Validators.required ]),
       comment: new FormControl('', [])
     }, {
       validators: [
@@ -38,11 +50,25 @@ export class EventFormModalComponent implements OnInit {
   }
 
   ngOnInit(){
-    if(this.preselectedDate()) {
+    this.vehicleService.loadVehicles();
+
+    const date = this.preselectedDate()
+    if(date) {
       this.formEvent.patchValue({
         date: this.preselectedDate()
       });
     }
+  }
+
+  onVehicleSelected(vehicle: VehicleInterface | null) {
+    if (!vehicle) {
+      this.formEvent.patchValue({ vehicleId: '' });
+      return;
+    }
+
+    this.formEvent.patchValue({
+      vehicleId: vehicle._id
+    });
   }
 
   private timeRangeValidator(control: AbstractControl): ValidationErrors | null {
@@ -55,11 +81,15 @@ export class EventFormModalComponent implements OnInit {
   }
 
   private timeOverlapValidator(control: AbstractControl): ValidationErrors | null {
-    const { date, hourStart, hourEnd } = control.value;
-    if (!date || !hourStart || !hourEnd) return null;
+    const { date, hourStart, hourEnd, vehicleId } = control.value;
+    if (!date || !hourStart || !hourEnd || !vehicleId) return null;
 
-    const eventsOfThisDay = this.eventService.getEventsByDate(date);
-    const hasTimeConflict  = eventsOfThisDay.some(event =>
+    const eventsOfThisDay = this.eventService
+      .getEventsByDate(date)
+      .filter(event => event.vehicleId === vehicleId)
+      .filter(event => event._id !== this.preselectedEvent()?._id);
+
+    const hasTimeConflict = eventsOfThisDay.some(event =>
       hourStart < event.hourEnd! && hourEnd > event.hourStart!
     );
 
@@ -68,12 +98,11 @@ export class EventFormModalComponent implements OnInit {
       : null;
   }
 
+  onSubmit(): void {
+    if (!this.formEvent.valid) return;
+    this.eventService.addEvent(this.formEvent.value);
 
-  onSubmit():void {
-    if(this.formEvent.valid) {
-      this.eventService.addEvent(this.formEvent.value);
-      this.handleClose();
-    }
+    this.handleClose();
   }
 
   handleClose() {

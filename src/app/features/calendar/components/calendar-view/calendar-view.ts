@@ -21,6 +21,9 @@ import { ConfirmModalComponent } from '../../../../shared/components/modals/conf
 import { EventService } from '../../services/event-service';
 import { EventFormModalComponent } from "../../modals/event-form-modal/event-form-modal";
 import { VehicleSelectorComponent } from "../../../vehicle/components/vehicle-selector/vehicle-selector";
+import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
+import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
+import { EventInterface } from '../../interfaces/event';
 
 @Component({
   selector: 'app-calendar-view',
@@ -39,18 +42,22 @@ import { VehicleSelectorComponent } from "../../../vehicle/components/vehicle-se
 })
 
 export class CalendarViewComponent implements AfterViewInit {
+
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 
   private eventService = inject(EventService);
+  public vehicleService = inject(VehicleService);
 
   public selectedDate = signal<string>('');
   private selectedEventId = signal<string | null>(null);
+  public editingEvent = signal<EventInterface | null>(null);
 
   public isEventModalOpen = signal(false);
   public isConfirmModalOpen = signal(false);
   public isCreateModalOpen = signal(false);
 
   selectedDayEvents = computed(() => this.eventService.getEventsByDate(this.selectedDate()));
+
 
   calendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
@@ -89,6 +96,8 @@ export class CalendarViewComponent implements AfterViewInit {
   };
 
   constructor() {
+    this.vehicleService.loadVehicles();
+
     effect(() => {
       this.eventService.calendarEvents();
       
@@ -98,9 +107,12 @@ export class CalendarViewComponent implements AfterViewInit {
     });
   }
 
+
   ngAfterViewInit(): void {
     this.refreshCalendar();
   }
+
+  // Eventos click 
 
   handleDateClick(arg: DateClickArg): void {
     this.selectedDate.set(arg.dateStr);
@@ -113,17 +125,26 @@ export class CalendarViewComponent implements AfterViewInit {
     this.isEventModalOpen.set(true);
   }
 
+  // Logica del Create
+
   handleCreateEvent() {
-    // TODO: Estoy Aqui
-    if (!this.selectedDate()) {
-      const today = new Date().toISOString().split('T')[0];
-      this.selectedDate.set(today);
-    }
+    const today = new Date().toISOString().split('T')[0];
+    this.selectedDate.set(this.selectedDate() || today);
+
+    this.editingEvent.set(null);
     this.isCreateModalOpen.set(true);
     this.isEventModalOpen.set(false);
   }
   
-  requestDeleteEvent(id: string): void {
+  // Logica del Edit
+
+  handleEditEvent(id: string) {
+    // TODO: Hacer la logica de editar para pasar la info del evento al modal de formulario
+  }
+
+  // Logica del Delete 
+
+  handleDeleteEvent(id: string): void {
     this.selectedEventId.set(id);
     this.isEventModalOpen.set(false);
     this.isConfirmModalOpen.set(true);
@@ -146,6 +167,8 @@ export class CalendarViewComponent implements AfterViewInit {
     this.selectedEventId.set(null);
   }
 
+  // Refresh de los eventos
+
   public refreshCalendar(): void {
     const calendarApi = this.calendarComponent.getApi();
 
@@ -153,8 +176,11 @@ export class CalendarViewComponent implements AfterViewInit {
     calendarApi.addEventSource(this.getCalendarEvents());
   }
 
+  // Eventos
+
   private getCalendarEvents(): EventInput[] {
     return this.eventService.calendarEvents().map((event) => ({
+      id: event._id,
       title: event.title,
       date: event.date,
       extendedProps: {
@@ -165,4 +191,14 @@ export class CalendarViewComponent implements AfterViewInit {
     }));
   }
 
+  // Vehiculo
+
+  handleVehicleSelected(vehicle: VehicleInterface): void {
+    if (!vehicle) {
+      this.eventService.selectedVehicleId.set(null);
+    } else {
+      this.eventService.selectedVehicleId.set(vehicle._id!);
+    }
+  }
+  
 }

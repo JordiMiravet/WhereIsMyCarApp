@@ -67,16 +67,14 @@ export class VehicleFormModalComponent {
 
   getFieldError(field: string): string | null {
     /* 
-      Todo: Tengo que pasar los mensajes a un service que solo recoja los mensajes de error
+      TODO: Tengo que pasar los mensajes a un service que solo recoja los mensajes de error
     */
     const control = this.form.get(field);
     if (!control || !control.touched || control.valid) return null;
 
-    const fieldName = field.charAt(0).toUpperCase() + field.slice(1);
-
-    if (control.errors?.['required']) return `${fieldName} is required`;
-    if (control.errors?.['minlength']) return `${fieldName} must be at least ${control.errors['minlength'].requiredLength} characters`;
-    if (control.errors?.['maxlength']) return `${fieldName} cannot exceed ${control.errors['maxlength'].requiredLength} characters`;
+    if (control.errors?.['required']) return `${field} is required`;
+    if (control.errors?.['minlength']) return `${field} must be at least ${control.errors['minlength'].requiredLength} characters`;
+    if (control.errors?.['maxlength']) return `${field} cannot exceed ${control.errors['maxlength'].requiredLength} characters`;
 
     return null;
   }

@@ -18,10 +18,13 @@ export class VehicleSelectorComponent {
 
   onVehicleChange(event: Event): void {
     const plate = (event.target as HTMLSelectElement).value;
-    const vehicle = this.vehicles().find(
-      v => v.plate === plate
-    );
 
+    if (!plate) {
+      this.vehicleSelected.emit(null as any);
+      return;
+    }
+
+    const vehicle = this.vehicles().find( v => v.plate === plate );
     if (!vehicle) return;
 
     this.vehicleSelected.emit(vehicle);

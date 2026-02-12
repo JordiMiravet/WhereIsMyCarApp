@@ -5,4 +5,5 @@ export interface EventInterface {
   hourStart?: string;
   hourEnd?: string;
   comment?: string;
+  vehicleId?: string;
 }

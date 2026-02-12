@@ -66,7 +66,6 @@
             </div>
 
             <div class="event-form__time-group">
-
                 <div class="event-form__group">
                     <label class="event-form__label" for="inputEventHourStart">Start Time</label>
                     <input 
@@ -130,6 +129,32 @@
                 </p>
             </div>
             
+            <div class="event-form__group">
+                <label class="event-form__label" for="vehicleSelect">Vehicle</label>
+
+                <select
+                    id="vehicleSelect"
+                    class="event-form__input"
+                    formControlName="vehicleId"
+                    [ngClass]="{'event-form__input-error': formEvent.get('vehicleId')?.invalid && formEvent.get('vehicleId')?.touched}"
+                >
+                    <option value="" selected disabled>Select vehicle*</option>
+                    @for (vehicle of vehicles(); track vehicle._id) {
+                        <option [value]="vehicle._id">
+                            {{ vehicle.name }}
+                        </option>
+                    }
+                </select>
+
+                <p
+                    class="event-form__error"
+                    role="alert"
+                    [hidden]="formEvent.get('vehicleId')?.valid || !formEvent.get('vehicleId')?.touched"
+                >
+                    <i class="pi pi-exclamation-circle"></i>
+                    Please select a vehicle
+                </p>
+            </div>
             <div class="event-form__group">
                 <label class="event-form__label" for="inputEventComment">Comment</label>
                 <textarea 

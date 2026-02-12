@@ -1,76 +1,156 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 import { EventInterface } from '../interfaces/event';
 
 @Injectable({
   providedIn: 'root',
 })
-
 export class EventService {
   
-  calendarEvents = signal<EventInterface[]>([
+  private _allEvents = signal<EventInterface[]>([
     {
       _id: '1',
-      title: 'Peluquero',
-      date: '2026-02-11',
-      hourStart: '09:00',
-      hourEnd: '15:00',
-      comment: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex similique asperiores quas fuga ad quis labore, iure, soluta eum sunt enim quasi tempore consectetur sint!',
+      title: 'Ir al trabajo',
+      date: '2026-02-10',
+      hourStart: '07:00',
+      hourEnd: '16:00',
+      comment: '',
+      vehicleId: '6981e52008fca1004920359a',
     },
     {
       _id: '2',
-      title: 'Barbero',
-      date: '2026-02-11',
-      hourStart: '16:00',
-      hourEnd: '17:00',
+      title: 'Cita médica',
+      date: '2026-02-10',
+      hourStart: '16:45',
+      hourEnd: '17:45',
       comment: '',
+      vehicleId: '6981e52008fca1004920359a',
     },
     {
       _id: '3',
-      title: 'Cita',
-      date: '2026-02-11',
-      hourStart: '18:00',
+      title: 'Cena con amigos',
+      date: '2026-02-10',
+      hourStart: '20:30',
       hourEnd: '23:00',
-      comment: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex similique asperiores quas fuga ad quis labore, iure, soluta eum sunt enim quasi tempore consectetur sint!',
+      comment: '',
+      vehicleId: '6981e55a08fca1004920359c',
     },
+
     {
       _id: '4',
-      title: 'Revisión',
-      date: '2026-02-14',
-      hourStart: '10:00',
-      hourEnd: '11:00',
-      comment: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex similique asperiores quas fuga ad quis labore, iure, soluta eum sunt enim quasi tempore consectetur sint!',
+      title: 'Reunión trabajo',
+      date: '2026-02-11',
+      hourStart: '09:00',
+      hourEnd: '12:00',
+      comment: '',
+      vehicleId: '6981e55a08fca1004920359c',
+    },
+    {
+      _id: '5',
+      title: 'Gimnasio',
+      date: '2026-02-11',
+      hourStart: '18:00',
+      hourEnd: '20:30',
+      comment: '',
+      vehicleId: '6981e56b08fca1004920359e',
+    },
+
+    {
+      _id: '6',
+      title: 'Barbero',
+      date: '2026-02-13',
+      hourStart: '09:00',
+      hourEnd: '10:00',
+      comment: '',
+      vehicleId: '6981e57f08fca100492035a0',
+    },
+
+    {
+      _id: '7',
+      title: 'Concentración JDM',
+      date: '2026-02-16',
+      hourStart: '17:00',
+      hourEnd: '23:30',
+      comment: '',
+      vehicleId: '6981e59208fca100492035a6',
+    },
+    {
+      _id: '8',
+      title: 'Ruta domingo',
+      date: '2026-02-16',
+      hourStart: '08:00',
+      hourEnd: '16:00',
+      comment: '',
+      vehicleId: '6981e5b808fca100492035ab',
+    },
+    {
+      _id: '9',
+      title: 'Comida familiar',
+      date: '2026-02-16',
+      hourStart: '14:30',
+      hourEnd: '17:00',
+      comment: '',
+      vehicleId: '6981e5ca08fca100492035ad',
+    },
+    {
+      _id: '10',
+      title: 'Lavado rápido',
+      date: '2026-02-16',
+      hourStart: '18:00',
+      hourEnd: '18:45',
+      comment: '',
+      vehicleId: '6981e56b08fca1004920359e',
     },
   ]);
+
+  public selectedVehicleId = signal<string | null>(null);
+
+  public calendarEvents = computed(() => {
+    const vehicleId = this.selectedVehicleId();
+    
+    if (!vehicleId) {
+      return this._allEvents();
+    } else {
+      return this._allEvents().filter(event => event.vehicleId === vehicleId);
+    }
+  });
   
-  getEventsByDate(date: string): EventInterface[]  { 
-    return this.calendarEvents().filter( events => events.date === date )
+  getEventById(id: string): EventInterface | null {
+    const event = this.calendarEvents().find(event => event._id === id);
+    return event 
+      ? event 
+      : null;
   }
 
-  addEvent(event: EventInterface) {
+  getEventsByDate(date: string): EventInterface[] { 
+    return this.calendarEvents().filter(events => events.date === date);
+  }
+
+  addEvent(event: EventInterface): void {
     const newEvent: EventInterface = {
       ...event,
       _id: this.generateId(),
-    }
-    this.calendarEvents.update( events => [ ...events, newEvent ]);
+    };
+    this._allEvents.update(events => [...events, newEvent]);
   }
 
-  updateEvent(updatedEvent: EventInterface) {
-    this.calendarEvents.update( events => 
-      events.map( event => 
+  updateEvent(updatedEvent: EventInterface): void {
+    this._allEvents.update(events => 
+      events.map(event => 
         event._id === updatedEvent._id 
           ? updatedEvent 
           : event
       )
-    )
+    );
   }
 
-  deleteEvent(id: string) {
-    this.calendarEvents.update( events => 
-      events.filter( e => e._id !== id)
-    )
+  deleteEvent(id: string): void {
+    this._allEvents.update(events => 
+      events.filter(e => e._id !== id)
+    );
   }
 
   private generateId(): string {
+    // TODO: Cuando pase todo al backend, esta funcion ya no será necesaria
     return crypto.randomUUID();
   }
 

@@ -1,8 +1,10 @@
 <section class="calendar__actions">
     <button (click)="handleCreateEvent()" class="calendar__button-create">Add Event</button>
-    <app-vehicle-selector/>
+    <app-vehicle-selector
+        [vehicles]="vehicleService.vehicles()"
+        (vehicleSelected)="handleVehicleSelected($event)"
+    />
 </section>
-
 
 <section class="calendar__container">
     <full-calendar
@@ -17,13 +19,15 @@
         [date]="selectedDate()"
         (closeModal)="isEventModalOpen.set(false)"
         (createEvent)="handleCreateEvent()"
-        (deleteEvent)="requestDeleteEvent($event)">
+        (editEvent)="handleEditEvent($event)"
+        (deleteEvent)="handleDeleteEvent($event)">
     </app-day-events-modal>
 }
 
 @if (isCreateModalOpen()) {
     <app-event-form-modal
         [preselectedDate]="selectedDate()"
+        [preselectedEvent]="editingEvent()"
         (close)="isCreateModalOpen.set(false)">
     </app-event-form-modal>
 }
