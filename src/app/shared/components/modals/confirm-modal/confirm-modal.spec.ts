@@ -52,7 +52,7 @@ describe('ConfirmModalComponent', () => {
     it('should call onCancel when clicking on modal background', () => {
       const spyCancel = spyOn(component, 'onCancel');
 
-      const modalDiv = fixture.nativeElement.querySelector('.modal');
+      const modalDiv = fixture.nativeElement.querySelector('.modal__overlay');
       modalDiv.click();
 
       expect(spyCancel).toHaveBeenCalled();
@@ -101,7 +101,7 @@ describe('ConfirmModalComponent', () => {
     it('should emit cancel event when clicking on modal background', () => {
       const spyCancel = spyOn(component.cancel, 'emit');
 
-      const modalDiv = fixture.nativeElement.querySelector('.modal');
+      const modalDiv = fixture.nativeElement.querySelector('.modal__overlay');
       modalDiv.click();
 
       expect(spyCancel).toHaveBeenCalled();
@@ -112,7 +112,7 @@ describe('ConfirmModalComponent', () => {
   describe('Accessibility attributes', () => {
 
     it('should have role dialog and aria attributes', () => {
-      const modal: HTMLElement = fixture.nativeElement.querySelector('.modal');
+      const modal: HTMLElement = fixture.nativeElement.querySelector('.modal__overlay');
 
       expect(modal.getAttribute('role')).toBe('dialog');
       expect(modal.getAttribute('aria-modal')).toBe('true');

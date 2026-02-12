@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { VehicleEmptyStateComponent } from './vehicle-empty-state';
+import { By } from '@angular/platform-browser';
 
 describe('VehicleEmptyStateComponent', () => {
   let component: VehicleEmptyStateComponent;
@@ -8,8 +9,7 @@ describe('VehicleEmptyStateComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ VehicleEmptyStateComponent ]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(VehicleEmptyStateComponent);
     component = fixture.componentInstance;
@@ -23,54 +23,55 @@ describe('VehicleEmptyStateComponent', () => {
   });
 
   describe('initial state', () => {
-    it('should have actionState input default to true', () => { 
-      expect(component.actionState()).toBeTrue()
+    it('should have createVehicle as an output', () => {
+      expect(component.createVehicle).toBeDefined();
+      expect(typeof component.createVehicle.emit).toBe('function');
     });
   });
 
   describe('template rendering', () => {
-    it('should render the container and message', () => { 
-      const message = fixture.nativeElement.querySelector('.vehicle-empty__message');
-      expect(message.textContent).toContain('There are no registered vehicles')
+    it('should render the container', () => {
+      const container = fixture.nativeElement.querySelector('.vehicle-empty__container');
+      expect(container).toBeTruthy();
     });
 
-    it('should display the create button when actionState is true', () => { 
-      (component.actionState as any) = () => true;
-      fixture.detectChanges();
+    it('should render the message', () => {
+      const message = fixture.nativeElement.querySelector('.vehicle-empty__text');
+      expect(message.textContent).toContain('There are no registered vehicles');
+    });
 
-      const button = fixture.nativeElement.querySelector('.vehicle-empty__button');
+    it('should render the create button', () => {
+      const button = fixture.debugElement.query(By.css('app-create-button'));
       expect(button).toBeTruthy();
     });
+  });
 
-    it('should not display the create button when actionState is false', () => { 
-      (component.actionState as any) = () => false;
-      fixture.detectChanges();
+  describe('methods', () => {
+    it('should call onClick method', () => {
+      spyOn(component, 'onClick');
 
-      const button = fixture.nativeElement.querySelector('.vehicle-empty__button');
-      expect(button).toBeNull()
+      const button = fixture.debugElement.query(By.css('app-create-button'));
+      button.triggerEventHandler('click', null);
+
+      expect(component.onClick).toHaveBeenCalled();
+    });
+
+    it('should emit createVehicle event when onClick is called', () => {
+      spyOn(component.createVehicle, 'emit');
+      component.onClick();
+
+      expect(component.createVehicle.emit).toHaveBeenCalled();
     });
   });
 
   describe('events', () => {
-    it('should emit createVehicle event when the button is clicked', () => { 
+    it('should emit createVehicle when create button is clicked', () => {
       spyOn(component.createVehicle, 'emit');
-      (component.actionState as any) = () => true;
 
-      const button: HTMLButtonElement = fixture.nativeElement.querySelector('.vehicle-empty__button');
-      button.click();
-
+      const button = fixture.debugElement.query(By.css('app-create-button'));
+      button.triggerEventHandler('click', null);
+      
       expect(component.createVehicle.emit).toHaveBeenCalled();
-    });
-
-    it('should call onClick when button is clicked', () => { 
-      spyOn(component, 'onClick');
-      (component.actionState as any) = () => true;
-      fixture.detectChanges();
-
-      const button: HTMLButtonElement = fixture.nativeElement.querySelector('.vehicle-empty__button');
-      button.click();
-
-      expect(component.onClick).toHaveBeenCalled();
     });
   });
 

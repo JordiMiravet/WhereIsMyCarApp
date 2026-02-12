@@ -61,17 +61,23 @@ describe('UserLocationButtonComponent', () => {
       expect(button.getAttribute('aria-label')).toBe('Center map on current location');
     });
 
-    it('should render the svg icon', () => {
-      const svg: SVGElement = fixture.nativeElement.querySelector('svg');
-      expect(svg).toBeTruthy();
+    it('should render the icon element', () => {
+      const icon: HTMLElement = fixture.nativeElement.querySelector('i');
+      expect(icon).toBeTruthy();
     });
 
     it('should have correct css classes', () => {
       const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
-      const svg: SVGElement = fixture.nativeElement.querySelector('svg');
+      const icon: HTMLElement = fixture.nativeElement.querySelector('i');
 
       expect(button.classList.contains('map__button')).toBeTrue();
-      expect(svg.classList.contains('map__button-icon')).toBeTrue();
+      expect(icon.classList.contains('fa-solid')).toBeTrue();
+      expect(icon.classList.contains('fa-street-view')).toBeTrue();
+    });
+
+    it('should have aria-hidden true on icon', () => {
+      const icon: HTMLElement = fixture.nativeElement.querySelector('i');
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
     });
 
   });

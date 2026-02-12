@@ -79,3 +79,16 @@
     height: 100%;
     vertical-align: middle;
 }
+
+/* Add Button */
+/* TODO: Esto lo convertiré en un componente proximamente, por ahora dejo el esbozo aqui*/
+
+.add-button {
+    color: var(--color-blue-light);
+    transition: color 0.25s ease-in-out;
+    cursor: pointer;
+}
+.add-button:hover {
+    color: var(--color-blue-dark);
+}
+

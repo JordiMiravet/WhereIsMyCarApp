@@ -31,7 +31,7 @@ describe('VehicleSelectorComponent', () => {
 
   describe('inputs', () => {
     it('should accept vehicles input', () => {
-       const mockSignal = () => mockVehicles;
+      const mockSignal = () => mockVehicles;
       (component.vehicles as any) = mockSignal;
 
       expect(component.vehicles()).toBe(mockVehicles);
@@ -43,7 +43,6 @@ describe('VehicleSelectorComponent', () => {
 
       expect(component.selectedPlate()).toBe('F123');
     });
-
   });
 
   describe('template rendering', () => {
@@ -52,12 +51,12 @@ describe('VehicleSelectorComponent', () => {
       expect(select).toBeTruthy();
     });
 
-    it('should render an option for each vehicle', () => {
+    it('should render an option for each vehicle plus default option', () => {
       (component.vehicles as any) = () => mockVehicles;
       fixture.detectChanges();
 
-      const allOptions = fixture.nativeElement.querySelectorAll('option:not([disabled])');
-      expect(allOptions.length).toBe(mockVehicles.length);
+      const allOptions = fixture.nativeElement.querySelectorAll('option');
+      expect(allOptions.length).toBe(mockVehicles.length + 1);
     });
 
     it('should mark the selected option according to selectedPlate', () => {
@@ -87,15 +86,27 @@ describe('VehicleSelectorComponent', () => {
       expect(component.vehicleSelected.emit).toHaveBeenCalledWith(mockVehicles[1]);
     });
 
+    it('should emit null when default option is selected', () => {
+      (component.vehicles as any) = () => mockVehicles;
+      fixture.detectChanges();
+      spyOn(component.vehicleSelected, 'emit');
+
+      const select: HTMLSelectElement = fixture.nativeElement.querySelector('#vehicle-select');
+      select.value = '';
+      select.dispatchEvent(new Event('change'));
+
+      expect(component.vehicleSelected.emit).toHaveBeenCalledWith(null as any);
+    });
+
     it('should not emit if selected plate does not match any vehicle', () => {
       (component.vehicles as any) = () => mockVehicles;
       fixture.detectChanges();
 
       spyOn(component.vehicleSelected, 'emit');
 
-      const select: HTMLSelectElement = fixture.nativeElement.querySelector('#vehicle-select');
-      select.value = 'X999';
-      select.dispatchEvent(new Event('change'));
+      component.onVehicleChange({
+        target: { value: 'X999' }
+      } as any);
 
       expect(component.vehicleSelected.emit).not.toHaveBeenCalled();
     });

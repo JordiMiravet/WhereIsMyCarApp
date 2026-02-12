@@ -32,25 +32,33 @@ describe('CreateButtonComponent', () => {
       expect(button.getAttribute('type')).toBe('button');
     });
 
-    it('should have the "create__button" css class', () => {
+    it('should have the "create-button" css class', () => {
       const button = fixture.nativeElement.querySelector('button');
-      expect(button.classList.contains('create__button')).toBeTrue();
+      expect(button.classList.contains('create-button')).toBeTrue();
     });
 
-    it('should have aria-label for accessibility', () => {
+    it('should have aria-label for accessibility when input is provided', () => {
+      (component.createText as any) = () => 'vehicle';
+      fixture.detectChanges();
+
       const button = fixture.nativeElement.querySelector('button');
 
-      expect(button.getAttribute('aria-label')).toBeTruthy();
-      expect(button.getAttribute('aria-label')).toBe('Create vehicle');
+      expect(button.getAttribute('aria-label')).toBe('Add vehicle');
     });
 
-    it('should render the plus icon', () => {
-      const italic = fixture.nativeElement.querySelector('i');
+    it('should render the text with provided input', () => {
+      (component.createText as any) = () => 'vehicle';
+      fixture.detectChanges();
 
-      expect(italic).toBeTruthy();
-      expect(italic.classList.contains('pi')).toBeTrue();
-      expect(italic.classList.contains('pi-plus')).toBeTrue();
+      const span = fixture.nativeElement.querySelector('.create-button__text');
+      expect(span.textContent.trim()).toBe('Add vehicle');
     });
+
+    it('should render empty text if no input provided', () => {
+      const span = fixture.nativeElement.querySelector('.create-button__text');
+      expect(span.textContent.trim()).toBe('Add');
+    });
+
 
     it('should call onClick when button is clicked', () => {
       spyOn(component, 'onClick');
@@ -59,7 +67,7 @@ describe('CreateButtonComponent', () => {
       button.click();
       fixture.detectChanges();
 
-      expect(component.onClick).toHaveBeenCalled()
+      expect(component.onClick).toHaveBeenCalled();
     });
 
   });
@@ -71,7 +79,7 @@ describe('CreateButtonComponent', () => {
     });
 
     it('should emit create event when onClick is called', () => {
-      spyOn(component.create, 'emit')
+      spyOn(component.create, 'emit');
       component.onClick();
 
       expect(component.create.emit).toHaveBeenCalled();
@@ -97,9 +105,9 @@ describe('CreateButtonComponent', () => {
 
       const button = fixture.nativeElement.querySelector('button');
       button.click();
-      fixture.detectChanges()
+      fixture.detectChanges();
 
-      expect(component.onClick).toHaveBeenCalled()
+      expect(component.onClick).toHaveBeenCalled();
     });
 
   });
@@ -108,12 +116,9 @@ describe('CreateButtonComponent', () => {
 
     it('should call create.emit()', () => {
       spyOn(component.create, 'emit');
+      component.onClick();
 
-      const button = fixture.nativeElement.querySelector('button');
-      button.click();
-      fixture.detectChanges();
-
-      expect(component.create.emit).toHaveBeenCalled()
+      expect(component.create.emit).toHaveBeenCalled();
     });
 
   });

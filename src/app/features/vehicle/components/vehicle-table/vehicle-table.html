@@ -15,6 +15,10 @@
                     <td data-label="Model">{{ vehicle.model }}</td>
                     <td data-label="Plate">{{ vehicle.plate }}</td>
                     <td data-label="Actions" class="vehicle-table__actions">
+                        <div class="add-button">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                        
                         <app-edit-button 
                             (edit)="vehicleModal().openEdit(vehicle)"
                             aria-label="Edit {{ vehicle.name }}"
