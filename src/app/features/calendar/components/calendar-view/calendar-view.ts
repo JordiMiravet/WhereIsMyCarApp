@@ -58,7 +58,7 @@ export class CalendarViewComponent implements AfterViewInit {
 
 
   calendarOptions = {
-    plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
+    plugins: [ dayGridPlugin, interactionPlugin, timeGridPlugin ],
 
     initialView: 'dayGridMonth',
     headerToolbar: {
@@ -137,8 +137,7 @@ export class CalendarViewComponent implements AfterViewInit {
   
   // Logica del Edit
 
-  handleEditEvent(id: string) {
-    // TODO: Tengo que añadirle la logica del modal de isconfirmModal 
+  handleEditEvent(id: string) { 
     const event = this.eventService.getEventById(id);
     if(!event) return;
     

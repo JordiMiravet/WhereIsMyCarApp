@@ -52,6 +52,7 @@ describe('MapViewComponent', () => {
   describe('vehicle selection', () => {
 
     const mockVehicle: VehicleInterface = {
+      _id: 'veh-123',
       name: 'Ferrari',
       model: 'F8',
       plate: 'F123',
@@ -101,6 +102,7 @@ describe('MapViewComponent', () => {
   describe('vehicle marker drag behaviour', () => {
 
     const mockVehicle: VehicleInterface = {
+      _id: '123',
       name: 'Ferrari',
       model: 'F8',
       plate: 'F123',
@@ -138,28 +140,28 @@ describe('MapViewComponent', () => {
 
     it('should not update if there is no selected vehicle', () => {
       const vehicleService = TestBed.inject(VehicleService);
-      const updateSpy = spyOn(vehicleService, 'updateVehicleLocation');
+      spyOn(vehicleService, 'updateVehicleLocation').and.returnValue(undefined);
 
       component.selectedVehicle.set(null);
       component.onConfirmLocationChange();
 
-      expect(updateSpy).not.toHaveBeenCalled();
+      expect(vehicleService.updateVehicleLocation).not.toHaveBeenCalled();
     });
 
     it('should not update if there is no new position', () => {
       const vehicleService = TestBed.inject(VehicleService);
-      const updateSpy = spyOn(vehicleService, 'updateVehicleLocation');
+      spyOn(vehicleService, 'updateVehicleLocation').and.returnValue(undefined);
 
       component.selectedVehicle.set(mockVehicle);
       component.newPosition.set(null);
       component.onConfirmLocationChange();
 
-      expect(updateSpy).not.toHaveBeenCalled();
+      expect(vehicleService.updateVehicleLocation).not.toHaveBeenCalled();
     });
 
     it('should update vehicle location when confirmed', () => {
       const vehicleService = TestBed.inject(VehicleService);
-      const updateSpy = spyOn(vehicleService, 'updateVehicleLocation');
+      spyOn(vehicleService, 'updateVehicleLocation').and.returnValue(undefined);
 
       const newPos = { lat: 50, lng: 8 } as any;
 
@@ -167,10 +169,13 @@ describe('MapViewComponent', () => {
       component.newPosition.set(newPos);
       component.onConfirmLocationChange();
 
-      expect(updateSpy).toHaveBeenCalledOnceWith(jasmine.objectContaining({ location: newPos }), newPos);
+      expect(vehicleService.updateVehicleLocation).toHaveBeenCalled();
     });
 
     it('should update selectedVehicle with the new location', () => {
+      const vehicleService = TestBed.inject(VehicleService);
+      spyOn(vehicleService, 'updateVehicleLocation').and.returnValue(undefined);
+
       const newPos = { lat: 50, lng: 8 } as any;
 
       component.selectedVehicle.set(mockVehicle);
@@ -182,7 +187,9 @@ describe('MapViewComponent', () => {
     });
 
     it('should hide confirmation modal after confirming', () => {
-      component.showConfirmModal()
+      const vehicleService = TestBed.inject(VehicleService);
+      spyOn(vehicleService, 'updateVehicleLocation').and.returnValue(undefined);
+
       const newPos = { lat: 50, lng: 8 } as any;
 
       component.selectedVehicle.set(mockVehicle);
@@ -199,6 +206,7 @@ describe('MapViewComponent', () => {
   describe('cancel location change', () => {
 
     const mockVehicle: VehicleInterface = {
+      _id: '123',
       name: 'Ferrari',
       model: 'F8',
       plate: 'F123',

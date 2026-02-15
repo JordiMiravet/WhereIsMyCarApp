@@ -27,6 +27,26 @@ describe('EventFormModalComponent', () => {
     expect(component).toBeTruthy()
   });
 
+  describe('mode input', () => {
+
+    it('should default to "create" mode', () => {
+      component.mode();
+      fixture.detectChanges();
+
+      expect(component.mode()).toBe('create');
+    });
+
+    it('should accept "edit" mode', () => {
+      fixture.componentRef.setInput('mode', 'edit');
+
+      component.mode();
+      fixture.detectChanges();
+
+      expect(component.mode()).toBe('edit');
+    });
+
+  });
+
   describe('ngOnInit', () => {
 
     it('should call loadVehicles on init', () => {
@@ -45,7 +65,7 @@ describe('EventFormModalComponent', () => {
       expect(component.formEvent.get('date')?.value).toBe(dateMock);
     });
 
-    it('should patch form values if preselectedEvent is provided', () => {
+    it('should patch form values if event is provided', () => {
       const eventMock = {
         _id: '123',
         title: 'Nintendo Direct',
@@ -56,7 +76,7 @@ describe('EventFormModalComponent', () => {
         comment: 'I want a new Zelda!'
       };
 
-      fixture.componentRef.setInput('preselectedEvent', eventMock);
+      fixture.componentRef.setInput('event', eventMock);
       fixture.detectChanges();
 
       expect(component.formEvent.get('title')?.value).toBe(eventMock.title);
@@ -179,11 +199,6 @@ describe('EventFormModalComponent', () => {
   });
 
   describe('timeOverlapValidator', () => {
-    const mockEventService = {
-      getEventsByDate: () => [],
-      addEvent: () => {},
-      updateEvent: () => {}
-    };
 
     it('should return null if required fields are missing', () => {
       component.formEvent.patchValue({
@@ -258,7 +273,7 @@ describe('EventFormModalComponent', () => {
         comment: ''
       };
 
-      fixture.componentRef.setInput('preselectedEvent', currentEvent);
+      fixture.componentRef.setInput('event', currentEvent);
       component.eventService.getEventsByDate = () => { return [currentEvent]};
 
       component.formEvent.patchValue({
@@ -270,6 +285,34 @@ describe('EventFormModalComponent', () => {
 
       component.formEvent.updateValueAndValidity();
       expect(component.formEvent.hasError('timeOverlap')).toBe(false)
+    });
+
+  });
+
+  describe('touchTimeControls', () => {
+
+    it('should mark hourStart and hourEnd as touched when hourStart changes', () => {
+      fixture.detectChanges();
+      
+      const hourStart = component.formEvent.get('hourStart');
+      const hourEnd = component.formEvent.get('hourEnd');
+      
+      hourStart?.setValue('10:00');
+      
+      expect(hourStart?.touched).toBeTrue();
+      expect(hourEnd?.touched).toBeTrue();
+    });
+
+    it('should mark hourStart and hourEnd as touched when hourEnd changes', () => {
+      fixture.detectChanges();
+      
+      const hourStart = component.formEvent.get('hourStart');
+      const hourEnd = component.formEvent.get('hourEnd');
+      
+      hourEnd?.setValue('12:00');
+      
+      expect(hourStart?.touched).toBeTrue();
+      expect(hourEnd?.touched).toBeTrue();
     });
 
   });
@@ -295,27 +338,26 @@ describe('EventFormModalComponent', () => {
       expect(component.formEvent.get('vehicleId')?.value).toBe('123');
     });
 
-    it('should re-patch form values if preselectedEvent exists', () => {
-      const event : EventInterface = {
-        _id: '1',
+    it('should only update vehicleId without affecting other fields', () => {
+      component.formEvent.patchValue({
         title: 'State of Play',
         date: '2026-02-15',
         hourStart: '10:00',
         hourEnd: '12:00',
-        vehicleId: '123456',
-        comment: ''
-      };
+        vehicleId: 'old-vehicle-id',
+        comment: 'Test comment'
+      });
 
-      fixture.componentRef.setInput('preselectedEvent', event);
+      component.onVehicleSelected({ 
+        _id: '123456', 
+        name: 'Ferrari', 
+        model: 'F8', 
+        plate: '123ABC' 
+      });
 
-      component.onVehicleSelected({ _id: '123456', name: 'State of Play', model: 'F8', plate: '123456' });
-
+      expect(component.formEvent.get('vehicleId')?.value).toBe('123456');
       expect(component.formEvent.get('title')?.value).toBe('State of Play');
       expect(component.formEvent.get('date')?.value).toBe('2026-02-15');
-      expect(component.formEvent.get('hourStart')?.value).toBe('10:00');
-      expect(component.formEvent.get('hourEnd')?.value).toBe('12:00');
-      expect(component.formEvent.get('vehicleId')?.value).toBe('123456');
-      expect(component.formEvent.get('comment')?.value).toBe('');
     });
 
   });
@@ -343,8 +385,8 @@ describe('EventFormModalComponent', () => {
       expect(component.close.emit).not.toHaveBeenCalled();
     });
 
-    it('should call addEvent if creating new event', () => {
-      fixture.componentRef.setInput('preselectedEvent', null)
+    it('should call addEvent if mode is "create"', () => {
+      fixture.componentRef.setInput('mode', 'create');
 
       component.formEvent.patchValue({
         title: 'BBQ',
@@ -365,7 +407,7 @@ describe('EventFormModalComponent', () => {
     })
 
 
-    it('should call updateEvent if editing existing event', () => {
+    it('should call updateEvent if mode is "edit"', () => {
       const event = {
         _id: '1',
         title: 'XBOX Direct',
@@ -375,7 +417,8 @@ describe('EventFormModalComponent', () => {
         vehicleId: '123456',
         comment: ''
       }
-      fixture.componentRef.setInput('preselectedEvent', event);
+      fixture.componentRef.setInput('mode', 'edit');
+      fixture.componentRef.setInput('event', event);
 
       component.formEvent.patchValue({
         title: 'XBOX Direct',

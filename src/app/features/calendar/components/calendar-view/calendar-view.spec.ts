@@ -4,6 +4,7 @@ import { EventService } from '../../services/event-service';
 import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
 import { signal } from '@angular/core';
 import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
+import { EventInterface } from '../../interfaces/event';
 
 describe('CalendarViewComponent', () => {
   let component: CalendarViewComponent;
@@ -43,9 +44,6 @@ describe('CalendarViewComponent', () => {
 
     mockEventService.deleteEvent.calls.reset();
     mockEventService.selectedVehicleId.set(null);
-    (component as any).selectedEventId?.set(null);
-    component.isConfirmModalOpen.set(false);
-    component.isEventModalOpen.set(true);
 
     fixture.detectChanges();
   });
@@ -54,14 +52,29 @@ describe('CalendarViewComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('initialization', () => {
+
+    it('should call loadVehicles on construction', () => {
+      expect(mockVehicleService.loadVehicles).toHaveBeenCalled();
+    });
+
+    it('should have correct confirm modal message', () => {
+      const msg = component.confirmModalMsg();
+
+      expect(msg.title).toBe('Delete this event');
+      expect(msg.message).toBe('Are you sure you want to delete this event? This action cannot be undone');
+    });
+
+  });
+
   describe('date click', () => {
 
     it('should set selectedDate and open event modal when date is clicked', () => {
       const mockArg = { dateStr: '2026-02-13'} as any;
-      component.handleDateClick(mockArg);
+      component.onDateClick(mockArg);
 
       expect(component.selectedDate()).toBe('2026-02-13');
-      expect(component.isEventModalOpen()).toBeTrue();
+      expect(component.activeModal()).toBe('dayEvents');
     });
 
   });
@@ -70,29 +83,33 @@ describe('CalendarViewComponent', () => {
 
     it('should open event modal and set selectedDate from event', () => {
       const mockArg = { event: { startStr: '2026-02-13T00:15:00' }} as any;
-      component.handleEventClick(mockArg);
+      component.onEventClick(mockArg);
 
       expect(component.selectedDate()).toBe('2026-02-13');
-      expect(component.isEventModalOpen()).toBeTrue();
+      expect(component.activeModal()).toBe('dayEvents');
     });
 
   });
 
   describe('create event flow', () => {
 
-    it('should reset editingEvent to null', () => {
-      component.editingEvent.set({ _id: '1' } as any);
+    it('should reset selectedEvent to null', () => {
+      component.selectedEvent.set({ _id: '1' } as any);
       component.handleCreateEvent();
 
-      expect(component.editingEvent()).toBeNull();
+      expect(component.selectedEvent()).toBeNull();
     });
 
-    it('should open form modal and close event modal', () => {
-      component.isEventModalOpen.set(true);
+    it('should set formMode to "create" when creating event', () => {
+      component.handleCreateEvent();
+      expect(component.formMode()).toBe('create');
+    });
+
+    it('should open form modal and close day events modal', () => {
+      component.activeModal.set('dayEvents');
       component.handleCreateEvent();
 
-      expect(component.isEventFormModalOpen()).toBeTrue();
-      expect(component.isEventModalOpen()).toBeFalse();
+      expect(component.activeModal()).toBe('eventForm');
     });
 
     it('should set today as selectedDate if none was selected', () => {
@@ -126,7 +143,7 @@ describe('CalendarViewComponent', () => {
       _id: '1',
       title: 'Test event',
       date: '2026-02-13'
-    } as any;
+    } as EventInterface;
 
     it('should call getEventById with provided id', () => {
       mockEventService.getEventById.and.returnValue(mockEvent);
@@ -135,42 +152,40 @@ describe('CalendarViewComponent', () => {
       expect(mockEventService.getEventById).toHaveBeenCalledWith('1');
     });
 
-    it('should set editingEvent when event is found', () => {
+    it('should set selectedEvent when event is found', () => {
       mockEventService.getEventById.and.returnValue(mockEvent);
       component.handleEditEvent('1');
 
-      expect(component.editingEvent()).toEqual(mockEvent);
+      expect(component.selectedEvent()).toEqual(mockEvent);
+    });
+
+    it('should set formMode to "edit" when editing event', () => {
+      mockEventService.getEventById.and.returnValue(mockEvent);
+      component.handleEditEvent('1');
+
+      expect(component.formMode()).toBe('edit');
     });
 
     it('should open form modal when event is found', () => {
       mockEventService.getEventById.and.returnValue(mockEvent);
       component.handleEditEvent('1');
 
-      expect(component.isEventFormModalOpen()).toBeTrue();
-    });
-
-    it('should close event modal when editing starts', () => {
-      component.isEventModalOpen.set(true);
-      mockEventService.getEventById.and.returnValue(mockEvent);
-
-      component.handleEditEvent('1');
-
-      expect(component.isEventModalOpen()).toBeFalse();
+      expect(component.activeModal()).toBe('eventForm');
     });
 
     it('should not open form modal if event is not found', () => {
       mockEventService.getEventById.and.returnValue(null);
       component.handleEditEvent('999');
 
-      expect(component.isEventFormModalOpen()).toBeFalse();
+      expect(component.activeModal()).not.toBe('eventForm');
     });
 
-    it('should not modify editingEvent if event is not found', () => {
-      component.editingEvent.set(null);
+    it('should not modify selectedEvent if event is not found', () => {
+      component.selectedEvent.set(null);
       mockEventService.getEventById.and.returnValue(null);
 
       component.handleEditEvent('999');
-      expect(component.editingEvent()).toBeNull();
+      expect(component.selectedEvent()).toBeNull();
     });
 
   });
@@ -178,48 +193,50 @@ describe('CalendarViewComponent', () => {
   describe('delete event flow', () => {
 
     it('should open confirm modal when delete is triggered', () => {
-      component.isEventFormModalOpen.set(true);
       component.handleDeleteEvent('123');
 
-      expect((component as any).selectedEventId()).toBe('123');
-      expect(component.isConfirmModalOpen()).toBeTrue();
-      expect(component.isEventModalOpen()).toBeFalse();
+      expect(component.activeModal()).toBe('confirm');
+    });
+
+    it('should set selectedEventId when deleting', () => {
+      component.handleDeleteEvent('123');
+      expect(component['selectedEventId']()).toBe('123');
     });
 
     it('should delete event when confirmDeleteEvent is called', () => {
-      (component as any).selectedEventId.set('123');
+      component.handleDeleteEvent('123');
       component.confirmDeleteEvent();
 
       expect(mockEventService.deleteEvent).toHaveBeenCalledWith('123');
-      expect(component.isConfirmModalOpen()).toBeFalse();
-      expect(component.isEventModalOpen()).toBeTrue();
-      expect((component as any).selectedEventId()).toBeNull();
+      expect(component.activeModal()).toBe('dayEvents');
     });
 
-    it('should do nothing if confirmDeleteEvent is called with null id', () => {
-      (component as any).selectedEventId.set(null);
+    it('should clear selectedEventId after confirming delete', () => {
+      component.handleDeleteEvent('123');
+      component.confirmDeleteEvent();
 
-      const confirmBefore = component.isConfirmModalOpen();
-      const eventBefore = component.isEventModalOpen();
+      expect(component['selectedEventId']()).toBeNull();
+    });
 
+    it('should do nothing if confirmDeleteEvent is called with no prior delete', () => {
       component.confirmDeleteEvent();
 
       expect(mockEventService.deleteEvent).not.toHaveBeenCalled();
-      expect(component.isConfirmModalOpen()).toBe(confirmBefore);
-      expect(component.isEventModalOpen()).toBe(eventBefore);
     });
 
     it('should cancel delete and restore modal state', () => {
-      (component as any).selectedEventId.set('123');
-      component.isConfirmModalOpen.set(true);
-      component.isEventModalOpen.set(false);
-
+      component.handleDeleteEvent('123');
       component.cancelDeleteEvent();
 
       expect(mockEventService.deleteEvent).not.toHaveBeenCalled();
-      expect(component.isConfirmModalOpen()).toBeFalse();
-      expect(component.isEventModalOpen()).toBeTrue();
-      expect((component as any).selectedEventId()).toBeNull();
+      expect(component.activeModal()).toBe('dayEvents');
+    });
+
+    it('should clear selectedEventId when canceling delete', () => {
+      component.handleDeleteEvent('123');
+      component.cancelDeleteEvent();
+
+      expect(component['selectedEventId']()).toBeNull();
     });
 
   });
@@ -242,6 +259,20 @@ describe('CalendarViewComponent', () => {
     it('should reset selectedVehicleId when null vehicle is selected', () => {
       component.handleVehicleSelected(null as unknown as VehicleInterface);
       expect(mockEventService.selectedVehicleId()).toBeNull();
+    });
+
+  });
+
+  describe('computed values', () => {
+
+    it('should compute selectedDayEvents based on selectedDate', () => {
+      const mockEvents = [{ _id: '1', title: 'Test', date: '2026-02-13' }];
+      mockEventService.getEventsByDate.and.returnValue(mockEvents);
+      
+      component.selectedDate.set('2026-02-13');
+      
+      expect(component.selectedDayEvents()).toEqual(mockEvents);
+      expect(mockEventService.getEventsByDate).toHaveBeenCalledWith('2026-02-13');
     });
 
   });
