@@ -16,26 +16,27 @@
     ></full-calendar>
 </section>
 
-@if (isEventModalOpen()) {
+@if (activeModal() === 'dayEvents') {
     <app-day-events-modal
         [events]="selectedDayEvents()"
         [date]="selectedDate()"
         (createEvent)="handleCreateEvent()"
         (editEvent)="handleEditEvent($event)"
         (deleteEvent)="handleDeleteEvent($event)"
-        (closeModal)="isEventModalOpen.set(false)"
+        (closeModal)="activeModal.set(null)"
     ></app-day-events-modal>
 }
 
-@if (isEventFormModalOpen()) {
+@if (activeModal() === 'eventForm') {
     <app-event-form-modal
         [preselectedDate]="selectedDate()"
-        [preselectedEvent]="editingEvent()"
-        (close)="isEventFormModalOpen.set(false)"
+        [mode]="formMode()"
+        [event]="selectedEvent()"
+        (close)="activeModal.set(null)"
     ></app-event-form-modal>
 }
 
-@if (isConfirmModalOpen()) {
+@if (activeModal() === 'confirm') {
     <app-confirm-modal
         [title]="confirmModalMsg().title"
         [message]="confirmModalMsg().message"

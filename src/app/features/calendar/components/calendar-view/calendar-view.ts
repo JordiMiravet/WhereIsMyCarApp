@@ -1,13 +1,4 @@
-import {
-  Component,
-  signal,
-  computed,
-  ViewChild,
-  ViewEncapsulation,
-  inject,
-  AfterViewInit,
-  effect,
-} from '@angular/core';
+import { Component, signal, computed, ViewChild, ViewEncapsulation, inject, AfterViewInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
@@ -37,7 +28,7 @@ import { CreateButtonComponent } from "../../../../shared/components/buttons/cre
     EventFormModalComponent,
     VehicleSelectorComponent,
     CreateButtonComponent
-],
+  ],
   templateUrl: './calendar-view.html',
   styleUrl: './calendar-view.css',
   encapsulation: ViewEncapsulation.None,
@@ -52,11 +43,11 @@ export class CalendarViewComponent implements AfterViewInit {
 
   public selectedDate = signal<string>('');
   private selectedEventId = signal<string | null>(null);
-  public editingEvent = signal<EventInterface | null>(null);
 
-  public isEventModalOpen = signal(false);
-  public isEventFormModalOpen = signal(false);
-  public isConfirmModalOpen = signal(false);
+  public formMode = signal<'create' | 'edit'>('create');
+  public selectedEvent = signal<EventInterface | null>(null);
+
+  public activeModal = signal<'dayEvents' | 'eventForm' | 'confirm' | null>(null);
 
   public confirmModalMsg = signal({
     title: 'Delete this event',
@@ -87,8 +78,8 @@ export class CalendarViewComponent implements AfterViewInit {
     height: 'auto',
     contentHeight: 'auto',
 
-    dateClick: (arg: DateClickArg) => this.handleDateClick(arg),
-    eventClick: (info: EventClickArg) => this.handleEventClick(info),
+    dateClick: (arg: DateClickArg) => this.onDateClick(arg),
+    eventClick: (info: EventClickArg) => this.onEventClick(info),
 
     events: [],
 
@@ -121,15 +112,14 @@ export class CalendarViewComponent implements AfterViewInit {
 
   // Eventos click 
 
-  handleDateClick(arg: DateClickArg): void {
+  onDateClick(arg: DateClickArg): void {
     this.selectedDate.set(arg.dateStr);
-    this.isEventModalOpen.set(true);
+    this.activeModal.set('dayEvents');
   }
 
-  handleEventClick(info: EventClickArg): void {
-    // TODO: Mas adelante ya cambiaré el evento para que cuando clique se abra solo ese evento especifico
+  onEventClick(info: EventClickArg): void {
     this.selectedDate.set(info.event.startStr.split('T')[0]);
-    this.isEventModalOpen.set(true);
+    this.activeModal.set('dayEvents');
   }
 
   // Logica del Create
@@ -139,9 +129,10 @@ export class CalendarViewComponent implements AfterViewInit {
     const today = new Date().toISOString().split('T')[0];
     this.selectedDate.set(this.selectedDate() || today);
 
-    this.editingEvent.set(null);
-    this.isEventFormModalOpen.set(true);
-    this.isEventModalOpen.set(false);
+    this.formMode.set('create');
+    this.selectedEvent.set(null);
+
+    this.activeModal.set('eventForm');
   }
   
   // Logica del Edit
@@ -151,17 +142,17 @@ export class CalendarViewComponent implements AfterViewInit {
     const event = this.eventService.getEventById(id);
     if(!event) return;
     
-    this.editingEvent.set(event);
-    this.isEventFormModalOpen.set(true);
-    this.isEventModalOpen.set(false);
+    this.formMode.set('edit');
+    this.selectedEvent.set(event);
+
+    this.activeModal.set('eventForm');
   }
 
   // Logica del Delete 
 
   handleDeleteEvent(id: string): void {
     this.selectedEventId.set(id);
-    this.isEventModalOpen.set(false);
-    this.isConfirmModalOpen.set(true);
+    this.activeModal.set('confirm');
   }
 
   confirmDeleteEvent(): void {
@@ -170,22 +161,20 @@ export class CalendarViewComponent implements AfterViewInit {
 
     this.eventService.deleteEvent(id);
 
-    this.isConfirmModalOpen.set(false);
-    this.isEventModalOpen.set(true);
     this.selectedEventId.set(null);
+    this.activeModal.set('dayEvents');
   }
 
   cancelDeleteEvent(): void {
-    this.isConfirmModalOpen.set(false);
-    this.isEventModalOpen.set(true);
     this.selectedEventId.set(null);
+    this.activeModal.set('dayEvents');
   }
 
   // Refresh de los eventos
 
   public refreshCalendar(): void {
     const calendarApi = this.calendarComponent.getApi();
-
+    
     calendarApi.removeAllEvents();
     calendarApi.addEventSource(this.getCalendarEvents());
   }

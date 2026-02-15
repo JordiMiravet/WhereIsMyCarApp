@@ -7,7 +7,6 @@ import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
 import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
 import { EventInterface } from '../../interfaces/event';
 
-
 @Component({
   selector: 'app-event-form-modal',
   standalone: true,
@@ -27,7 +26,8 @@ export class EventFormModalComponent implements OnInit {
   public vehicles = this.vehicleService.vehicles;
 
   public preselectedDate = input<string>('');
-  public preselectedEvent = input<EventInterface | null>(null);
+  public mode = input<'create' | 'edit'>('create');
+  public event = input<EventInterface | null>(null);
   
   public close = output<void>();
 
@@ -49,52 +49,55 @@ export class EventFormModalComponent implements OnInit {
     });
   }
 
-  ngOnInit(){
+  ngOnInit(): void {
     this.vehicleService.loadVehicles();
+    this.initializeFormValues();
+    this.touchTimeControls();
+  }
 
+  private initializeFormValues(): void {
     const date = this.preselectedDate()
     if(date) {
-      this.formEvent.patchValue({
-        date: this.preselectedDate()
-      });
+      this.formEvent.patchValue({ date: date });
     }
 
-    const event = this.preselectedEvent();
-    if(event) {
+    const EventData = this.event();
+    if(EventData) {
       this.formEvent.patchValue({
-        title: event.title,
-        date: event.date,
-        hourStart: event.hourStart,
-        hourEnd: event.hourEnd,
-        vehicleId: event.vehicleId,
-        comment: event.comment
+        title: EventData.title,
+        date: EventData.date,
+        hourStart: EventData.hourStart,
+        hourEnd: EventData.hourEnd,
+        vehicleId: EventData.vehicleId,
+        comment: EventData.comment
       })
     }
   }
 
-  onVehicleSelected(vehicle: VehicleInterface | null) {
+  private touchTimeControls(): void {
+    const hourStart = this.formEvent.get('hourStart');
+    const hourEnd = this.formEvent.get('hourEnd');
+
+    hourStart?.valueChanges.subscribe(() => {
+      hourStart?.markAsTouched();
+      hourEnd?.markAsTouched();
+    });
+
+    hourEnd?.valueChanges.subscribe(() => {
+      hourStart?.markAsTouched();
+      hourEnd?.markAsTouched();
+    });
+  }
+
+
+  public onVehicleSelected(vehicle: VehicleInterface | null): void {
     if (!vehicle) {
       this.formEvent.patchValue({ vehicleId: '' });
       return;
     }
-
-    this.formEvent.patchValue({
-      vehicleId: vehicle._id
-    });
-
-    const event = this.preselectedEvent();
-    if (event) {
-      this.formEvent.patchValue({
-        title: event?.title,
-        date: event?.date,
-        hourStart: event?.hourStart,
-        hourEnd: event?.hourEnd,
-        vehicleId: event?.vehicleId,
-        comment: event?.comment
-      });
-    }
-
+    this.formEvent.patchValue({ vehicleId: vehicle._id });
   }
+
 
   private timeRangeValidator(control: AbstractControl): ValidationErrors | null {
     const { hourStart, hourEnd } = control.value;
@@ -112,7 +115,7 @@ export class EventFormModalComponent implements OnInit {
     const eventsOfThisDay = this.eventService
       .getEventsByDate(date)
       .filter(event => event.vehicleId === vehicleId)
-      .filter(event => event._id !== this.preselectedEvent()?._id);
+      .filter(event => event._id !== this.event()?._id);
 
     const hasTimeConflict = eventsOfThisDay.some(event =>
       hourStart < event.hourEnd! && hourEnd > event.hourStart!
@@ -126,9 +129,9 @@ export class EventFormModalComponent implements OnInit {
   onSubmit(): void {
     if (!this.formEvent.valid) return;
 
-    if (this.preselectedEvent()) {
+    if (this.mode() === 'edit') {
       this.eventService.updateEvent({
-        ...this.preselectedEvent(),
+        ...this.event(),
         ...this.formEvent.value
       });
     } else {
@@ -138,7 +141,7 @@ export class EventFormModalComponent implements OnInit {
     this.handleClose();
   }
 
-  handleClose() {
+  handleClose(): void {
     this.formEvent.reset();
     this.close.emit();
   }
