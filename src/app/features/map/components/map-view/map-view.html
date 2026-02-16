@@ -20,8 +20,8 @@
 
 @if(showConfirmModal()){
     <app-confirm-modal
-        [title]="'Change vehicle position'"
-        [message]="'Are you sure about changing the position of the vehicle?'"
+        [title]="messages.confirm.title"
+        [message]="messages.confirm.message"
         (confirm)="onConfirmLocationChange()"
         (cancel)="onCancelLocationChange()"
     />

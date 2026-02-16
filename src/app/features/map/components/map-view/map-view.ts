@@ -36,6 +36,13 @@ export class MapViewComponent implements OnInit {
       10
     );
   }
+
+  public messages = ({
+    confirm : {
+      title : 'Change vehicle position',
+      message : 'Are you sure about changing the position of the vehicle?'
+    }
+  })
   
   // VEHICLES LOCATION
 
@@ -43,8 +50,9 @@ export class MapViewComponent implements OnInit {
   public vehicles = this.vehicleService.vehicles;
 
   public selectedVehicle = signal<VehicleInterface | null>(null);
+  private vehicleMarkers: L.Marker[] = [];
   private vehicleMarker?: L.Marker;
-  
+
   public newPosition = signal<L.LatLng | null>(null);
 
   public showConfirmModal = signal(false);

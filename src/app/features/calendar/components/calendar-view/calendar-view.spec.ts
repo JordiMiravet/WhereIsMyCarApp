@@ -266,7 +266,12 @@ describe('CalendarViewComponent', () => {
   describe('computed values', () => {
 
     it('should compute selectedDayEvents based on selectedDate', () => {
-      const mockEvents = [{ _id: '1', title: 'Test', date: '2026-02-13' }];
+      const mockEvents = [
+        { _id: '1', 
+          title: 'Wololo', 
+          date: '2026-02-13' 
+        }
+      ];
       mockEventService.getEventsByDate.and.returnValue(mockEvents);
       
       component.selectedDate.set('2026-02-13');
