@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GraphicsView } from "../../features/graphics/graphics-view/graphics-view";
+import { GraphicsView } from "../../features/graphics/components/graphics-view/graphics-view";
 
 @Component({
   selector: 'app-graphics',
