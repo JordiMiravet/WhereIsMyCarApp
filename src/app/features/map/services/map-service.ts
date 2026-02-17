@@ -46,6 +46,7 @@ export class MapService {
 
     if(popupText) {
       marker.bindPopup(popupText).openPopup();
+      /* TODO: Para un futuro deberé cambiar el bindPopup para añadirle mejor informacion en el bocata, o cambiar al Bindtooltip */
     }
 
     return marker;

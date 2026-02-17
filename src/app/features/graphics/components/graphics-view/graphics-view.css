@@ -1,3 +1,6 @@
+
+/* Actions */
+
 .graphic-actions {
     background-color: var(--color-white);
     margin: 0;
@@ -13,6 +16,15 @@
     padding: 1rem;
     font-size: var(--font-size-lg);
     color: var(--color-blue-dark);
+}
+
+/* Graphic View */
+
+.graphics {
+    display: flex;
+    justify-content: space-between;
+    
+    flex-wrap: wrap;
 }
 
 .graphics-view__container {

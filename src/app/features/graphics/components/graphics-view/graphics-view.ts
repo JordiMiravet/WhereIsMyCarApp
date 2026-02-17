@@ -14,30 +14,36 @@ import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicl
   styleUrl: './graphics-view.css',
 })
 
-export class GraphicsView implements AfterViewInit {
+export class GraphicsViewComponent implements AfterViewInit {
 
-  @ViewChild('myChart') chartRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('vehicleUsageHours') vehicleUsageHours!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('mostUsedVehicle') mostUsedVehicle!: ElementRef<HTMLCanvasElement>;
   
   private graphicsService = inject(GraphicsServices);
   private vehicleService = inject(VehicleService);
 
-  chart!: Chart;
+  vehicleUsageChart!: Chart;
+  mostUsedVehicleChart!: Chart;
 
   ngAfterViewInit(): void {
     this.vehicleService.loadVehicles();
     setTimeout(() => {
-      this.createChart();
+      this.createvehicleUsageHoursChart();
+      this.createMostUsedVehicleChart();
     }, 500);
   }
 
   ngOnDestroy(): void {
-    if(this.chart) {
-      this.chart.destroy();
+    if(this.vehicleUsageChart) {
+      this.vehicleUsageChart.destroy();
+    }
+    if(this.mostUsedVehicleChart) {
+      this.mostUsedVehicleChart.destroy();
     }
   }
 
-  createChart(): void {
-    const data = this.graphicsService.getVehicleMetrics();
+  createvehicleUsageHoursChart(): void {
+    const data = this.graphicsService.getVehicleUsageHours();
 
     const labels = data.map(item => item.vehicleName);
     const values = data.map(item => item.totalHours);
@@ -54,9 +60,9 @@ export class GraphicsView implements AfterViewInit {
       'rgba(255, 102, 132, 0.75)'
     ];
     
-    const canvasElement = this.chartRef.nativeElement.getContext('2d')!;
+    const canvasElement = this.vehicleUsageHours.nativeElement.getContext('2d')!;
     
-    this.chart = new Chart(canvasElement, {
+    this.vehicleUsageChart = new Chart(canvasElement, {
       type: 'doughnut',
       data: {
         labels: labels,
@@ -84,6 +90,45 @@ export class GraphicsView implements AfterViewInit {
               boxWidth: 15,
               boxHeight: 15,
               padding: 15,
+              font: { size: 15, weight: 'normal' }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  createMostUsedVehicleChart(): void {
+    const mostUsed = this.graphicsService.getMostUsedVehicle();
+    if(!mostUsed) return;
+
+    const canvasElement = this.mostUsedVehicle.nativeElement.getContext('2d')!;
+
+    this.mostUsedVehicleChart = new Chart(canvasElement, {
+      type: 'bar',
+      data: {
+        labels: [mostUsed.vehicleName],
+        datasets: [{
+          label: 'Most Used Vehicle (Hours)',
+          data: [mostUsed.totalHours],
+          backgroundColor: 'rgba(255, 99, 132, 0.75)',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Most Used Vehicle',
+            font: { size: 20 }
+          },
+          legend: {
+            display: false,
+            position: 'bottom',
+            align: 'center',
+            labels: {
               font: { size: 15, weight: 'normal' }
             }
           }

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { GraphicsView } from "../../features/graphics/components/graphics-view/graphics-view";
+import { GraphicsViewComponent } from "../../features/graphics/components/graphics-view/graphics-view";
 
 @Component({
   selector: 'app-graphics',
   standalone: true,
-  imports: [ GraphicsView] ,
+  imports: [ GraphicsViewComponent ] ,
   templateUrl: './graphics.html',
   styleUrl: './graphics.css',
 })

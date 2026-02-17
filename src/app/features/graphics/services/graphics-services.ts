@@ -14,7 +14,7 @@ export class GraphicsServices {
   private eventService = inject(EventService);
   private vehicleService = inject(VehicleService)
 
-  getVehicleMetrics(): VehicleMetrics[] {
+  public getVehicleUsageHours(): VehicleMetrics[] {
 
     const events = this.eventService['_allEvents']();
     const vehicles = this.vehicleService.vehicles();
@@ -56,10 +56,24 @@ export class GraphicsServices {
     const endMinutes = (endH * 60) + endM;
 
     const diffMinutes = endMinutes - startMinutes;
-
     const hours = diffMinutes / 60;
 
     return hours;
   }
   
+  public getMostUsedVehicle(): VehicleMetrics | null {
+    const allVehicles = this.getVehicleUsageHours();
+    if (!allVehicles.length) return null;
+
+    const mostUsedVehicle = allVehicles.reduce((prevVehicle, currentVehicle) => 
+      currentVehicle.totalHours > prevVehicle.totalHours 
+        ? currentVehicle 
+        : prevVehicle
+    );
+
+    return mostUsedVehicle;
+  }
+
+  
+
 }
