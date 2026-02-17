@@ -5,6 +5,7 @@ import Chart from 'chart.js/auto';
 
 import { GraphicsServices } from '../../services/graphics-services';
 import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
+import { canvas } from 'leaflet';
 
 @Component({
   selector: 'app-graphics-view',
@@ -18,60 +19,57 @@ export class GraphicsViewComponent implements AfterViewInit {
 
   @ViewChild('vehicleUsageHours') vehicleUsageHours!: ElementRef<HTMLCanvasElement>;
   @ViewChild('mostUsedVehicle') mostUsedVehicle!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('hoursByWeekday') hoursByWeekday!: ElementRef<HTMLCanvasElement>;
   
   private graphicsService = inject(GraphicsServices);
   private vehicleService = inject(VehicleService);
 
-  vehicleUsageChart!: Chart;
+  vehicleUsageHoursChart!: Chart;
   mostUsedVehicleChart!: Chart;
+  hoursByWeekdayChart!: Chart;
 
   ngAfterViewInit(): void {
     this.vehicleService.loadVehicles();
     setTimeout(() => {
-      this.createvehicleUsageHoursChart();
+      this.createVehicleUsageHoursChart();
       this.createMostUsedVehicleChart();
+      this.createHoursByWeekdayByVehicle();
     }, 500);
   }
 
   ngOnDestroy(): void {
-    if(this.vehicleUsageChart) {
-      this.vehicleUsageChart.destroy();
+    if(this.vehicleUsageHoursChart) {
+      this.vehicleUsageHoursChart.destroy();
     }
     if(this.mostUsedVehicleChart) {
       this.mostUsedVehicleChart.destroy();
     }
+    if(this.hoursByWeekdayChart) {
+      this.hoursByWeekdayChart.destroy();
+    }
   }
 
-  createvehicleUsageHoursChart(): void {
+  /* Horas por vehiculo */
+
+  public createVehicleUsageHoursChart(): void {
     const data = this.graphicsService.getVehicleUsageHours();
 
     const labels = data.map(item => item.vehicleName);
     const values = data.map(item => item.totalHours);
-    
-    const colors = [
-      'rgba(54, 162, 235, 0.75)',
-      'rgba(255, 99, 132, 0.75)',
-      'rgba(75, 192, 192, 0.75)',
-      'rgba(255, 205, 86, 0.75)', 
-      'rgba(153, 102, 255, 0.75)',
-      'rgba(255, 159, 64, 0.75)',
-      'rgba(201, 203, 207, 0.75)',
-      'rgba(54, 99, 235, 0.75)',
-      'rgba(255, 102, 132, 0.75)'
-    ];
+
     
     const canvasElement = this.vehicleUsageHours.nativeElement.getContext('2d')!;
     
-    this.vehicleUsageChart = new Chart(canvasElement, {
+    this.vehicleUsageHoursChart = new Chart(canvasElement, {
       type: 'doughnut',
       data: {
         labels: labels,
         datasets: [{
           label: 'Hours of Use',
           data: values,
-          backgroundColor: colors,
+          
           borderWidth: 2,
-          hoverOffset: 10 
+          hoverOffset: 10,
         }]
       },
       options: {
@@ -98,19 +96,21 @@ export class GraphicsViewComponent implements AfterViewInit {
     });
   }
 
-  createMostUsedVehicleChart(): void {
-    const mostUsed = this.graphicsService.getMostUsedVehicle();
-    if(!mostUsed) return;
+  /* Vehiculo mas usado */
+
+  public createMostUsedVehicleChart(): void {
+    const data = this.graphicsService.getMostUsedVehicle();
+    if(!data) return;
 
     const canvasElement = this.mostUsedVehicle.nativeElement.getContext('2d')!;
 
     this.mostUsedVehicleChart = new Chart(canvasElement, {
       type: 'bar',
       data: {
-        labels: [mostUsed.vehicleName],
+        labels: [data.vehicleName],
         datasets: [{
           label: 'Most Used Vehicle (Hours)',
-          data: [mostUsed.totalHours],
+          data: [data.totalHours],
           backgroundColor: 'rgba(255, 99, 132, 0.75)',
           borderWidth: 2
         }]
@@ -131,6 +131,46 @@ export class GraphicsViewComponent implements AfterViewInit {
             labels: {
               font: { size: 15, weight: 'normal' }
             }
+          }
+        }
+      }
+    });
+  }
+
+  /* Horas por coche por semana */
+
+  public createHoursByWeekdayByVehicle(): void {
+
+    const data = this.graphicsService.getHoursByWeekdayPerVehicle();
+    if (!data) return;
+
+    const canvasElement = this.hoursByWeekday.nativeElement.getContext('2d')!;
+
+    const vehicleData = data.vehicles.map(vehicle => ({
+      label: vehicle.name,
+      data: vehicle.hours,
+      borderWidth: 2,
+      fill: false,
+      tension: 0.2
+    }));
+
+    this.hoursByWeekdayChart = new Chart(canvasElement, {
+      type: 'line',
+      data: {
+        labels: data.weekdayNames,
+        datasets: vehicleData
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Hours per Days & Vehicle',
+            font: { size: 20 }
+          },
+          legend: {
+            display: true
           }
         }
       }

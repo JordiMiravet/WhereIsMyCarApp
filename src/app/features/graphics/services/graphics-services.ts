@@ -48,19 +48,6 @@ export class GraphicsServices {
 
   }
 
-  private calculateEventHours(hourStart: string, hourEnd: string): number {
-    const [ startH, startM ] = hourStart.split(':').map(Number);
-    const startMinutes = (startH * 60) + startM;
-
-    const [ endH, endM ] = hourEnd.split(':').map(Number);
-    const endMinutes = (endH * 60) + endM;
-
-    const diffMinutes = endMinutes - startMinutes;
-    const hours = diffMinutes / 60;
-
-    return hours;
-  }
-  
   public getMostUsedVehicle(): VehicleMetrics | null {
     const allVehicles = this.getVehicleUsageHours();
     if (!allVehicles.length) return null;
@@ -73,7 +60,50 @@ export class GraphicsServices {
 
     return mostUsedVehicle;
   }
-
   
+  public getHoursByWeekdayPerVehicle() {
+    const events = this.eventService['_allEvents']();
+    const vehicles = this.vehicleService.vehicles();
+
+    const weekdayNames = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+    
+    const result = vehicles.map(vehicle => ({
+      id: vehicle._id,
+      name: vehicle.name,
+      hours: [0,0,0,0,0,0,0]
+    }));
+
+    events.forEach(event => {
+      const { vehicleId, date, hourStart, hourEnd } = event;
+      if(!vehicleId || !date || !hourStart || !hourEnd) return;
+
+      const numberDay = new Date(date).getDay();
+      const dayIndex = numberDay === 0 
+        ? 6 
+        : numberDay - 1;
+
+      const hours = this.calculateEventHours(hourStart, hourEnd);
+      const vehicleData = result.find(v => v.id === vehicleId);
+
+      if(vehicleData) {
+        vehicleData.hours[dayIndex] += hours;
+      }
+    });
+
+    return { weekdayNames, vehicles: result };
+  }
+
+  private calculateEventHours(hourStart: string, hourEnd: string): number {
+    const [ startH, startM ] = hourStart.split(':').map(Number);
+    const startMinutes = (startH * 60) + startM;
+
+    const [ endH, endM ] = hourEnd.split(':').map(Number);
+    const endMinutes = (endH * 60) + endM;
+
+    const diffMinutes = endMinutes - startMinutes;
+    const hours = diffMinutes / 60;
+
+    return hours;
+  }
 
 }
