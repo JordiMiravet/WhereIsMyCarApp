@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { CreateButtonComponent } from "../../../../shared/components/buttons/create-button/create-button";
 
 @Component({

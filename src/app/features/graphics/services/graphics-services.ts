@@ -45,7 +45,6 @@ export class GraphicsServices {
     });
 
     return result;
-
   }
 
   public getMostUsedVehicle(): VehicleMetrics | null {
@@ -81,7 +80,7 @@ export class GraphicsServices {
       const dayIndex = numberDay === 0 
         ? 6 
         : numberDay - 1;
-
+      
       const hours = this.calculateEventHours(hourStart, hourEnd);
       const vehicleData = result.find(v => v.id === vehicleId);
 
