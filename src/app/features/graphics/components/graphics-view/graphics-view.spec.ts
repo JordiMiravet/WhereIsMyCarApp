@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GraphicsView } from './graphics-view';
+import { GraphicsViewComponent } from './graphics-view';
 
 describe('GraphicsView', () => {
-  let component: GraphicsView;
-  let fixture: ComponentFixture<GraphicsView>;
+  let component: GraphicsViewComponent;
+  let fixture: ComponentFixture<GraphicsViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GraphicsView]
+      imports: [GraphicsViewComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GraphicsView);
+    fixture = TestBed.createComponent(GraphicsViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
