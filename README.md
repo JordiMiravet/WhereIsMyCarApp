@@ -5,11 +5,13 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge)
 ![TypeScript](https://img.shields.io/badge/TypeScript-TS-blue?style=for-the-badge)
 ![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+
 ![PrimeNG](https://img.shields.io/badge/PrimeNG-6C2BD9?style=for-the-badge&logo=primeng&logoColor=white)
 ![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white)
 ![FullCalendar](https://img.shields.io/badge/FullCalendar-3788D8?style=for-the-badge&logo=fullcalendar&logoColor=white)
 ![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white)
 ![Tests](https://img.shields.io/badge/Tests-Jasmine-8A4Baf?style=for-the-badge&logo=jasmine&logoColor=white)
+
 ![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 ![Firebase Auth](https://img.shields.io/badge/Firebase_Auth-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
@@ -61,10 +63,7 @@ La aplicación combina gestión de datos, visualización geográfica, planificac
 - `JavaScript`
 - `TypeScript`
 - `Angular 20`
-- `PrimeNG`
-- `Leaflet`
-- `FullCalendar`
-- `Chart.js`
+- Angular Dependencys: `PrimeNG`, `Leaflet`, `FullCalendar`, `Chart.js`
 - Backend: `NestJS`, `MongoDB`
 - Autenticación:`Firebase Authentication`
 - Testing: `Jasmine`
@@ -101,13 +100,13 @@ La aplicación está dividida en dos repositorios:
 
 Es necesario levantar ambos para que funcione correctamente.
 
-### Requisitos previos
+#### Requisitos previos
 
 - Node.js v20 o superior
 - Angular CLI (`npm install -g @angular/cli`)
 - MongoDB en ejecución
 
-### 1. Frontend
+#### 1. Frontend
 
 Clonar el repositorio:
 
@@ -119,10 +118,10 @@ Clonar el repositorio:
 Configuración de Firebase Authentication:
 
 - Configurar Firebase Authentication:
-    1. Crear proyecto en Firebase Console
-    2. Activar Email/Password Authentication
-    3. Añadir aplicación web y copiar configuración
-    4. Crear src/environments/environment.ts con tu configuración
+    - Crear proyecto en Firebase Console
+    - Activar Email/Password Authentication
+    - Añadir aplicación web y copiar configuración
+    - Crear src/environments/environment.ts con tu configuración
 
 Dentro de src, crear la carpeta environments y añadir el archivo:
 
@@ -147,7 +146,7 @@ Con el siguiente contenido, reemplazando los valores por los de tu proyecto:
 
 ```
 
-### 2. Backend
+#### 2. Backend
 
 Clonar el repositorio del backend:
 ```bash
@@ -176,7 +175,7 @@ Del archivo JSON descargado necesitas:
 
 La private_key debe mantenerse en una sola línea y conservar los \n.
 
-### 3. Ejecutar la aplicación
+#### 3. Ejecutar la aplicación
 
 Primero levantar el backend:
 
@@ -240,8 +239,6 @@ A continuación se muestra una vista previa de la aplicación en funcionamiento:
 - Calendario de eventos (añadir, editar, eliminar, control de solapamientos y filtrado de eventos)
 - Panel de estadísticas (gráficos)
 
-/// aun tengo que ver
-
 ---
 
 ## Tests
@@ -257,6 +254,7 @@ La aplicación incluye tests unitarios desarrollados con Jasmine, ejecutables me
 - Cobertura:
 
 ```markdown
+Total Tests : 356
 | Tipo       | Total | Cobertura |
 | ---------- | ----- | --------- |
 | Statements | 501   | 79.64%    |
@@ -264,8 +262,6 @@ La aplicación incluye tests unitarios desarrollados con Jasmine, ejecutables me
 | Functions  | 150   | 75.33%    |
 | Lines      | 453   | 80.13%    |
 ```
-
-<!-- Nota: Cobertura general aproximada, algunas ramas de edge cases todavía por testear -->
 
 #### Ejemplo destacado y explicación por líneas
 
@@ -333,8 +329,8 @@ También se testean casos de estado vacío y apertura/cierre de modales para ase
 Si quieres contribuir a este proyecto, puedes:
 
 1. Hacer un fork de los repositorios. 
-https://github.com/JordiMiravet/WhereIsMyCarApp.git
-https://github.com/JordiMiravet/WhereIsMyCarApp-backend.git
+    - Frontend: https://github.com/JordiMiravet/WhereIsMyCarApp.git
+    - Backend: https://github.com/JordiMiravet/WhereIsMyCarApp-backend.git
 2. Crear una rama con la nueva funcionalidad o corrección de bug (`git checkout -b feature/nueva-funcionalidad`).
 3. Hacer commits claros y descriptivos.
 4. Hacer push a tu rama.
@@ -348,4 +344,4 @@ Actualmente, la aplicación no está desplegada en GitHub Pages.
 
 ## Autor
 
-**Jordi Miravet**
+[**Jordi Miravet**](https://www.linkedin.com/in/jordimiravet-dev/)
