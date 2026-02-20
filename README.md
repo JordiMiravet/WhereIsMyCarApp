@@ -65,91 +65,30 @@ La aplicación combina gestión de datos, visualización geográfica, planificac
 - `Leaflet`
 - `FullCalendar`
 - `Chart.js`
-- `NestJS`
-- `MongoDB`
-- `Firebase Authentication`
-- Testing con `Jasmine`
+- Backend: `NestJS`, `MongoDB`
+- Autenticación:`Firebase Authentication`
+- Testing: `Jasmine`
 
 ---
 
 ## Estructura del Proyecto
 
 ```bash
-whereismycarapp
-├──src
-│   ├──app
-│   │   ├──features
-│   │   │   ├──auth
-│   │   │   │   ├──login
-│   │   │   │   ├──register
-│   │   │   │   └──services
-│   │   │   │
-│   │   │   ├──calendar
-│   │   │   │   ├──components
-│   │   │   │   │   └──calendar-view
-│   │   │   │   ├──interfaces
-│   │   │   │   │   └──event.ts
-│   │   │   │   ├──modals
-│   │   │   │   │   ├──day-events-modal
-│   │   │   │   │   └──event-form-modal
-│   │   │   │   └──services
-│   │   │   │
-│   │   │   ├──graphics
-│   │   │   │   ├──components
-│   │   │   │   │   └──graphics-view
-│   │   │   │   ├──interfaces
-│   │   │   │   │   └──VehicleMetrics.ts
-│   │   │   │   └──services
-│   │   │   ├──map
-│   │   │   │   ├──components
-│   │   │   │   │   ├──buttons
-│   │   │   │   │   │   └──user-location-button
-│   │   │   │   │   └──map-view
-│   │   │   │   └──services
-│   │   │   └──vehicle
-│   │   │       ├──components
-│   │   │       │   ├──vehicle-empty-state
-│   │   │       │   ├──vehicle-selector
-│   │   │       │   └──vehicle-table
-│   │   │       ├──interfaces
-│   │   │       │   └──vehicle.ts
-│   │   │       ├──modals
-│   │   │       │   └──vehicle-form-modal
-│   │   │       └──services
-│   │   │           ├──vehicle-modal-state-service
-│   │   │           └──vehicle-service
-│   │   ├──pages
-│   │   │   ├──calendar
-│   │   │   ├──graphics
-│   │   │   ├──home
-│   │   │   └──map
-│   │   ├──shared
-│   │   │   ├──components
-│   │   │   │   ├──buttons
-│   │   │   │   │   ├──create-button
-│   │   │   │   │   ├──delete-button
-│   │   │   │   │   └──edit-button
-│   │   │   │   └──modals
-│   │   │   │       └──confirm-modal
-│   │   │   ├──layout
-│   │   │   │   ├──auth-actions
-│   │   │   │   ├──header
-│   │   │   │   └──navigation
-│   │   │   └──services
-│   │   │       └──geolocation
-│   │   │
-│   │   ├──app.config.ts
-│   │   ├──app.css
-│   │   ├──app.html
-│   │   ├──app.routes.ts
-│   │   ├──app.spec.ts
-│   │   └──app.ts
-│   ├──assets
-│   │   └──icons
-│   ├──index.html
-│   ├──main.ts
-│   └──styles.css
-
+src/
+ ├─ app/
+ │   ├─ features/
+ │   │   ├─ auth/ ( login, register, services )
+ │   │   ├─ calendar/ ( components, modals, services, interfaces )
+ │   │   ├─ graphics/ ( components, services, interfaces )
+ │   │   ├─ map/ ( components, services )
+ │   │   └─ vehicle/ ( components, modals, services, interfaces )
+ │   ├─ pages/ ( home, map, calendar, graphics )
+ │   └─ shared/ ( components, layout, services )
+ ├─ assets/
+ ├─ environments/
+ ├─ index.html
+ ├─ main.ts
+ └─ styles.css
 ```
 
 ---
@@ -157,10 +96,11 @@ whereismycarapp
 ## Instalación del Proyecto
 
 La aplicación está dividida en dos repositorios:
-- Frontend → Angular 20 (https://github.com/JordiMiravet/WhereIsMyCarApp.git)
-- Backend → NestJS (https://github.com/JordiMiravet/WhereIsMyCarApp-backend.git)
+- Frontend → Angular 20 https://github.com/JordiMiravet/WhereIsMyCarApp.git
+- Backend → NestJS https://github.com/JordiMiravet/WhereIsMyCarApp-backend.git
 
 Es necesario levantar ambos para que funcione correctamente.
+
 ### Requisitos previos
 
 - Node.js v20 o superior
@@ -176,13 +116,13 @@ Clonar el repositorio:
     cd whereismycarapp
     npm install
 ```
-Configuración de Firebase
+Configuración de Firebase Authentication:
 
-El frontend utiliza Firebase Authentication, por lo que necesitas crear tu propio proyecto en Firebase.
-1. Crear un proyecto en https://console.firebase.google.com
-2. Activar Authentication con Email/Password
-3. En la configuración del proyecto, añadir una aplicación web
-4. Copiar la configuración que te da Firebase
+- Configurar Firebase Authentication:
+    1. Crear proyecto en Firebase Console
+    2. Activar Email/Password Authentication
+    3. Añadir aplicación web y copiar configuración
+    4. Crear src/environments/environment.ts con tu configuración
 
 Dentro de src, crear la carpeta environments y añadir el archivo:
 
@@ -226,6 +166,7 @@ Crear un archivo .env en la raíz del proyecto con el siguiente contenido:
     FIREBASE_CLIENT_EMAIL=tu_client_email
     FIREBASE_PRIVATE_KEY=tu_private_key
 ```
+
 Las credenciales de Firebase se obtienen desde:
 Firebase Console → Configuración del Proyecto → Cuentas de servicio → Generar nueva clave privada.
 Del archivo JSON descargado necesitas:
@@ -267,7 +208,7 @@ Notas
 
 ---
 
-1. Uso
+## Uso
 
 Aquí explicas cómo interactuar con la app una vez que está corriendo. Por ejemplo:
 
@@ -284,3 +225,127 @@ Aquí explicas cómo interactuar con la app una vez que está corriendo. Por eje
         - Filtrando un vehículo concreto, solo se verán los eventos de ese coche.
     7. Visualizar estadísticas en la sección de gráficos. (Graphics)
 
+---
+
+## Vista Previa del Proyecto
+
+A continuación se muestra una vista previa de la aplicación en funcionamiento:
+
+//// TODO: Luego tengo que hacer gifs de las siguientes acciones :
+
+- Registro de usuario
+- Login de usuario
+- Gestión de vehículos (crear, editar, eliminar)
+- Mapa interactivo (drag & drop y filtrado por coches)
+- Calendario de eventos (añadir, editar, eliminar, control de solapamientos y filtrado de eventos)
+- Panel de estadísticas (gráficos)
+
+/// aun tengo que ver
+
+---
+
+## Tests
+
+La aplicación incluye tests unitarios desarrollados con Jasmine, ejecutables mediante Angular CLI:
+
+```bash
+    ng test
+```
+- Componentes y servicios principales testeados:
+    - Componentes: `VehicleTableComponent`, `CalendarViewComponent`, `MapViewComponent`, `GraphicsViewComponent`
+    - Servicios: `VehicleService`, `CalendarService`, `MapService`, `GraphicsService`
+- Cobertura:
+
+```markdown
+| Tipo       | Total | Cobertura |
+| ---------- | ----- | --------- |
+| Statements | 501   | 79.64%    |
+| Branches   | 99    | 71.71%    |
+| Functions  | 150   | 75.33%    |
+| Lines      | 453   | 80.13%    |
+```
+
+<!-- Nota: Cobertura general aproximada, algunas ramas de edge cases todavía por testear -->
+
+#### Ejemplo destacado y explicación por líneas
+
+El siguiente test es uno de los más interesantes, ya que combina asincronía, manejo de errores y fallback logic dentro del método saveVehicle del MapComponent:
+
+```typescript
+it('should use fallback location when geolocation fails', async () => {
+
+    // 1. Mock del vehículo que se va a guardar
+    const vehicle = {
+        name: 'Mercedes GLC Coupe',
+        model: 'GLC Coupe',
+        plate: '3447VHZ',
+    };
+
+    // 2. Establecemos el modo de modal en 'create'
+    vehicleModalStateServiceMock.mode.set('create');
+
+    // 3. Simulamos que la geolocalización falla
+    geolocationServiceMock.getCurrentLocation.and.rejectWith(new Error('geolocation failed'));
+
+    // 4. Reiniciamos los spies de addVehicles
+    vehicleServiceMock.addVehicles.calls.reset();
+
+    // 5. Llamamos a saveVehicle
+    await component.saveVehicle(vehicle as any);
+
+    // 6. Se espera que se haya intentado obtener la geolocalización
+    expect(geolocationServiceMock.getCurrentLocation).toHaveBeenCalled();
+
+    // 7. Se espera que el vehículo se haya añadido usando la ubicación fallback
+    expect(vehicleServiceMock.addVehicles).toHaveBeenCalled();
+    const addedVehicle = vehicleServiceMock.addVehicles.calls.mostRecent().args[0];
+    expect(addedVehicle.location).toEqual({ lat: 41.478, lng: 2.310 });
+
+    // 8. Se espera que se cierre el modal al finalizar
+    expect(vehicleModalStateServiceMock.close).toHaveBeenCalled();
+});
+```
+
+#### Ejemplo de test de template
+
+Este test asegura que el mapa se renderiza correctamente cuando la lista de vehículos no está vacía:
+```Typescript
+it('should render map view when vehicle list is not empty', () => {
+    vehicleServiceMock.vehicles.set([{
+        name: 'Mercedes GLC Coupe',
+        model: 'GLC Coupe',
+        plate: '3447VHZ',
+        location: { lat: 41.486, lng: 2.311 }
+    }]);
+    fixture.detectChanges();
+
+    const mapView = fixture.nativeElement.querySelector('app-map-view');
+    expect(mapView).toBeTruthy();
+});
+```
+
+También se testean casos de estado vacío y apertura/cierre de modales para asegurar la correcta interacción del usuario con la interfaz.
+
+---
+
+## Contribución
+
+Si quieres contribuir a este proyecto, puedes:
+
+1. Hacer un fork de los repositorios. 
+https://github.com/JordiMiravet/WhereIsMyCarApp.git
+https://github.com/JordiMiravet/WhereIsMyCarApp-backend.git
+2. Crear una rama con la nueva funcionalidad o corrección de bug (`git checkout -b feature/nueva-funcionalidad`).
+3. Hacer commits claros y descriptivos.
+4. Hacer push a tu rama.
+5. Crear un Pull Request describiendo tus cambios.
+
+---
+
+## GH-Pages
+
+Actualmente, la aplicación no está desplegada en GitHub Pages. 
+
+## Autor
+
+**Jordi Miravet**
