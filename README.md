@@ -151,198 +151,136 @@ whereismycarapp
 │   └──styles.css
 
 ```
-//////////////////////// Estoy por aqui
+
 ---
 
-## Instalación del proyecto
+## Instalación del Proyecto
 
-#### Requisitos previos
-- Antes de instalar el proyecto asegúrate de tener:
-    - Navegador web
-    - node > 22
-    - npm > 10
-    - Angular CLI (instalado globalmente)
-    
+La aplicación está dividida en dos repositorios:
+- Frontend → Angular 20 (https://github.com/JordiMiravet/WhereIsMyCarApp.git)
+- Backend → NestJS (https://github.com/JordiMiravet/WhereIsMyCarApp-backend.git)
 
-1. Clona el repositorio:
+Es necesario levantar ambos para que funcione correctamente.
+### Requisitos previos
+
+- Node.js v20 o superior
+- Angular CLI (`npm install -g @angular/cli`)
+- MongoDB en ejecución
+
+### 1. Frontend
+
+Clonar el repositorio:
 
 ```bash
-    git clone https://github.com/JordiMiravet/Bootcamp-S7.git
+    git clone https://github.com/JordiMiravet/WhereIsMyCarApp.git
+    cd whereismycarapp
+    npm install
+```
+Configuración de Firebase
+
+El frontend utiliza Firebase Authentication, por lo que necesitas crear tu propio proyecto en Firebase.
+1. Crear un proyecto en https://console.firebase.google.com
+2. Activar Authentication con Email/Password
+3. En la configuración del proyecto, añadir una aplicación web
+4. Copiar la configuración que te da Firebase
+
+Dentro de src, crear la carpeta environments y añadir el archivo:
+
+```bash
+    src/environments/environment.ts
 ```
 
-2. Instala dependencias:
+Con el siguiente contenido, reemplazando los valores por los de tu proyecto:
 
+```typescript
+    export const environment = {
+        production: true,
+        firebaseConfig: {
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_AUTH_DOMAIN",
+            projectId: "TU_PROJECT_ID",
+            storageBucket: "TU_STORAGE_BUCKET",
+            messagingSenderId: "TU_MESSAGING_SENDER_ID",
+            appId: "TU_APP_ID"
+        }
+    };
+
+```
+
+### 2. Backend
+
+Clonar el repositorio del backend:
 ```bash
+    git clone https://github.com/JordiMiravet/WhereIsMyCarApp-backend.git
+    cd whereismycar-backend
     npm install
 ```
 
-3. Ejecuta el servidor:
+Crear un archivo .env en la raíz del proyecto con el siguiente contenido:
+
+```env
+    PORT=3000
+    MONGO_URI=mongodb://localhost:27017/whereismycar
+
+    FIREBASE_PROJECT_ID=tu_project_id
+    FIREBASE_CLIENT_EMAIL=tu_client_email
+    FIREBASE_PRIVATE_KEY=tu_private_key
+```
+Las credenciales de Firebase se obtienen desde:
+Firebase Console → Configuración del Proyecto → Cuentas de servicio → Generar nueva clave privada.
+Del archivo JSON descargado necesitas:
+- project_id
+- client_email
+- private_key
+
+La private_key debe mantenerse en una sola línea y conservar los \n.
+
+### 3. Ejecutar la aplicación
+
+Primero levantar el backend:
+
+```code
+    npm run start:dev
+```
+
+Después, en otra terminal en el proyecto de frontend, levantar el frontend:
 
 ```bash
     ng serve
 ```
 
-4. Abrir en el navegador:
+Abrir en el navegador:
 
 ```bash
     http://localhost:4200
 ```
 
----
 
-## Uso
-
-Tras iniciar la aplicación, el usuario puede:
-
-1. **Registro y login de usuarios**: Los usuarios pueden crear una cuenta y loguearse para acceder al contenido protegido.
-2. **Acceder a la página principal**: Se muestra un listado de naves espaciales con información básica como nombre y modelo.
-3. **Navegación paginada**: Solo se cargan inicialmente las primeras 10 naves, y el usuario puede cargar más mediante el _scroll infinito_.
-4. **Ver detalles de cada nave**: Haciendo clic en cualquier nave del listado, se accede a su ficha completa con todos los atributos disponibles (fabricante, costo, velocidad, tripulación, pasajeros, clase de nave, etc.).
-5. **Explorar pilotos asociados**: Dentro de la ficha de cada nave, se pueden ver tarjetas con los pilotos que la han manejado.
-6. **Consultar películas relacionadas**: Se muestran las películas en las que aparece cada nave.
-7. **Protección de rutas**: El listado de naves y los detalles solo están disponibles para usuarios registrados.
-8. **Navegación dinámica**: El usuario puede volver a la lista de naves o moverse entre secciones mediante la barra de navegación.
-
----
-
-## Vista Previa del proyecto
-
-1. Registro de usuario
-- El usuario puede registrarse únicamente si el correo no está registrado previamente.
-- Tras registrarse, se redirige automáticamente a la lista de naves.
-- En caso de que el email ya exista, se muestra un mensaje de error.
-
-![register](/public/assets/readme/sw_register.gif)
-
-2. Login de usuario
-- El usuario puede iniciar sesión solo si el correo y la contraseña coinciden.
-- Tras iniciar sesión, se redirige automáticamente a la lista de naves.
-- Si los datos son incorrectos, se muestra un mensaje de error.
-
-![login](/public/assets/readme/sw_login.gif)
-
-3. Logout de usuario
-- El usuario puede cerrar sesión.
-- Una vez hecho logout, no podrá acceder a la información protegida de la página.
-
-![logout](/public/assets/readme/sw_logout.gif)
-
-4. Lista de naves:
-- Se carga dinámicamente una lista de naves usando scroll infinito.
-
-![list](/public/assets/readme/sw_list_infinite-scroll.gif)
-
-5. Detalle de una nave especifica
-- Se muestran los detalles de la nave seleccionada de la lista.
-- Mientras se cargan los datos, se muestra un mensaje de carga y, si ocurre un error, aparece un mensaje de error.
-
-![detail](/public/assets/readme/sw_detail.gif)
-
----
-
-## Tests
-
-La aplicación incluye pruebas unitarias con `Jasmine` y se ejecutan mediante `Karma`.  
-
-#### Resumen
-- `32 specs` ejecutadas
-- `0 fallos`
-- Componentes y servicios principales testeados:
-    - Componentes: HeaderComponent, LoginComponent, RegisterComponent, StarshipsListComponent, StarshipInfoComponent, StarshipPilotsComponent, StarshipFilmsComponent, StarshipDetailComponent
-    - Servicios: UserService, StarshipsService
-
-#### Ejemplo destacado
-
-Se verifica que un usuario pueda loguearse correctamente:
-
-```ts
-    it('should call onSubmit and attempt login when form is valid', () => {
-    component.formLogin.setValue({
-        email: 'pleaseStopTesting@gmail.com',
-        password: '123456'
-    })
-    
-    let called = false;
-    (component as any).userService.login = () => {
-        called = true;
-        return Promise.resolve();
-    };
-    
-    component.onSubmit();
-
-    expect(called).toBe(true);
-    });
-```
-
-También se validan formularios reactivos y mensajes de error:
-
-```ts
-    it('should display error messages for invalid email and password', () => {
-    const emailControl = component.formLogin.controls['email'];
-    const passwordControl = component.formLogin.controls['password'];
-
-    emailControl.setValue(''); 
-    emailControl.markAsTouched();
-    passwordControl.setValue('');
-    passwordControl.markAsTouched();
-
-    expect(emailControl.invalid).toBeTrue();
-    expect(passwordControl.invalid).toBeTrue();
-
-    expect(component.message.invalidEmail).toBe('Please enter a valid email');
-    expect(component.message.invalidPassword).toBe('Please enter a password that contains at least 6 characters');
-    });
-```
-#### Ejecutar test
-
-- Para correr todos los tests locales:
-
+Notas
+- Es necesario tener Node.js instalado.
+- Angular CLI debe estar instalado globalmente:
 ```bash
-    ng test
+    npm install -g @angular/cli
 ```
+- Las claves reales no están incluidas en el repositorio.
+- Cada desarrollador debe usar su propio proyecto de Firebase.
 
 ---
 
-## Contribución
- 
-Para colaborar en este proyecto, sigue estos pasos:
+1. Uso
 
-1. Haz un **fork** del repositorio.
+Aquí explicas cómo interactuar con la app una vez que está corriendo. Por ejemplo:
 
-```bash
-https://github.com/JordiMiravet/Bootcamp-S7.git
-```
-
-2. Crea una nueva rama para tu funcionalidad o corrección:
-
-```bash
-   git checkout -b feature/nueva-funcionalidad
-
-```
-
-3. Realiza los cambios y asegúrate de que los test pasan correctamente.
-
-4. Haz un commit siguiendo las Conventional Commits:
-
-```bash
-    feat: añade nueva funcionalidad
-    fix: corrige error
-    docs: actualiza documentación
-```
-
-5. Envía un Pull Request describiendo tus cambios.
-
----
-
-## GH-Pages
-[Abrir proyecto](https://jordimiravet.github.io/Bootcamp-S7/)
-
----
-
-## Autor
-
-```bash
-    Jordi Miravet – Bootcamp S7 : StarWars app
-```
-
+    1. Abrir la aplicación en el navegador: http://localhost:4200
+    2. Registrar un nuevo usuario con email y contraseña.
+    3. Iniciar sesión con tus credenciales.
+    4. Crear, editar o eliminar un vehículo desde el panel de gestión de vehículos (Home).
+    5. Mover coches en el mapa para actualizar su ubicación. (Map)
+        - Por defecto se muestran todos los coches.
+        - Filtrando un vehículo concreto, solo se mostrará la localización de ese coche.
+    6. Añadir, editar o eliminar eventos al calendario para cada coche. (Calendar)
+        - La app evita conflictos de horario entre eventos de un mismo coche.
+        - Por defecto se muestran los eventos de todos los vehículos.
+        - Filtrando un vehículo concreto, solo se verán los eventos de ese coche.
+    7. Visualizar estadísticas en la sección de gráficos. (Graphics)
 
