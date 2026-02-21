@@ -230,14 +230,24 @@ Aquí explicas cómo interactuar con la app una vez que está corriendo. Por eje
 
 A continuación se muestra una vista previa de la aplicación en funcionamiento:
 
-//// TODO: Luego tengo que hacer gifs de las siguientes acciones :
-
-- Registro de usuario
-- Login de usuario
-- Gestión de vehículos (crear, editar, eliminar)
-- Mapa interactivo (drag & drop y filtrado por coches)
-- Calendario de eventos (añadir, editar, eliminar, control de solapamientos y filtrado de eventos)
-- Panel de estadísticas (gráficos)
+#### Registro de usuario
+![Register](src/assets/readme/register.gif)
+#### Login de usuario
+![Login](src/assets/readme/login.gif)
+#### Gestión de vehículos (CRUD)
+![Create Vehicle](src/assets/readme/vehicle-create.gif)
+![Edit Vehicle](src/assets/readme/vehicle-edit.gif)
+![Delete Vehicle](src/assets/readme/vehicle-delete.gif)
+#### Mapa interactivo (drag & drop y filtrado por coches)
+![Drag & Drop](src/assets/readme/vehicle-map-dragdrop.gif)
+#### Calendario de eventos (CRUD, control de solapamientos y filtrado de eventos)
+![Create Event](src/assets/readme/event-create.gif)
+![Edit Event](src/assets/readme/event-edit.gif)
+![Delete Event](src/assets/readme/event-delete.gif)
+![Overlap validation](src/assets/readme/event-valid-overlap.gif)
+![Event time validation](src/assets/readme/event-valid-time.gif)
+#### Panel de estadísticas (gráficos)
+![Graphics](src/assets/readme/graphics.gif)
 
 ---
 
@@ -254,13 +264,14 @@ La aplicación incluye tests unitarios desarrollados con Jasmine, ejecutables me
 - Cobertura:
 
 ```markdown
-Total Tests : 356
 | Tipo       | Total | Cobertura |
 | ---------- | ----- | --------- |
 | Statements | 501   | 79.64%    |
 | Branches   | 99    | 71.71%    |
 | Functions  | 150   | 75.33%    |
 | Lines      | 453   | 80.13%    |
+
+Total Tests : 356
 ```
 
 #### Ejemplo destacado y explicación por líneas
