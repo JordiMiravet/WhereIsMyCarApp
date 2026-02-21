@@ -97,7 +97,7 @@
     background-color: var(--color-red-light);
     color: var(--color-white);
     padding: var(--space-xs);
-    margin-top: 1rem;
+    margin: 1rem 0 0 0;
     opacity: 0.9;
     border-radius: var(--radius-sm);
     font-size: var(--font-size-sm);
@@ -127,4 +127,14 @@
     opacity: 0.9;
     background-color: var(--gray-200);
     color: var(--gray-900);
+}
+
+/* Form Note */
+
+.form__note {
+    margin: 1rem 0 0 0 ;
+    padding: 0;
+    text-align: end;
+    font-weight: 700;
+    color: var(--color-blue-dark);
 }
