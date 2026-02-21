@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GraphicsViewComponent } from './graphics-view';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('GraphicsView', () => {
   let component: GraphicsViewComponent;
@@ -8,7 +9,10 @@ describe('GraphicsView', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GraphicsViewComponent]
+      imports: [
+        GraphicsViewComponent,
+        HttpClientTestingModule
+      ]
     })
     .compileComponents();
 

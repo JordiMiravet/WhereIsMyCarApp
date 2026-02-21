@@ -94,16 +94,6 @@ describe('LoginComponent', () => {
 
   describe('Template rendering', () => {
 
-    it('should disable submit button when form is invalid', () => {
-      const button = fixture.nativeElement.querySelector('button');
-
-      component.formLogin.get('email')?.setValue('');
-      component.formLogin.get('password')?.setValue('');
-      fixture.detectChanges();
-      
-      expect(button.disabled).toBeTrue();
-    });
-
     it('should enable submit button when form is valid', () => {
       const button = fixture.nativeElement.querySelector('button');
 

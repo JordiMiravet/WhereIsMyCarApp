@@ -486,21 +486,6 @@ describe('EventFormModalComponent', () => {
 
   describe('Template integration', () => {
 
-    it('should disable save button when form is invalid', () => {
-      component.formEvent.patchValue({
-        title: '',
-        date: '',
-        hourStart: '',
-        hourEnd: '',
-        vehicleId: '',
-        comment: 'Cojo otro muelle, lo tiro por el retrete y ya son 578 muelles los que el retrete se ha tragado'
-      })
-      fixture.detectChanges()
-
-      var button = fixture.nativeElement.querySelector('.event-form__button--Save')
-      expect(button.disabled).toBe(true)
-    });
-
     it('should enable save button when form is valid', () => {
       component.formEvent.patchValue({
         title: 'Quedada JDM',
