@@ -20,13 +20,13 @@
             </legend>
 
             <div class="modal__form-section">
-                <label for="createVehicleName" class="modal__label">Name</label>
+                <label for="createVehicleName" class="modal__label">Name *</label>
                 <input 
                     type="text" 
                     id="createVehicleName" 
                     formControlName="name" 
                     class="modal__input" 
-                    placeholder="Vehicle Name*"
+                    placeholder="Vehicle Name"
                     [ngClass]="{'modal__input--error': form.controls['name'].invalid && form.controls['name'].touched}"
                     [attr.aria-invalid]="form.controls['name'].invalid && form.controls['name'].touched"
                     aria-describedby="createVehicleName-error"
@@ -44,13 +44,13 @@
             </div>
 
             <div class="modal__form-section">
-                <label for="createVehicleModel" class="modal__label">Model</label>
+                <label for="createVehicleModel" class="modal__label">Model *</label>
                 <input 
                     type="text" 
                     id="createVehicleModel" 
                     formControlName="model" 
                     class="modal__input"
-                    placeholder="Vehicle Model*"
+                    placeholder="Vehicle Model"
                     [ngClass]="{'modal__input--error': form.controls['model'].invalid && form.controls['model'].touched}"
                     [attr.aria-invalid]="form.controls['model'].invalid && form.controls['model'].touched"
                     aria-describedby="createVehicleModel-error"
@@ -68,13 +68,13 @@
             </div>
 
             <div class="modal__form-section">
-                <label for="createVehiclePlate" class="modal__label">Plate</label>
+                <label for="createVehiclePlate" class="modal__label">Plate *</label>
                 <input 
                     type="text" 
                     id="createVehiclePlate" 
                     formControlName="plate" 
                     class="modal__input" 
-                    placeholder="Vehicle Plate*"
+                    placeholder="Vehicle Plate"
                     [ngClass]="{'modal__input--error': form.controls['plate'].invalid && form.controls['plate'].touched}"
                     [attr.aria-invalid]="form.controls['plate'].invalid && form.controls['plate'].touched"
                     aria-describedby="createVehiclePlate-error"
@@ -110,5 +110,10 @@
             </button>
         </div>
 
+        <p class="modal__note">
+            <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
+            Fields marked with * are required
+        </p>
     </form>
+
 </div>

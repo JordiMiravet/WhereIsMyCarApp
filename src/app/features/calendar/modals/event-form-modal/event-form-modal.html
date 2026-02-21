@@ -20,7 +20,7 @@
             </legend>
 
             <div class="event-form__group">
-                <label class="event-form__label" for="inputEventTitle">Title</label>
+                <label class="event-form__label" for="inputEventTitle">Title *</label>
                 <input 
                     class="event-form__input" 
                     type="text" 
@@ -44,7 +44,7 @@
             </div>
 
             <div class="event-form__group">
-                <label class="event-form__label" for="inputEventDate">Date</label>
+                <label class="event-form__label" for="inputEventDate">Date *</label>
                 <input 
                     class="event-form__input" 
                     type="date" 
@@ -69,7 +69,7 @@
 
             <div class="event-form__time-group">
                 <div class="event-form__group">
-                    <label class="event-form__label" for="inputEventHourStart">Start Time</label>
+                    <label class="event-form__label" for="inputEventHourStart">Start Time *</label>
                     <input 
                         class="event-form__input" 
                         type="time" 
@@ -92,7 +92,7 @@
                 </div>
 
                 <div class="event-form__group">
-                    <label class="event-form__label" for="inputEventHourEnd">End Time</label>
+                    <label class="event-form__label" for="inputEventHourEnd">End Time *</label>
                     <input 
                         class="event-form__input" 
                         type="time" 
@@ -134,7 +134,7 @@
             </div>
             
             <div class="event-form__group">
-                <label class="event-form__label" for="vehicleSelect">Vehicle</label>
+                <label class="event-form__label" for="vehicleSelect">Vehicle *</label>
                 <select
                     id="vehicleSelect"
                     class="event-form__input"
@@ -193,6 +193,11 @@
                 </button>
             </div>
         </fieldset>
+
+        <p class="event-form__note">
+            <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
+            Fields marked with * are required
+        </p>
 
     </form>
 </section>
