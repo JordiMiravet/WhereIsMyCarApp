@@ -38,6 +38,11 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
+    if (!this.formReg.valid) {
+      this.formReg.markAllAsTouched();
+      return
+    }
+
     this.authService.register(this.formReg.value)
     .then( response => {
       this.router.navigate([''])
