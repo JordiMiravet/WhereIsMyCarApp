@@ -37,6 +37,11 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
+    if(this.formLogin.invalid) {
+      this.formLogin.markAllAsTouched(); 
+      return;
+    }
+    
     this.authService.login(this.formLogin.value)
     .then( response => {
       this.router.navigate([''])

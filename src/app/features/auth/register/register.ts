@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
-    if (!this.formReg.valid) {
+    if (this.formReg.invalid) {
       this.formReg.markAllAsTouched();
       return
     }
