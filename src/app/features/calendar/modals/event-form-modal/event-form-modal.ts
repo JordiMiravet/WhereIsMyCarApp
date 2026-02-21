@@ -127,7 +127,10 @@ export class EventFormModalComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (!this.formEvent.valid) return;
+    if (!this.formEvent.valid) {
+      this.formEvent.markAllAsTouched();
+      return;
+    }
 
     if (this.mode() === 'edit') {
       this.eventService.updateEvent({
