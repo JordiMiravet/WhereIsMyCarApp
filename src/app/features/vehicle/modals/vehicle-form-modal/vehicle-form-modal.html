@@ -98,8 +98,6 @@
                 type="button" 
                 class="modal__button modal__button--save" 
                 (click)="onSubmit()" 
-                [disabled]="form.invalid"
-                [attr.aria-disabled]="form.invalid"
             >
                 <i class="pi pi-save" aria-hidden="true"></i>
                 {{ mode() === 'create' ? 'Create' : 'Update' }}

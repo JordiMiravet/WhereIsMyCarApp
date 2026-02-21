@@ -57,7 +57,10 @@ export class VehicleFormModalComponent {
   }
 
   onSubmit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return
+    }
     this.submit.emit({ ...this.form.value });
   }
 
