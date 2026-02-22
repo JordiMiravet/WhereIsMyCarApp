@@ -78,7 +78,7 @@ src/
  │   ├─ features/
  │   │   ├─ auth/ ( login, register, services )
  │   │   ├─ calendar/ ( components, modals, services, interfaces )
- │   │   ├─ graphics/ ( components, services, interfaces )
+ │   │   ├─ graphics/ ( components, services, interfaces, enums )
  │   │   ├─ map/ ( components, services )
  │   │   └─ vehicle/ ( components, modals, services, interfaces )
  │   ├─ pages/ ( home, map, calendar, graphics )
@@ -223,6 +223,7 @@ Aquí explicas cómo interactuar con la app una vez que está corriendo. Por eje
         - Por defecto se muestran los eventos de todos los vehículos.
         - Filtrando un vehículo concreto, solo se verán los eventos de ese coche.
     7. Visualizar estadísticas en la sección de gráficos. (Graphics)
+        - Los gráficos permiten filtrar los datos por período de tiempo mediante los botones This Month, This Year y All Time.
 
 ---
 

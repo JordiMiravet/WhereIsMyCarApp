@@ -44,9 +44,11 @@ export class CalendarViewComponent implements AfterViewInit {
   public selectedDate = signal<string>('');
   private selectedEventId = signal<string | null>(null);
 
+  // TODO: Pasar el formMode a enums
   public formMode = signal<'create' | 'edit'>('create');
   public selectedEvent = signal<EventInterface | null>(null);
 
+  // TODO: Pasar el activeModal a enums
   public activeModal = signal<'dayEvents' | 'eventForm' | 'confirm' | null>(null);
 
   public confirmModalMsg = signal({

@@ -1,5 +1,6 @@
-import { Component, effect, ElementRef, inject, OnDestroy, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, input, OnDestroy, ViewChild } from '@angular/core';
 import Chart from 'chart.js/auto';
+import { TimePeriod } from '../../enums/time-period.enum';
 import { GraphicsServices } from '../../services/graphics-services';
 import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
 
@@ -15,6 +16,8 @@ export class VehicleUsageHoursChartComponent implements OnDestroy {
 
   @ViewChild('vehicleUsageHours') vehicleUsageHours!: ElementRef<HTMLCanvasElement>;
 
+  public period = input<TimePeriod>(TimePeriod.Month);
+  
   private graphicsService = inject(GraphicsServices);
   private vehicleService = inject(VehicleService);
 
@@ -23,6 +26,7 @@ export class VehicleUsageHoursChartComponent implements OnDestroy {
   constructor() {
     effect(() => {
       this.vehicleService.vehicles();
+      this.period();
 
       if (this.vehicleUsageHours) {
         this.createVehicleUsageHours();
@@ -38,7 +42,7 @@ export class VehicleUsageHoursChartComponent implements OnDestroy {
   
   private createVehicleUsageHours(): void {
 
-    const data = this.graphicsService.getVehicleUsageHours(new Date());
+    const data = this.graphicsService.getVehicleUsageHours(this.period());
     if (!data.length) return;
 
     const labels = data.map(item => item.vehicleName);

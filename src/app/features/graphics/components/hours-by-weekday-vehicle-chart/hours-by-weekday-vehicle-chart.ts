@@ -1,7 +1,11 @@
-import { Component, effect, ElementRef, inject, OnDestroy, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, input, OnDestroy, ViewChild } from '@angular/core';
 import Chart from 'chart.js/auto';
+
+import { TimePeriod } from '../../enums/time-period.enum';
+
 import { GraphicsServices } from '../../services/graphics-services';
 import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
+
 
 @Component({
   selector: 'app-hours-by-weekday-vehicle-chart',
@@ -14,6 +18,8 @@ import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicl
 export class HoursByWeekdayVehicleChartComponent implements OnDestroy {
 
   @ViewChild('hoursByWeekday') hoursByWeekday!: ElementRef<HTMLCanvasElement>;
+
+  public period = input<TimePeriod>(TimePeriod.Month);
   
   private graphicsService = inject(GraphicsServices);
   private vehicleService = inject(VehicleService);
@@ -23,6 +29,7 @@ export class HoursByWeekdayVehicleChartComponent implements OnDestroy {
   constructor() {
     effect(() => {
       this.vehicleService.vehicles();
+      this.period();
 
       if(this.hoursByWeekday) {
         this.createHoursByWeekdayByVehicle()
@@ -38,7 +45,7 @@ export class HoursByWeekdayVehicleChartComponent implements OnDestroy {
 
   private createHoursByWeekdayByVehicle(): void {
   
-    const data = this.graphicsService.getHoursByWeekdayPerVehicle(new Date());
+    const data = this.graphicsService.getHoursByWeekdayPerVehicle(this.period());
     if (!data) return;
 
     if(this.chart) {

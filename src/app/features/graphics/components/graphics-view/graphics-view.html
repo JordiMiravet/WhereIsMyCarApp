@@ -1,20 +1,45 @@
+
 <section class="graphics-actions" role="region" aria-label="Vehicle metrics heading">
     <h2 class="graphics-actions__title">
         <i class="pi pi-chart-bar" aria-hidden="true"></i>    
         Metrics:
     </h2>
+    <!-- TODO: Pasar los actions a un componente propio -->
+    <div class="graphics-actions__period" role="group" aria-label="Time period filter">
+        <button 
+            class="graphics-actions__period-button"
+            [class.graphics-actions__period-button--active]="selectedPeriod() === TimePeriod.Month"
+            [attr.aria-pressed]="selectedPeriod() === TimePeriod.Month"
+            (click)="changePeriod(TimePeriod.Month)">
+            This Month
+        </button>
+        <button 
+            class="graphics-actions__period-button"
+            [class.graphics-actions__period-button--active]="selectedPeriod() === TimePeriod.Year"
+            [attr.aria-pressed]="selectedPeriod() === TimePeriod.Year"
+            (click)="changePeriod(TimePeriod.Year)">
+            This Year
+        </button>
+        <button 
+            class="graphics-actions__period-button"
+            [class.graphics-actions__period-button--active]="selectedPeriod() === TimePeriod.AllTime"
+            [attr.aria-pressed]="selectedPeriod() === TimePeriod.AllTime"
+            (click)="changePeriod(TimePeriod.AllTime)">
+            All Time
+        </button>
+    </div>
 </section>
 
 <section class="graphics" role="region" aria-label="Vehicle metrics charts">
     <div class="graphics-view__container">
-        <app-vehicle-usage-hours-chart/>
+        <app-vehicle-usage-hours-chart [period]="selectedPeriod()"/>
     </div>
 
     <div class="graphics-view__container">
-        <app-most-used-vehicle-chart/>
+        <app-most-used-vehicle-chart [period]="selectedPeriod()"/>
     </div>
 
     <div class="graphics-view__container">
-        <app-hours-by-weekday-vehicle-chart/>
+        <app-hours-by-weekday-vehicle-chart [period]="selectedPeriod()"/>
     </div>
 </section>

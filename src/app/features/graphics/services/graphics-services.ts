@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 
 import { VehicleMetrics } from '../interfaces/VehicleMetrics';
+import { TimePeriod } from '../enums/time-period.enum';
 
 import { EventService } from '../../calendar/services/event-service';
 import { VehicleService } from '../../vehicle/services/vehicle-service/vehicle-service';
@@ -8,22 +9,17 @@ import { VehicleService } from '../../vehicle/services/vehicle-service/vehicle-s
 @Injectable({
   providedIn: 'root',
 })
-
 export class GraphicsServices {
 
   private eventService = inject(EventService);
-  private vehicleService = inject(VehicleService)
+  private vehicleService = inject(VehicleService);
 
-  public getVehicleUsageHours(monthDate?: Date): VehicleMetrics[] {
+  public getVehicleUsageHours(period: TimePeriod = TimePeriod.Month): VehicleMetrics[] {
 
     const events = this.eventService['_allEvents']();
     const vehicles = this.vehicleService.vehicles();
 
     const result: VehicleMetrics[] = [];
-
-    const referenceDate = monthDate ?? new Date();
-    const referenceMonth = referenceDate.getMonth();
-    const referenceYear = referenceDate.getFullYear();
 
     vehicles.forEach(vehicle => {
       let totalHours = 0;
@@ -34,12 +30,10 @@ export class GraphicsServices {
 
         if (!isSameVehicle || !hasValidHours) return;
 
-        const eventDate = new Date(event.date);
-        if (eventDate.getMonth() !== referenceMonth || eventDate.getFullYear() !== referenceYear) return;
+        if (!this.isInPeriod(event.date, period)) return;
 
         const hours = this.calculateEventHours(event.hourStart!, event.hourEnd!);
         totalHours += hours;
-
       });
 
       if (totalHours > 0) {
@@ -49,28 +43,23 @@ export class GraphicsServices {
           totalHours: totalHours
         });
       }
-
     });
 
     return result;
   }
 
-  public getMostUsedVehicle(monthDate?: Date): VehicleMetrics[] {
-    const allVehicles = this.getVehicleUsageHours(monthDate);
+  public getMostUsedVehicle(period: TimePeriod = TimePeriod.Month): VehicleMetrics[] {
+    const allVehicles = this.getVehicleUsageHours(period);
     if (!allVehicles.length) return [];
 
-    const mostUsedVehicles = allVehicles.sort((a, b) => b.totalHours - a.totalHours)
-
+    const mostUsedVehicles = allVehicles.sort((a, b) => b.totalHours - a.totalHours);
     return mostUsedVehicles.slice(0, 3);
   }
   
-  public getHoursByWeekdayPerVehicle(monthDate?: Date) {
+  public getHoursByWeekdayPerVehicle(period: TimePeriod = TimePeriod.Month) {
+  
     const events = this.eventService['_allEvents']();
     const vehicles = this.vehicleService.vehicles();
-
-    const referenceDate = monthDate ?? new Date();
-    const referenceMonth = referenceDate.getMonth();
-    const referenceYear = referenceDate.getFullYear();
 
     const weekdayNames = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
     
@@ -84,13 +73,10 @@ export class GraphicsServices {
       const { vehicleId, date, hourStart, hourEnd } = event;
       if(!vehicleId || !date || !hourStart || !hourEnd) return;
 
-      const eventDate = new Date(date);
-      if (eventDate.getMonth() !== referenceMonth || eventDate.getFullYear() !== referenceYear) return;
+      if (!this.isInPeriod(date, period)) return;
 
       const numberDay = new Date(date).getDay();
-      const dayIndex = numberDay === 0 
-        ? 6 
-        : numberDay - 1;
+      const dayIndex = numberDay === 0 ? 6 : numberDay - 1;
       
       const hours = this.calculateEventHours(hourStart, hourEnd);
       const vehicleData = result.find(v => v.id === vehicleId);
@@ -103,7 +89,29 @@ export class GraphicsServices {
     return { weekdayNames, vehicles: result };
   }
 
+  private isInPeriod(eventDateStr: string, period: TimePeriod): boolean {
+  
+    const eventDate = new Date(eventDateStr);
+    const now = new Date();
+
+    if (period === TimePeriod.AllTime) {
+      return true;
+    }
+    if (period === TimePeriod.Year) {
+      return eventDate.getFullYear() === now.getFullYear();
+    }
+    if (period === TimePeriod.Month) {
+      const sameMonth = eventDate.getMonth() === now.getMonth();
+      const sameYear = eventDate.getFullYear() === now.getFullYear();
+
+      return sameMonth && sameYear;
+    }
+
+    return true;
+  }
+
   private calculateEventHours(hourStart: string, hourEnd: string): number {
+    
     const [ startH, startM ] = hourStart.split(':').map(Number);
     const startMinutes = (startH * 60) + startM;
 

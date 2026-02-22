@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, inject,} from '@angular/core';
+import { AfterViewInit, Component, inject, signal,} from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { TimePeriod } from '../../enums/time-period.enum';
 
 import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
 import { VehicleUsageHoursChartComponent } from "../vehicle-usage-hours-chart/vehicle-usage-hours-chart";
@@ -23,7 +25,14 @@ export class GraphicsViewComponent implements AfterViewInit {
 
   private vehicleService = inject(VehicleService);
 
+  public selectedPeriod = signal<TimePeriod>(TimePeriod.Month);
+  public TimePeriod = TimePeriod;
+
   ngAfterViewInit(): void {
     this.vehicleService.loadVehicles();
+  }
+
+  changePeriod(period: TimePeriod): void {
+    this.selectedPeriod.set(period);
   }
 }

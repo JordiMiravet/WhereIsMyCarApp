@@ -2,7 +2,10 @@
 .graphics-actions {
     background-color: var(--color-white);
     margin: 0;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .graphics-actions__title {
     display: flex;
@@ -13,6 +16,37 @@
     padding: 1rem;
     font-size: var(--font-size-lg);
     color: var(--color-blue-dark);
+    filter: opacity(0.9);
+}
+
+.graphics-actions__period {
+    display: flex;
+    gap: 0.5rem;
+}
+.graphics-actions__period-button {
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--color-white);
+    border-radius: var(--radius-sm);
+    background: var(--color-white);
+    color: var(--color-blue-dark);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.graphics-actions__period-button:hover {
+    border-color: var(--color-blue-light);
+    color: var(--color-blue-light);
+}
+.graphics-actions__period-button--active {
+    background: var(--color-blue-light);
+    border-color: var(--color-blue-light);
+    color: var(--color-white);
+}
+.graphics-actions__period-button--active:hover {
+    background: var(--color-blue-light);
+    border-color: var(--color-blue-light);
+    color: var(--color-white);
 }
 
 .graphics {
