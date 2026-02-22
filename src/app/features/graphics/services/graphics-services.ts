@@ -14,12 +14,16 @@ export class GraphicsServices {
   private eventService = inject(EventService);
   private vehicleService = inject(VehicleService)
 
-  public getVehicleUsageHours(): VehicleMetrics[] {
+  public getVehicleUsageHours(monthDate?: Date): VehicleMetrics[] {
 
     const events = this.eventService['_allEvents']();
     const vehicles = this.vehicleService.vehicles();
 
     const result: VehicleMetrics[] = [];
+
+    const referenceDate = monthDate ?? new Date();
+    const referenceMonth = referenceDate.getMonth();
+    const referenceYear = referenceDate.getFullYear();
 
     vehicles.forEach(vehicle => {
       let totalHours = 0;
@@ -28,10 +32,14 @@ export class GraphicsServices {
         const isSameVehicle = event.vehicleId === vehicle._id;
         const hasValidHours = event.hourStart && event.hourEnd;
 
-        if (isSameVehicle && hasValidHours) {
-          const hours = this.calculateEventHours(event.hourStart!, event.hourEnd!);
-          totalHours += hours;
-        }
+        if (!isSameVehicle || !hasValidHours) return;
+
+        const eventDate = new Date(event.date);
+        if (eventDate.getMonth() !== referenceMonth || eventDate.getFullYear() !== referenceYear) return;
+
+        const hours = this.calculateEventHours(event.hourStart!, event.hourEnd!);
+        totalHours += hours;
+
       });
 
       if (totalHours > 0) {
@@ -47,22 +55,22 @@ export class GraphicsServices {
     return result;
   }
 
-  public getMostUsedVehicle(): VehicleMetrics | null {
-    const allVehicles = this.getVehicleUsageHours();
-    if (!allVehicles.length) return null;
+  public getMostUsedVehicle(monthDate?: Date): VehicleMetrics[] {
+    const allVehicles = this.getVehicleUsageHours(monthDate);
+    if (!allVehicles.length) return [];
 
-    const mostUsedVehicle = allVehicles.reduce((prevVehicle, currentVehicle) => 
-      currentVehicle.totalHours > prevVehicle.totalHours 
-        ? currentVehicle 
-        : prevVehicle
-    );
+    const mostUsedVehicles = allVehicles.sort((a, b) => b.totalHours - a.totalHours)
 
-    return mostUsedVehicle;
+    return mostUsedVehicles.slice(0, 3);
   }
   
-  public getHoursByWeekdayPerVehicle() {
+  public getHoursByWeekdayPerVehicle(monthDate?: Date) {
     const events = this.eventService['_allEvents']();
     const vehicles = this.vehicleService.vehicles();
+
+    const referenceDate = monthDate ?? new Date();
+    const referenceMonth = referenceDate.getMonth();
+    const referenceYear = referenceDate.getFullYear();
 
     const weekdayNames = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
     
@@ -75,6 +83,9 @@ export class GraphicsServices {
     events.forEach(event => {
       const { vehicleId, date, hourStart, hourEnd } = event;
       if(!vehicleId || !date || !hourStart || !hourEnd) return;
+
+      const eventDate = new Date(date);
+      if (eventDate.getMonth() !== referenceMonth || eventDate.getFullYear() !== referenceYear) return;
 
       const numberDay = new Date(date).getDay();
       const dayIndex = numberDay === 0 

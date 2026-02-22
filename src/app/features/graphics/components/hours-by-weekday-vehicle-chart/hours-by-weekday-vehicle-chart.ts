@@ -38,7 +38,7 @@ export class HoursByWeekdayVehicleChartComponent implements OnDestroy {
 
   private createHoursByWeekdayByVehicle(): void {
   
-    const data = this.graphicsService.getHoursByWeekdayPerVehicle();
+    const data = this.graphicsService.getHoursByWeekdayPerVehicle(new Date());
     if (!data) return;
 
     if(this.chart) {
@@ -67,7 +67,7 @@ export class HoursByWeekdayVehicleChartComponent implements OnDestroy {
         plugins: {
           title: {
             display: true,
-            text: 'Hours per Days & Vehicle',
+            text: 'Usage by Day of Week',
             font: { size: 20 }
           },
           legend: {

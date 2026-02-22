@@ -37,8 +37,8 @@ export class VehicleUsageHoursChartComponent implements OnDestroy {
   }
   
   private createVehicleUsageHours(): void {
-    
-    const data = this.graphicsService.getVehicleUsageHours();
+
+    const data = this.graphicsService.getVehicleUsageHours(new Date());
     if (!data.length) return;
 
     const labels = data.map(item => item.vehicleName);
@@ -55,7 +55,7 @@ export class VehicleUsageHoursChartComponent implements OnDestroy {
       data: {
         labels: labels,
         datasets: [{
-          label: 'Hours of Use',
+          label: 'Hours of Use (Current Month)',
           data: values,
           
           borderWidth: 2,
@@ -68,7 +68,7 @@ export class VehicleUsageHoursChartComponent implements OnDestroy {
         plugins: {
           title: {
             display: true,
-            text: 'Vehicle Usage (Hours)',
+            text: 'Vehicle Usage by Hours',
             font: { size: 20 }
           },
           legend: {

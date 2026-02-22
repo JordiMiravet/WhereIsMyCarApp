@@ -37,9 +37,9 @@ export class MostUsedVehicleChartComponent implements OnDestroy {
   }
  
   private createMostUsedVehicleChart(): void {
-    
-    const data = this.graphicsService.getMostUsedVehicle();
-    if(!data) return;
+
+    const data = this.graphicsService.getMostUsedVehicle(new Date());
+    if(!data.length) return;
 
     if(this.chart){
       this.chart.destroy();
@@ -50,11 +50,15 @@ export class MostUsedVehicleChartComponent implements OnDestroy {
     this.chart = new Chart(canvasElement, {
       type: 'bar',
       data: {
-        labels: [data.vehicleName],
+        labels: data.map(v => v.vehicleName),
         datasets: [{
-          label: 'Most Used Vehicle (Hours)',
-          data: [data.totalHours],
-          backgroundColor: 'rgba(255, 99, 132, 0.75)',
+          label: 'Top 3 Most Used (Current Month)',
+          data: data.map(v => v.totalHours),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.75)',
+            'rgba(54, 162, 235, 0.75)',
+            'rgba(75, 192, 192, 0.75)'
+          ],
           borderWidth: 2
         }]
       },
@@ -64,7 +68,7 @@ export class MostUsedVehicleChartComponent implements OnDestroy {
         plugins: {
           title: {
             display: true,
-            text: 'Most Used Vehicle',
+            text: 'Top 3 Most Used Vehicles',
             font: { size: 20 }
           },
           legend: {
