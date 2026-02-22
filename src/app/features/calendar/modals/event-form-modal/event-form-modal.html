@@ -120,7 +120,7 @@
                     [hidden]="!formEvent.hasError('invalidTimeRange') || !formEvent.get('hourStart')?.touched || !formEvent.get('hourEnd')?.touched"
                 >
                     <i class="pi pi-exclamation-circle" aria-hidden="true"></i> 
-                    Are you going back to the future, McFly? End time must be after start time                
+                    Are you going back to the future, McFly? End time must be after start time               
                 </p>
                 <p 
                     id="overlapError"
@@ -129,7 +129,7 @@
                     [hidden]="!formEvent.hasError('timeOverlap') || formEvent.hasError('invalidTimeRange')"
                 >
                     <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
-                    This time slot overlaps with another event on the same day
+                    This vehicle is already booked at this time, choose another time or vehicle
                 </p>
             </div>
             

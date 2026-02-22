@@ -5,95 +5,42 @@ import Chart from 'chart.js/auto';
 
 import { GraphicsServices } from '../../services/graphics-services';
 import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
-
+import { VehicleUsageHoursChartComponent } from "../vehicle-usage-hours-chart/vehicle-usage-hours-chart";
 
 @Component({
   selector: 'app-graphics-view',
   standalone: true,
-  imports: [ CommonModule ],
+  imports: [CommonModule, VehicleUsageHoursChartComponent],
   templateUrl: './graphics-view.html',
   styleUrl: './graphics-view.css',
 })
 
 export class GraphicsViewComponent implements AfterViewInit {
 
-  @ViewChild('vehicleUsageHours') vehicleUsageHours!: ElementRef<HTMLCanvasElement>;
   @ViewChild('mostUsedVehicle') mostUsedVehicle!: ElementRef<HTMLCanvasElement>;
   @ViewChild('hoursByWeekday') hoursByWeekday!: ElementRef<HTMLCanvasElement>;
   
   private graphicsService = inject(GraphicsServices);
   private vehicleService = inject(VehicleService);
 
-  vehicleUsageHoursChart!: Chart;
   mostUsedVehicleChart!: Chart;
   hoursByWeekdayChart!: Chart;
 
   ngAfterViewInit(): void {
     this.vehicleService.loadVehicles();
     setTimeout(() => {
-      this.createVehicleUsageHoursChart();
       this.createMostUsedVehicleChart();
       this.createHoursByWeekdayByVehicle();
     }, 500);
   }
 
   ngOnDestroy(): void {
-    if(this.vehicleUsageHoursChart) {
-      this.vehicleUsageHoursChart.destroy();
-    }
     if(this.mostUsedVehicleChart) {
       this.mostUsedVehicleChart.destroy();
     }
     if(this.hoursByWeekdayChart) {
       this.hoursByWeekdayChart.destroy();
     }
-  }
-
-  /* Horas por vehiculo */
-
-  public createVehicleUsageHoursChart(): void {
-    const data = this.graphicsService.getVehicleUsageHours();
-
-    const labels = data.map(item => item.vehicleName);
-    const values = data.map(item => item.totalHours);
-
-    
-    const canvasElement = this.vehicleUsageHours.nativeElement.getContext('2d')!;
-    
-    this.vehicleUsageHoursChart = new Chart(canvasElement, {
-      type: 'doughnut',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Hours of Use',
-          data: values,
-          
-          borderWidth: 2,
-          hoverOffset: 10,
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Vehicle Usage (Hours)',
-            font: { size: 20 }
-          },
-          legend: {
-            position: 'bottom',
-            align: 'center',
-            labels: {
-              boxWidth: 15,
-              boxHeight: 15,
-              padding: 15,
-              font: { size: 15, weight: 'normal' }
-            }
-          }
-        }
-      }
-    });
   }
 
   /* Vehiculo mas usado */
