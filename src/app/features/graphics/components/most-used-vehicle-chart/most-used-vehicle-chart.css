@@ -1,0 +1,10 @@
+.chart-wrapper {
+    position: relative;
+    height: 40rem;
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background: var(--color-white);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}

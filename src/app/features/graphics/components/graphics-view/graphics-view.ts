@@ -6,11 +6,12 @@ import Chart from 'chart.js/auto';
 import { GraphicsServices } from '../../services/graphics-services';
 import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
 import { VehicleUsageHoursChartComponent } from "../vehicle-usage-hours-chart/vehicle-usage-hours-chart";
+import { MostUsedVehicleChartComponent } from "../most-used-vehicle-chart/most-used-vehicle-chart";
 
 @Component({
   selector: 'app-graphics-view',
   standalone: true,
-  imports: [CommonModule, VehicleUsageHoursChartComponent],
+  imports: [CommonModule, VehicleUsageHoursChartComponent, MostUsedVehicleChartComponent],
   templateUrl: './graphics-view.html',
   styleUrl: './graphics-view.css',
 })
@@ -29,15 +30,11 @@ export class GraphicsViewComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.vehicleService.loadVehicles();
     setTimeout(() => {
-      this.createMostUsedVehicleChart();
       this.createHoursByWeekdayByVehicle();
     }, 500);
   }
 
   ngOnDestroy(): void {
-    if(this.mostUsedVehicleChart) {
-      this.mostUsedVehicleChart.destroy();
-    }
     if(this.hoursByWeekdayChart) {
       this.hoursByWeekdayChart.destroy();
     }
