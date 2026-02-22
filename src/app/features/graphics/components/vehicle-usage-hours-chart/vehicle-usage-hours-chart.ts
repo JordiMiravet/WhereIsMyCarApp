@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, OnDestroy, ViewChild } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { GraphicsServices } from '../../services/graphics-services';
+import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
 
 @Component({
   selector: 'app-vehicle-usage-hours-chart',
@@ -10,18 +11,23 @@ import { GraphicsServices } from '../../services/graphics-services';
   styleUrl: './vehicle-usage-hours-chart.css',
 })
 
-export class VehicleUsageHoursChartComponent implements AfterViewInit, OnDestroy {
+export class VehicleUsageHoursChartComponent implements OnDestroy {
 
   @ViewChild('vehicleUsageHours') vehicleUsageHours!: ElementRef<HTMLCanvasElement>;
 
   private graphicsService = inject(GraphicsServices);
+  private vehicleService = inject(VehicleService);
 
   private chart!: Chart;
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.createChart()
-    }, 250)
+  constructor() {
+    effect(() => {
+      this.vehicleService.vehicles();
+
+      if (this.vehicleUsageHours) {
+        this.createVehicleUsageHours();
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -30,11 +36,17 @@ export class VehicleUsageHoursChartComponent implements AfterViewInit, OnDestroy
     }
   }
   
-  private createChart(): void {
-    const data = this.graphicsService.getVehicleUsageHours();
+  private createVehicleUsageHours(): void {
     
+    const data = this.graphicsService.getVehicleUsageHours();
+    if (!data.length) return;
+
     const labels = data.map(item => item.vehicleName);
     const values = data.map(item => item.totalHours);
+
+    if (this.chart) {
+      this.chart.destroy();
+    }
 
     const canvasElement = this.vehicleUsageHours.nativeElement.getContext('2d')!;
     

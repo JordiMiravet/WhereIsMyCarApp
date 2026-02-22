@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HoursByWeekdayVehicleChart } from './hours-by-weekday-vehicle-chart';
+import { HoursByWeekdayVehicleChartComponent } from './hours-by-weekday-vehicle-chart';
 
-describe('HoursByWeekdayVehicleChart', () => {
-  let component: HoursByWeekdayVehicleChart;
-  let fixture: ComponentFixture<HoursByWeekdayVehicleChart>;
+describe('HoursByWeekdayVehicleChartComponent', () => {
+  let component: HoursByWeekdayVehicleChartComponent;
+  let fixture: ComponentFixture<HoursByWeekdayVehicleChartComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HoursByWeekdayVehicleChart]
+      imports: [HoursByWeekdayVehicleChartComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HoursByWeekdayVehicleChart);
+    fixture = TestBed.createComponent(HoursByWeekdayVehicleChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

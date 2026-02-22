@@ -1,25 +1,33 @@
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, OnDestroy, ViewChild } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { GraphicsServices } from '../../services/graphics-services';
+import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
 
 @Component({
   selector: 'app-most-used-vehicle-chart',
+  standalone: true,
   imports: [],
   templateUrl: './most-used-vehicle-chart.html',
   styleUrl: './most-used-vehicle-chart.css',
 })
-export class MostUsedVehicleChartComponent implements AfterViewInit, OnDestroy {
+
+export class MostUsedVehicleChartComponent implements OnDestroy {
 
   @ViewChild('mostUsedVehicle') mostUsedVehicle!: ElementRef<HTMLCanvasElement>;
 
   private graphicsService = inject(GraphicsServices);
+  private vehicleService = inject(VehicleService);
 
   private chart!: Chart;
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.createMostUsedVehicleChart()
-    }, 100)
+  constructor() {
+    effect(() => {
+      this.vehicleService.vehicles();
+
+      if (this.mostUsedVehicle) {
+        this.createMostUsedVehicleChart();
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -27,12 +35,15 @@ export class MostUsedVehicleChartComponent implements AfterViewInit, OnDestroy {
       this.chart.destroy();
     }
   }
-
-  /* Vehiculo mas usado */
-  
-  public createMostUsedVehicleChart(): void {
+ 
+  private createMostUsedVehicleChart(): void {
+    
     const data = this.graphicsService.getMostUsedVehicle();
     if(!data) return;
+
+    if(this.chart){
+      this.chart.destroy();
+    }
 
     const canvasElement = this.mostUsedVehicle.nativeElement.getContext('2d')!;
 
