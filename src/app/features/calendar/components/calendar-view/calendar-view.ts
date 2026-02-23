@@ -99,17 +99,16 @@ export class CalendarViewComponent implements AfterViewInit {
     this.vehicleService.loadVehicles();
 
     effect(() => {
-      this.eventService.calendarEvents();
-      
+      const events = this.eventService.calendarEvents();
       if (this.calendarComponent) {
         this.refreshCalendar();
       }
     });
   }
 
-
   ngAfterViewInit(): void {
-    this.refreshCalendar();
+    this.eventService.loadEvents();
+    this.refreshCalendar(); 
   }
 
   // Eventos click 
@@ -139,14 +138,12 @@ export class CalendarViewComponent implements AfterViewInit {
   
   // Logica del Edit
 
-  handleEditEvent(id: string) { 
-    const event = this.eventService.getEventById(id);
-    if(!event) return;
-    
-    this.formMode.set('edit');
-    this.selectedEvent.set(event);
-
-    this.activeModal.set('eventForm');
+  handleEditEvent(id: string): void { 
+    this.eventService.getEventById(id).subscribe(event => {
+      this.formMode.set('edit');
+      this.selectedEvent.set(event);
+      this.activeModal.set('eventForm');
+    });
   }
 
   // Logica del Delete 
