@@ -32,7 +32,6 @@ export class MapViewComponent implements OnInit {
 
   private map!: L.Map;
   private vehicleMarker?: L.Marker;
-  private userMarker?: L.Marker;
 
   public selectedVehicle = signal<VehicleInterface | null>(null);
   public newPosition = signal<L.LatLng | null>(null);
@@ -69,9 +68,14 @@ export class MapViewComponent implements OnInit {
       const coords = await this.geo.getCurrentLocation();
       
       this.placeVehicleMarker(coords, vehicle.name);
+
+      const position = L.latLng(coords);
+      this.vehicleService.updateVehicleLocation(vehicle, position);
       
-      this.newPosition.set(L.latLng(coords));
-      this.showConfirmModal.set(true);
+      this.selectedVehicle.set({ 
+        ...vehicle, 
+        location: { lat: position.lat, lng: position.lng }
+      });
 
     } catch (error) {
       console.error(error);
@@ -87,7 +91,6 @@ export class MapViewComponent implements OnInit {
 
     this.vehicleMarker.on('dragend', () => {
       const position = this.vehicleMarker!.getLatLng();
-
       this.newPosition.set(position);
       this.showConfirmModal.set(true);
     });
@@ -107,7 +110,7 @@ export class MapViewComponent implements OnInit {
       ...vehicle, 
       location: { lat: position.lat, lng: position.lng }
     });
-
+    this.mapService.setView(position, 19);
     this.showConfirmModal.set(false);
   }
 
