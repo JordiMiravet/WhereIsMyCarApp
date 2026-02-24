@@ -1,15 +1,16 @@
 .map__button {
     margin: 0;
-    padding: 0.75rem;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    font-size: 2rem;
-    background-color: var(--color-white);
+    padding: 1rem;
+    width: 100%;
+    border: none;
+    font-size: var(--font-size-sm);
+    background-color: var(--color-blue-light);
+    color: var(--color-white);
     border-radius: var(--radius-sm);
     transition: background-color 0.25s ease;
-    box-shadow: 0 0.5rem 0.5rem rgba(0, 0, 0, 0.25);
     cursor: pointer;
 }
 
 .map__button:hover {
-    background-color: var(--gray-100);
+    background-color: var(--color-blue-dark);
 }

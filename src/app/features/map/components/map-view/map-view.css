@@ -5,15 +5,18 @@
 
 /* Map Actions */
 
-.map-view__actions {
+.map-actions__container {
     width: 100%;
     padding: 0.75rem;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: stretch;
     gap: 1rem;
-    background-color: var(--color-gray-200);
+    background-color: var(--color-white);
     text-align: end;
+}
+.map-actions__container > * {
+    display: flex;
 }
 
 /* Map Container */
@@ -22,16 +25,6 @@
     position: relative;
     margin: 0;
     padding: 0;
-}
-
-.map__controls {
-    position: absolute;
-    z-index: 1000;
-    right: 0.25rem;
-    top: 0.25rem;
-    display: flex;
-    margin: 0 auto;
-    padding: 1rem 1rem;
 }
 
 /* Map */

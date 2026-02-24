@@ -9,20 +9,18 @@
     width: 100%;
     margin: 0;
     min-width: 20rem;
-    padding: 0.75rem;
+    padding: 1rem;
 
-    font-size: 1rem;
+    font-size: var(--font-size-sm);
     text-align: center;
-    font-size: var(--font-size-);
     color: var(--color-white);
 
-    border: 1px solid var(--gray-200);
+    border: none;
     border-radius: var(--radius-sm);
     background-color: var(--color-blue-light);
     cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
 }
-
-/* @Media Tablet */
 
 @media (min-width: 768px) {
     .map__vehicle-select {

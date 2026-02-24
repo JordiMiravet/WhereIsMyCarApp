@@ -1,5 +1,8 @@
 
-<section class="map-view__actions">
+<section class="map-actions__container">
+    <app-user-location-button
+        (click)="onUserLocationClick()"
+    />
     <app-vehicle-selector
         [vehicles]="vehicles()"
         (vehicleSelected)="showVehicle($event)"
@@ -7,10 +10,6 @@
 </section>
 
 <section class="map-view__container">
-    <app-user-location-button
-        (click)="onUserLocationClick()"
-        class="map__controls"
-    />
     <div 
         id="map" 
         class="map" 

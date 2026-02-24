@@ -54,8 +54,9 @@ export class VehicleService {
       updatedLocation
     ).subscribe(updatedVehicle => {
       this.vehicles.update(list =>
-        list.map(v =>
-          v._id === vehicle._id ? updatedVehicle : v
+        list.map(v => v._id === vehicle._id 
+          ? updatedVehicle 
+          : v
         )
       );
     });

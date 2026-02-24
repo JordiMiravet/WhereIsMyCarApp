@@ -46,7 +46,10 @@ export class EventService {
     this.http.put<EventInterface>(`${this.apiUrl}/${updatedEvent._id}`, updatedEvent)
       .subscribe(event => {
         this._allEvents.update(events =>
-          events.map(e => e._id === event._id ? event : e)
+          events.map(e => e._id === event._id 
+            ? event 
+            : e
+          )
         );
       });
   }
@@ -59,4 +62,5 @@ export class EventService {
         );
       });
   }
+
 }

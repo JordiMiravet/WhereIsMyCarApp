@@ -6,8 +6,6 @@
     aria-required="true"
 >
     <option class="map__vehicle-option" value="" selected>-- All Vehicles --</option>
-    <!-- TODO: Este primer option en el futuro irá fuera, de momento se deja así, luego con el backend montado se verá -->
-    <!-- TODO: Estaba disabled, ahora ya no y funciona, tendré que mirar si genera errores en un futuro -->
     @for (vehicle of vehicles(); track vehicle.plate) {
         <option 
             class="map__vehicle-option" 
