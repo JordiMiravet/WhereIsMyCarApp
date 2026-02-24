@@ -40,15 +40,18 @@ export class MapService {
   
   createMarker(
     coords: L.LatLngExpression,
-    popupText?: string
+    title?: string,
+    draggable: boolean = true
   ): L.Marker {
-    const marker = L.marker(coords, this.markerOptions).addTo(this.map);
 
-    if(popupText) {
-      marker.bindPopup(popupText).openPopup();
-      /* TODO: Para un futuro deberé cambiar el bindPopup para añadirle mejor informacion en el bocata, o cambiar al Bindtooltip */
+    const marker = L.marker(coords, {
+      draggable: draggable,
+      icon: this.locationIcon,
+    }).addTo(this.map);
+
+    if (title) { 
+      marker.bindPopup(title) 
     }
-
     return marker;
   }
 

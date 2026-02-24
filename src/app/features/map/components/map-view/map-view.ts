@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import * as L from 'leaflet';
 
 import { GeolocationService } from '../../../../shared/services/geolocation/geolocation-service';
@@ -31,33 +31,71 @@ export class MapViewComponent implements OnInit {
   public readonly vehicles = this.vehicleService.vehicles;
 
   private map!: L.Map;
-  private vehicleMarker?: L.Marker;
+  private allVehicleMarkers: L.Marker[] = [];
+  private selectedVehicleMarker?: L.Marker;
 
   public selectedVehicle = signal<VehicleInterface | null>(null);
   public newPosition = signal<L.LatLng | null>(null);
   public showConfirmModal = signal(false);
 
   public messages = {
-    confirm: {
+    mapView: {
+      ariaLabel : 'Interactive map showing vehicle positions. Visual only, drag points to move vehicles with mouse or touch'
+    },
+    confirmModal: {
       title: 'Change vehicle position',
       message: 'Are you sure about changing the position of the vehicle?'
-    }
+    },
   };
+
+  constructor() {
+    effect(() => {
+      const vehicleList = this.vehicles();
+      if (vehicleList.length > 0 && !this.selectedVehicle()) {
+        this.showAllVehicles();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.map = this.mapService.initMap('map', [41.478, 2.310], 10);
     this.vehicleService.loadVehicles();
   }
 
-  showVehicle(vehicle: VehicleInterface): void {
+  private showAllVehicles(): void {
+    this.clearAllMarkers();
+
+    const vehicleList = this.vehicles();
+    const bounds = L.latLngBounds([]);
+
+    vehicleList.forEach(vehicle => {
+      if (!vehicle.location) return;
+
+      const coords: [number, number] = [vehicle.location.lat, vehicle.location.lng];
+      const marker = this.mapService.createMarker(coords, vehicle.name, false);
+
+      this.allVehicleMarkers.push(marker);
+      bounds.extend(coords);
+    });
+
+    if (bounds.isValid()) {
+      this.map.fitBounds(bounds, { padding: [50, 50] });
+    }
+  }
+
+  showVehicle(vehicle: VehicleInterface | null): void {
     this.selectedVehicle.set(vehicle);
+    this.clearAllMarkers();
 
-    const coords: [number, number] = [
-      vehicle.location!.lat, 
-      vehicle.location!.lng
-    ];
+    if (!vehicle) {
+      this.showAllVehicles();
+      return;
+    }
 
-    this.placeVehicleMarker(coords, vehicle.name);
+    if (!vehicle.location) return;
+
+    const coords: [number, number] = [vehicle.location.lat, vehicle.location.lng];
+    this.placeSelectedVehicleMarker(coords, vehicle.name);
   }
 
   async onUserLocationClick(): Promise<void> {
@@ -66,14 +104,13 @@ export class MapViewComponent implements OnInit {
 
     try {
       const coords = await this.geo.getCurrentLocation();
-      
-      this.placeVehicleMarker(coords, vehicle.name);
-
+      this.placeSelectedVehicleMarker(coords, vehicle.name);
       const position = L.latLng(coords);
+
       this.vehicleService.updateVehicleLocation(vehicle, position);
-      
-      this.selectedVehicle.set({ 
-        ...vehicle, 
+
+      this.selectedVehicle.set({
+        ...vehicle,
         location: { lat: position.lat, lng: position.lng }
       });
 
@@ -82,50 +119,61 @@ export class MapViewComponent implements OnInit {
     }
   }
 
-  private placeVehicleMarker(coords: [number, number] | L.LatLng, vehicleName: string): void {
-    if (this.vehicleMarker) {
-      this.mapService.removeLayer(this.vehicleMarker);
-    }
+  private placeSelectedVehicleMarker(coords: [number, number] | L.LatLng, vehicleName: string): void {
+    this.clearSelectedMarker();
+    this.selectedVehicleMarker = this.mapService.createMarker(coords, vehicleName, true);
 
-    this.vehicleMarker = this.mapService.createMarker(coords, vehicleName);
-
-    this.vehicleMarker.on('dragend', () => {
-      const position = this.vehicleMarker!.getLatLng();
+    this.selectedVehicleMarker.on('dragend', () => {
+      const position = this.selectedVehicleMarker!.getLatLng();
       this.newPosition.set(position);
+
       this.showConfirmModal.set(true);
     });
 
     this.mapService.setView(coords, 19);
   }
 
+  private clearAllMarkers(): void {
+    this.allVehicleMarkers.forEach(
+      marker => this.mapService.removeLayer(marker)
+    );
+    this.allVehicleMarkers = [];
+  }
+
+  private clearSelectedMarker(): void {
+    if (this.selectedVehicleMarker) {
+      this.mapService.removeLayer(this.selectedVehicleMarker);
+      this.selectedVehicleMarker = undefined;
+    }
+  }
+
   onConfirmLocationChange(): void {
     const vehicle = this.selectedVehicle();
     const position = this.newPosition();
-
     if (!vehicle || !position) return;
 
     this.vehicleService.updateVehicleLocation(vehicle, position);
 
-    this.selectedVehicle.set({ 
-      ...vehicle, 
+    this.selectedVehicle.set({
+      ...vehicle,
       location: { lat: position.lat, lng: position.lng }
     });
+
     this.mapService.setView(position, 19);
     this.showConfirmModal.set(false);
   }
 
   onCancelLocationChange(): void {
     const vehicle = this.selectedVehicle();
+    if (!vehicle?.location || !this.selectedVehicleMarker) return;
 
-    if (this.vehicleMarker && vehicle?.location) {
-      const originalCoords: [number, number] = [
-        vehicle.location.lat,
-        vehicle.location.lng
-      ];
-      
-      this.vehicleMarker.setLatLng(originalCoords);
-      this.mapService.setView(originalCoords, 19);
-    }
+    const originalCoords: [number, number] = [
+      vehicle.location.lat, 
+      vehicle.location.lng
+    ];
+
+    this.selectedVehicleMarker.setLatLng(originalCoords);
+    this.mapService.setView(originalCoords, 19);
 
     this.showConfirmModal.set(false);
   }

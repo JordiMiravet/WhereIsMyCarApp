@@ -13,19 +13,15 @@
     <div 
         id="map" 
         class="map" 
-        aria-label="Interactive map showing vehicle positions. Visual only, drag points to move vehicles with mouse or touch"
+        [aria-label]="messages.mapView.ariaLabel"
     ></div>
 </section>
 
 @if(showConfirmModal()){
     <app-confirm-modal
-        [title]="messages.confirm.title"
-        [message]="messages.confirm.message"
+        [title]="messages.confirmModal.title"
+        [message]="messages.confirmModal.message"
         (confirm)="onConfirmLocationChange()"
         (cancel)="onCancelLocationChange()"
     />
 }
-
-
-
-
