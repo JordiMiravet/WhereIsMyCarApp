@@ -63,7 +63,6 @@ export class MapViewComponent implements OnInit {
   }
 
   private showAllVehicles(): void {
-    this.clearAllMarkers();
 
     const vehicleList = this.vehicles();
     const bounds = L.latLngBounds([]);
