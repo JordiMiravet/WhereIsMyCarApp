@@ -1,9 +1,6 @@
-
 :host {
     background-color: var(--gray-200);
 }
-
-/* Map Actions */
 
 .map-actions__container {
     width: 100%;
@@ -13,13 +10,15 @@
     align-items: stretch;
     gap: 1rem;
     background-color: var(--color-white);
-    text-align: end;
-}
-.map-actions__container > * {
-    display: flex;
 }
 
-/* Map Container */
+.map-actions__container > * {
+    display: inline-flex;
+}
+
+.map-actions__container app-vehicle-selector {
+    width: 100%;
+}
 
 .map-view__container {
     position: relative;
@@ -27,8 +26,16 @@
     padding: 0;
 }
 
-/* Map */
-
 #map {
     height: 92.5vh;
+}
+
+@media (min-width: 576px) {
+    .map-actions__container {
+        justify-content: space-between;
+    }
+
+    .map-actions__container app-vehicle-selector {
+        width: auto;
+    }
 }

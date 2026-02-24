@@ -22,7 +22,6 @@ import { ConfirmModalComponent } from "../../../../shared/components/modals/conf
   templateUrl: './map-view.html',
   styleUrls: ['./map-view.css'],
 })
-
 export class MapViewComponent implements OnInit {
 
   private readonly mapService = inject(MapService);
@@ -37,7 +36,6 @@ export class MapViewComponent implements OnInit {
 
   public selectedVehicle = signal<VehicleInterface | null>(null);
   public newPosition = signal<L.LatLng | null>(null);
-
   public showConfirmModal = signal(false);
 
   public messages = {
@@ -48,77 +46,51 @@ export class MapViewComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.map = this.mapService.initMap(
-      'map', 
-      [41.478, 2.310], 
-      10
-    );
+    this.map = this.mapService.initMap('map', [41.478, 2.310], 10);
+    this.vehicleService.loadVehicles();
   }
 
-  // VEHICLES LOCATION
-
   showVehicle(vehicle: VehicleInterface): void {
-    if (this.vehicleMarker) {
-      this.mapService.removeLayer(this.vehicleMarker);
-      this.vehicleMarker = undefined;
-    }
-
     this.selectedVehicle.set(vehicle);
 
-    const coords = L.latLng(
+    const coords: [number, number] = [
       vehicle.location!.lat, 
       vehicle.location!.lng
-    );
+    ];
 
-    this.vehicleMarker = this.mapService.createMarker(coords, vehicle.name);
+    this.placeVehicleMarker(coords, vehicle.name);
+  }
+
+  async onUserLocationClick(): Promise<void> {
+    const vehicle = this.selectedVehicle();
+    if (!vehicle) return;
+
+    try {
+      const coords = await this.geo.getCurrentLocation();
+      
+      this.placeVehicleMarker(coords, vehicle.name);
+      
+      this.newPosition.set(L.latLng(coords));
+      this.showConfirmModal.set(true);
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  private placeVehicleMarker(coords: [number, number] | L.LatLng, vehicleName: string): void {
+    if (this.vehicleMarker) {
+      this.mapService.removeLayer(this.vehicleMarker);
+    }
+
+    this.vehicleMarker = this.mapService.createMarker(coords, vehicleName);
 
     this.vehicleMarker.on('dragend', () => {
       const position = this.vehicleMarker!.getLatLng();
 
       this.newPosition.set(position);
-      this.mapService.setView(position, 19);
-
       this.showConfirmModal.set(true);
     });
-
-    this.mapService.setView(coords, 19);
-  }
-
-  // USER LOCATION
-
-  async onUserLocationClick(): Promise<void> {
-    try {
-      const coords = await this.geo.getCurrentLocation();
-      this.getUserLocation(coords);
-
-      const vehicle = this.selectedVehicle();
-      if (vehicle && this.vehicleMarker) {
-        this.mapService.removeLayer(this.vehicleMarker);
-
-        this.vehicleMarker = this.mapService.createMarker(coords, vehicle.name);
-
-        this.newPosition.set(L.latLng(coords[0], coords[1]));
-        this.showConfirmModal.set(true);
-
-        this.mapService.setView(coords, 19);
-      }
-
-    } catch {
-      console.error('Could not obtain geolocation');
-    }
-  }
-
-  getUserLocation(coords: [number, number]): void {
-    if (this.userMarker) {
-      this.userMarker.setLatLng(coords);
-    } else {
-      this.userMarker = this.mapService.createMarker(coords, "You");
-
-      this.userMarker.on('dragend', () => {
-        const position = this.userMarker!.getLatLng();
-        this.mapService.setView(position);
-      });
-    }
 
     this.mapService.setView(coords, 19);
   }
@@ -129,14 +101,13 @@ export class MapViewComponent implements OnInit {
 
     if (!vehicle || !position) return;
 
-    const updated: VehicleInterface = { 
+    this.vehicleService.updateVehicleLocation(vehicle, position);
+
+    this.selectedVehicle.set({ 
       ...vehicle, 
-      location: position 
-    };
+      location: { lat: position.lat, lng: position.lng }
+    });
 
-    this.vehicleService.updateVehicleLocation(updated, position);
-
-    this.selectedVehicle.set(updated);
     this.showConfirmModal.set(false);
   }
 
@@ -144,13 +115,15 @@ export class MapViewComponent implements OnInit {
     const vehicle = this.selectedVehicle();
 
     if (this.vehicleMarker && vehicle?.location) {
-      this.vehicleMarker.setLatLng([
+      const originalCoords: [number, number] = [
         vehicle.location.lat,
         vehicle.location.lng
-      ]);
+      ];
+      
+      this.vehicleMarker.setLatLng(originalCoords);
+      this.mapService.setView(originalCoords, 19);
     }
 
     this.showConfirmModal.set(false);
   }
-
 }
