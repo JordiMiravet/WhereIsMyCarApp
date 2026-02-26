@@ -1,0 +1,43 @@
+
+<section class="home__header">
+    <h2 class="home__title">
+        <i class="pi pi-car" aria-hidden="true"></i>
+        My Garage
+    </h2>
+    <app-create-button 
+        (create)="vehicleModal.openCreate()"
+        [createText]="'Vehicle'"
+    />
+</section>
+
+<section class="table__container">
+    @if (vehicleList().length) {
+        <app-vehicle-table
+            [vehicles]="vehicleList()"
+            [vehicleModal]="vehicleModal"
+            (deleteVehicle)="openConfirmDelete($event)"
+        />
+    } @else {
+        <app-vehicle-empty-state 
+            (createVehicle)="vehicleModal.openCreate()"
+        />
+    }
+</section>
+
+@if (vehicleModal.isOpen()) {
+    <app-vehicle-form-modal
+        [mode]="vehicleModal.mode()"
+        [vehicle]="vehicleModal.selectedVehicle()"
+        (submit)="saveVehicle($event)"
+        (cancel)="vehicleModal.close()"
+    />
+}
+
+@if (isConfirmDeleteOpen()) {
+    <app-confirm-modal
+        [title]="deleteConfirmation.title"
+        [message]="deleteConfirmation.message"
+        (confirm)="confirmDeleteVehicle()"
+        (cancel)="closeConfirmModal()"
+    />
+}
