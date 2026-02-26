@@ -1,11 +1,10 @@
-
 <section class="home__header">
     <h2 class="home__title">
         <i class="pi pi-car" aria-hidden="true"></i>
         My Garage
     </h2>
     <app-create-button 
-        (create)="vehicleModal.openCreate()"
+        (create)="modalState.openCreate()"
         [createText]="'Vehicle'"
     />
 </section>
@@ -14,30 +13,30 @@
     @if (vehicleList().length) {
         <app-vehicle-table
             [vehicles]="vehicleList()"
-            [vehicleModal]="vehicleModal"
-            (deleteVehicle)="openConfirmDelete($event)"
+            [vehicleModal]="modalState"
+            (deleteVehicle)="modalState.openConfirmDelete($event)"
         />
     } @else {
         <app-vehicle-empty-state 
-            (createVehicle)="vehicleModal.openCreate()"
+            (createVehicle)="modalState.openCreate()"
         />
     }
 </section>
 
-@if (vehicleModal.isOpen()) {
+@if (modalState.activeModal() === VehicleModalState.VehicleForm) {
     <app-vehicle-form-modal
-        [mode]="vehicleModal.mode()"
-        [vehicle]="vehicleModal.selectedVehicle()"
+        [mode]="modalState.formMode()"
+        [vehicle]="modalState.selectedVehicle()"
         (submit)="saveVehicle($event)"
-        (cancel)="vehicleModal.close()"
+        (cancel)="modalState.close()"
     />
 }
 
-@if (isConfirmDeleteOpen()) {
+@if (modalState.activeModal() === VehicleModalState.ConfirmDelete) {
     <app-confirm-modal
-        [title]="deleteConfirmation.title"
-        [message]="deleteConfirmation.message"
+        [title]="messages.deleteConfirmation.title"
+        [message]="messages.deleteConfirmation.message"
         (confirm)="confirmDeleteVehicle()"
-        (cancel)="closeConfirmModal()"
+        (cancel)="modalState.close()"
     />
 }

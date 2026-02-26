@@ -3,7 +3,7 @@ import { signal } from '@angular/core';
 import { VehicleInterface } from '../../interfaces/vehicle';
 import { VehicleViewComponent } from './vehicle-view';
 import { VehicleService } from '../../services/vehicle-service/vehicle-service';
-import { VehicleModalStateService } from '../../services/vehicle-modal-state-service/vehicle-modal-state-service';
+import { VehicleModalStateService } from '../../services/vehicle-modal-service/vehicle-modal-service';
 import { GeolocationService } from '../../../../shared/services/geolocation/geolocation-service';
 
 const vehicleServiceMock = {

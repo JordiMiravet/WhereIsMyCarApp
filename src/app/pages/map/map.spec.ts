@@ -3,7 +3,7 @@ import { signal } from '@angular/core';
 
 import { MapComponent } from './map';
 import { VehicleService } from '../../features/vehicle/services/vehicle-service/vehicle-service';
-import { VehicleModalStateService } from '../../features/vehicle/services/vehicle-modal-state-service/vehicle-modal-state-service';
+import { VehicleModalStateService } from '../../features/vehicle/services/vehicle-modal-service/vehicle-modal-service';
 import { GeolocationService } from '../../shared/services/geolocation/geolocation-service';
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
 

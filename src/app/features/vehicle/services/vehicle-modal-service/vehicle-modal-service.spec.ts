@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { VehicleModalStateService } from './vehicle-modal-state-service';
+import { VehicleModalService } from './vehicle-modal-service';
 import { VehicleInterface } from '../../interfaces/vehicle';
 
-describe('VehicleModalStateService', () => {
-  let service: VehicleModalStateService;
+describe('VehicleModalService', () => {
+  let service: VehicleModalService;
 
   const mockVehicle : VehicleInterface = {
     name: 'Ferrari',
@@ -17,7 +17,7 @@ describe('VehicleModalStateService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(VehicleModalStateService);
+    service = TestBed.inject(VehicleModalService);
   });
 
   describe('service creation', () => {

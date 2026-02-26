@@ -3,7 +3,6 @@ import { EditButtonComponent } from '../../../../shared/components/buttons/edit-
 import { DeleteButtonComponent } from '../../../../shared/components/buttons/delete-button/delete-button';
 import { CommonModule } from '@angular/common';
 import { VehicleInterface } from '../../interfaces/vehicle';
-import { VehicleModalStateService } from '../../services/vehicle-modal-state-service/vehicle-modal-state-service';
 
 @Component({
   selector: 'app-vehicle-table',
