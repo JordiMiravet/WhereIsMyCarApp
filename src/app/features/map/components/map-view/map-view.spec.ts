@@ -8,12 +8,11 @@ import { MapViewComponent } from './map-view';
 
 import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
 import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
-import { VehicleModalService } from '../../../vehicle/services/vehicle-modal-service/vehicle-modal-service';
 
 import { GeolocationService } from '../../../../shared/services/geolocation/geolocation-service';
 
 
-describe('MapViewComponent', () => {
+fdescribe('MapViewComponent', () => {
   let component: MapViewComponent;
   let fixture: ComponentFixture<MapViewComponent>;
 
@@ -86,7 +85,7 @@ describe('MapViewComponent', () => {
 
       component.showVehicle(mockVehicle);
 
-      expect(mapService.createMarker).toHaveBeenCalledWith([41, 2], mockVehicle.name);
+      expect(mapService.createMarker).toHaveBeenCalledWith([41, 2], mockVehicle.name, true);
       expect(mockMarker.on).toHaveBeenCalledWith('dragend', jasmine.any(Function));
     });
 
@@ -96,9 +95,24 @@ describe('MapViewComponent', () => {
 
       component.showVehicle(mockVehicle);
 
-      expect(setViewSpy).toHaveBeenCalledOnceWith( [41, 2] );
+      expect(setViewSpy).toHaveBeenCalledOnceWith([41, 2], 19);
     });
 
+    it('should do nothing if vehicle has no location', () => {
+      const vehicleWithoutLocation: VehicleInterface = {
+        _id: '1',
+        name: 'Ferrari',
+        model: 'LaFerrari',
+        plate: '123456',
+        location: undefined
+      };
+      const mapService = TestBed.inject(MapService);
+      const createMarkerSpy = spyOn(mapService, 'createMarker');
+
+      component.showVehicle(vehicleWithoutLocation);
+
+      expect(createMarkerSpy).not.toHaveBeenCalled();
+    });
   });
 
   describe('vehicle marker drag behaviour', () => {
@@ -227,7 +241,12 @@ describe('MapViewComponent', () => {
     });
 
     it('should hide confirmation modal after cancelling', () => {
+      const mockMarker: any = { setLatLng: jasmine.createSpy('setLatLng') };
+
+      component.selectedVehicle.set(mockVehicle);
+      (component as any).selectedVehicleMarker = mockMarker;
       component.showConfirmModal.set(true);
+
       component.onCancelLocationChange();
 
       expect(component.showConfirmModal()).toBe(false);
@@ -284,6 +303,35 @@ describe('MapViewComponent', () => {
 
       expect(vehicleService.updateVehicleLocation).toHaveBeenCalled();
       expect(component.selectedVehicle()?.location).toEqual({ lat: 50, lng: 8 });
+    });
+
+  });
+
+  describe('private helper methods', () => {
+
+    it('should clear all markers', () => {
+      const mapService = TestBed.inject(MapService);
+      const markers: any = [{}, {}, {}];
+      (component as any).allVehicleMarkers = markers;
+      const removeLayerSpy = spyOn(mapService, 'removeLayer');
+
+      (component as any).clearAllMarkers();
+
+      expect(removeLayerSpy).toHaveBeenCalledTimes(markers.length);
+      expect((component as any).allVehicleMarkers.length).toBe(0);
+    });
+
+    it('should place selected vehicle marker', () => {
+      const mapService = TestBed.inject(MapService);
+      const mockMarker: any = { on: jasmine.createSpy('on') };
+      spyOn(mapService, 'createMarker').and.returnValue(mockMarker);
+      const setViewSpy = spyOn(mapService, 'setView');
+
+      (component as any).placeSelectedVehicleMarker([41, 2], 'Ferrari');
+
+      expect(mapService.createMarker).toHaveBeenCalledWith([41, 2], 'Ferrari', true);
+      expect(mockMarker.on).toHaveBeenCalledWith('dragend', jasmine.any(Function));
+      expect(setViewSpy).toHaveBeenCalledOnceWith([41, 2], 19);
     });
 
   });
