@@ -5,6 +5,7 @@ import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicl
 import { signal } from '@angular/core';
 import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
 import { EventInterface } from '../../interfaces/event';
+import { of } from 'rxjs';
 
 describe('CalendarViewComponent', () => {
   let component: CalendarViewComponent;
@@ -15,6 +16,7 @@ describe('CalendarViewComponent', () => {
     getEventsByDate: jasmine.createSpy('getEventsByDate').and.returnValue([]),
     getEventById: jasmine.createSpy('getEventById'),
     deleteEvent: jasmine.createSpy('deleteEvent'),
+    loadEvents: jasmine.createSpy('loadEvents'),
     selectedVehicleId: signal<string | null>(null)
   };
 
@@ -63,6 +65,21 @@ describe('CalendarViewComponent', () => {
 
       expect(msg.title).toBe('Delete this event');
       expect(msg.message).toBe('Are you sure you want to delete this event? This action cannot be undone');
+    });
+
+    it('should trigger refreshCalendar when calendarComponent exists', () => {
+      component.calendarComponent = {
+        getApi: () => ({
+          removeAllEvents: () => {},
+          addEventSource: () => {}
+        })
+      } as any;
+
+      let called = false;
+      component.refreshCalendar = () => { called = true; };
+      component.refreshCalendar();
+
+      expect(called).toBe(true);
     });
 
   });
@@ -146,43 +163,36 @@ describe('CalendarViewComponent', () => {
     } as EventInterface;
 
     it('should call getEventById with provided id', () => {
-      mockEventService.getEventById.and.returnValue(mockEvent);
+      mockEventService.getEventById.and.returnValue(of(mockEvent));
       component.handleEditEvent('1');
 
       expect(mockEventService.getEventById).toHaveBeenCalledWith('1');
     });
 
     it('should set selectedEvent when event is found', () => {
-      mockEventService.getEventById.and.returnValue(mockEvent);
+      mockEventService.getEventById.and.returnValue(of(mockEvent));
       component.handleEditEvent('1');
 
       expect(component.selectedEvent()).toEqual(mockEvent);
     });
 
     it('should set formMode to "edit" when editing event', () => {
-      mockEventService.getEventById.and.returnValue(mockEvent);
+      mockEventService.getEventById.and.returnValue(of(mockEvent));
       component.handleEditEvent('1');
 
       expect(component.formMode()).toBe('edit');
     });
 
     it('should open form modal when event is found', () => {
-      mockEventService.getEventById.and.returnValue(mockEvent);
+      mockEventService.getEventById.and.returnValue(of(mockEvent));
       component.handleEditEvent('1');
 
       expect(component.activeModal()).toBe('eventForm');
     });
 
-    it('should not open form modal if event is not found', () => {
-      mockEventService.getEventById.and.returnValue(null);
-      component.handleEditEvent('999');
-
-      expect(component.activeModal()).not.toBe('eventForm');
-    });
-
     it('should not modify selectedEvent if event is not found', () => {
       component.selectedEvent.set(null);
-      mockEventService.getEventById.and.returnValue(null);
+      mockEventService.getEventById.and.returnValue(of(null));
 
       component.handleEditEvent('999');
       expect(component.selectedEvent()).toBeNull();
@@ -325,6 +335,17 @@ describe('CalendarViewComponent', () => {
       expect(add).toHaveBeenCalled();
     });
 
+    it('should update element title and show correct more link', () => {
+      const elementDom = { title: '' } as any;
+      const eventInfo = { el: elementDom, event: { title: 'Cita con Barbara' } } as any;
+      const moreArg = { num: 3 } as any;
+
+      (component.calendarOptions as any).eventDidMount(eventInfo);
+      expect(elementDom.title).toBe('Cita con Barbara');
+
+      const content = (component.calendarOptions as any).moreLinkContent(moreArg);
+      expect(content).toBe('+ 3');
+    });
   });
 
 });

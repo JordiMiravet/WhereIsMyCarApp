@@ -14,10 +14,10 @@ import { ConfirmModalComponent } from "../../../../shared/components/modals/conf
   selector: 'app-vehicle-view',
   standalone: true,
   imports: [
-    CreateButtonComponent, 
-    VehicleTableComponent, 
-    VehicleEmptyStateComponent, 
-    VehicleFormModalComponent, 
+    CreateButtonComponent,
+    VehicleTableComponent,
+    VehicleEmptyStateComponent,
+    VehicleFormModalComponent,
     ConfirmModalComponent
   ],
   templateUrl: './vehicle-view.html',
@@ -63,7 +63,6 @@ export class VehicleViewComponent {
 
     } else if (this.modalState.formMode() === 'edit') {
       const originalVehicle = this.modalState.selectedVehicle();
-      
       if (!originalVehicle) return;
 
       const vehicle: VehicleInterface = {

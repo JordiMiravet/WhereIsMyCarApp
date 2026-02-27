@@ -8,8 +8,10 @@ import { MapViewComponent } from './map-view';
 
 import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
 import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
+import { VehicleModalService } from '../../../vehicle/services/vehicle-modal-service/vehicle-modal-service';
 
 import { GeolocationService } from '../../../../shared/services/geolocation/geolocation-service';
+
 
 describe('MapViewComponent', () => {
   let component: MapViewComponent;
@@ -68,7 +70,7 @@ describe('MapViewComponent', () => {
       const mapService = TestBed.inject(MapService);
       const mockMarker = {} as L.Marker;
 
-      (component as any).vehicleMarker = mockMarker;
+      (component as any).selectedVehicleMarker = mockMarker;
       const removeLayerSpy = spyOn(mapService, 'removeLayer');
 
       component.showVehicle(mockVehicle);
@@ -111,17 +113,17 @@ describe('MapViewComponent', () => {
 
     it('should set newPosition when marker drag ends', () => {
       const fakePosition = { lat: 50, lng: 8 } as any;
-      (component as any).vehicleMarker = { getLatLng: () => fakePosition };
-      component.newPosition.set( (component as any).vehicleMarker.getLatLng() );
+      (component as any).selectedVehicleMarker = { getLatLng: () => fakePosition };
+      component.newPosition.set( (component as any).selectedVehicleMarker.getLatLng() );
 
       expect(component.newPosition()).toBe(fakePosition);
     });
 
     it('should show confirmation modal after dragging the marker', () => {
       const fakePosition = { lat: 50, lng: 8 } as any;
-      (component as any).vehicleMarker = { getLatLng: () => fakePosition };
+      (component as any).selectedVehicleMarker = { getLatLng: () => fakePosition };
 
-      component.newPosition.set((component as any).vehicleMarker.getLatLng());
+      component.newPosition.set((component as any).selectedVehicleMarker.getLatLng());
       component.showConfirmModal.set(true);
 
       expect(component.showConfirmModal()).toBe(true);
@@ -217,7 +219,7 @@ describe('MapViewComponent', () => {
       const mockMarker: any = { setLatLng: jasmine.createSpy('setLatLng') };
       
       component.selectedVehicle.set(mockVehicle);
-      (component as any).vehicleMarker = mockMarker;
+      (component as any).selectedVehicleMarker = mockMarker;
 
       component.onCancelLocationChange();
 
@@ -235,42 +237,53 @@ describe('MapViewComponent', () => {
 
   describe('user location', () => {
 
-    it('should request user geolocation when button is clicked', async () => {
+    const mockVehicle: VehicleInterface = {
+      _id: '123',
+      name: 'Ferrari',
+      model: 'F8',
+      plate: 'F123',
+      location: { lat: 41, lng: 2 }
+    };
+
+    it('should not request geolocation if no vehicle selected', async () => {
       const geo = TestBed.inject(GeolocationService);
-      spyOn(geo, 'getCurrentLocation').and.returnValue(Promise.resolve([41, 2]));
+      spyOn(geo, 'getCurrentLocation');
+
+      component.selectedVehicle.set(null);
+      await component.onUserLocationClick();
+
+      expect(geo.getCurrentLocation).not.toHaveBeenCalled();
+    });
+
+    it('should request user location if vehicle selected', async () => {
+      const geo = TestBed.inject(GeolocationService);
+      spyOn(geo, 'getCurrentLocation').and.returnValue(Promise.resolve([50, 8]));
+
+      component.selectedVehicle.set(mockVehicle);
 
       await component.onUserLocationClick();
 
       expect(geo.getCurrentLocation).toHaveBeenCalled();
     });
 
-    it('should create a user marker if it does not exist', () => {
+    it('should update vehicle location after getting user position', async () => {
+      const geo = TestBed.inject(GeolocationService);
+      const vehicleService = TestBed.inject(VehicleService);
       const mapService = TestBed.inject(MapService);
-      const mockMarker: any = { on: jasmine.createSpy('on') };
-      spyOn(mapService, 'createMarker').and.returnValue(mockMarker);
 
-      component.getUserLocation([41, 2]);
+      spyOn(geo, 'getCurrentLocation').and.returnValue(Promise.resolve([50, 8]));
+      spyOn(vehicleService, 'updateVehicleLocation');
+      spyOn(mapService, 'createMarker').and.returnValue({
+        on: jasmine.createSpy('on')
+      } as any);
+      spyOn(mapService, 'setView');
 
-      expect(mapService.createMarker).toHaveBeenCalledWith([41, 2], 'You');
-      expect((component as any).userMarker).toBe(mockMarker);
-    });
+      component.selectedVehicle.set(mockVehicle);
 
-    it('should update user marker position if it already exists', () => {
-      const mockMarker: any = { setLatLng: jasmine.createSpy('setLatLng') };
-      (component as any).userMarker = mockMarker;
+      await component.onUserLocationClick();
 
-      component.getUserLocation([50, 8]);
-
-      expect(mockMarker.setLatLng).toHaveBeenCalledWith([50, 8]);
-    });
-
-    it('should center the map on user location with zoom', () => {
-      const mapService = TestBed.inject(MapService);
-      const setViewSpy = spyOn(mapService, 'setView');
-
-      component.getUserLocation([50, 8]);
-
-      expect(setViewSpy).toHaveBeenCalledWith([50, 8], 19);
+      expect(vehicleService.updateVehicleLocation).toHaveBeenCalled();
+      expect(component.selectedVehicle()?.location).toEqual({ lat: 50, lng: 8 });
     });
 
   });
