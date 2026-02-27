@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { signal } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { HomeComponent } from './home';
 
-describe('HomeComponent', () => {
+fdescribe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomeComponent],
+      imports: [ HomeComponent, HttpClientModule],
       providers: []
     }).compileComponents();
 
@@ -26,5 +26,13 @@ describe('HomeComponent', () => {
 
   });
 
- 
+ describe('Template rendering', () => {
+
+    it('should render vehicle view component', () => {
+      const vehicleViewComponent = fixture.nativeElement.querySelector('app-vehicle-view'); 
+      expect(vehicleViewComponent).toBeTruthy()
+    });
+
+  });
+
 });

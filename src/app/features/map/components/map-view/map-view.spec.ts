@@ -11,8 +11,7 @@ import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
 
 import { GeolocationService } from '../../../../shared/services/geolocation/geolocation-service';
 
-
-fdescribe('MapViewComponent', () => {
+describe('MapViewComponent', () => {
   let component: MapViewComponent;
   let fixture: ComponentFixture<MapViewComponent>;
 
