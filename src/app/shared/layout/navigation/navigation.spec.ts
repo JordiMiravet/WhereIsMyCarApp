@@ -87,7 +87,7 @@ describe('NavigationComponent', () => {
       fixture.detectChanges();
 
       const links = fixture.nativeElement.querySelectorAll('.navbar__links li a');
-      const expectedIcons = ['pi-home', 'pi-map-marker', 'pi-calendar', 'pi-chart-bar'];
+      const expectedIcons = ['pi-home', 'pi-map', 'pi-calendar', 'pi-chart-bar'];
       const expectedLabels = ['Home', 'Map', 'Calendar', 'Graphics'];
 
       links.forEach((link: HTMLElement, index: number) => {
