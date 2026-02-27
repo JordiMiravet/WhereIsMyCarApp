@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { HomeComponent } from './home';
 
-fdescribe('HomeComponent', () => {
+describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
 
