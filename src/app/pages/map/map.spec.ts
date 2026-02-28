@@ -7,6 +7,8 @@ import { VehicleModalService } from '../../features/vehicle/services/vehicle-mod
 
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
 import { GeolocationService } from '../../shared/services/geolocation/geolocation-service';
+import { HttpClientModule } from '@angular/common/http';
+import { VehicleModalState } from '../../features/vehicle/enum/vehicle-modal-state.enum';
 
 const vehicleServiceMock = {
   vehicles: signal<VehicleInterface[]>([]),
@@ -16,8 +18,8 @@ const vehicleServiceMock = {
 };
 
 const VehicleModalServiceMock = {
-  isOpen: signal(false),
-  mode: signal<'create' | 'edit'>('create'),
+  activeModal: signal<VehicleModalState>(VehicleModalState.Closed),
+  formMode: signal<'create' | 'edit'>('create'),
   selectedVehicle: signal<VehicleInterface | null>(null),
   openCreate: jasmine.createSpy('openCreate'),
   close: jasmine.createSpy('close'),
@@ -32,8 +34,22 @@ describe('MapComponent', () => {
   let fixture: ComponentFixture<MapComponent>;
 
   beforeEach(async () => {
+    vehicleServiceMock.loadVehicles.calls.reset();
+    vehicleServiceMock.addVehicles.calls.reset();
+    vehicleServiceMock.updateVehicle.calls.reset();
+    VehicleModalServiceMock.openCreate.calls.reset();
+    VehicleModalServiceMock.close.calls.reset();
+    geolocationServiceMock.getCurrentLocation.calls.reset();
+    
+    VehicleModalServiceMock.activeModal.set(VehicleModalState.Closed);
+    VehicleModalServiceMock.formMode.set('create');
+    VehicleModalServiceMock.selectedVehicle.set(null);
+
     await TestBed.configureTestingModule({
-      imports: [MapComponent],
+      imports: [
+        MapComponent, 
+        HttpClientModule
+      ],
       providers: [
         { provide: VehicleService, useValue: vehicleServiceMock },
         { provide: VehicleModalService, useValue: VehicleModalServiceMock },
@@ -79,7 +95,7 @@ describe('MapComponent', () => {
         },
       };
 
-      VehicleModalServiceMock.mode.set('create');
+      VehicleModalServiceMock.formMode.set('create');
       geolocationServiceMock.getCurrentLocation.calls.reset();
       vehicleServiceMock.addVehicles.calls.reset();
 
@@ -98,7 +114,7 @@ describe('MapComponent', () => {
         plate: '3447VHZ',
       };
 
-      VehicleModalServiceMock.mode.set('create');
+      VehicleModalServiceMock.formMode.set('create');
 
       geolocationServiceMock.getCurrentLocation.and.resolveTo([41.4, 2.1]);
       vehicleServiceMock.addVehicles.calls.reset();
@@ -122,7 +138,7 @@ describe('MapComponent', () => {
         plate: '3447VHZ',
       };
 
-      VehicleModalServiceMock.mode.set('create');
+      VehicleModalServiceMock.formMode.set('create');
       geolocationServiceMock.getCurrentLocation.and.rejectWith( new Error('geolocation failed'));
       vehicleServiceMock.addVehicles.calls.reset();
 
@@ -149,7 +165,7 @@ describe('MapComponent', () => {
         },
       };
 
-      VehicleModalServiceMock.mode.set('create');
+      VehicleModalServiceMock.formMode.set('create');
       vehicleServiceMock.addVehicles.calls.reset();
       vehicleServiceMock.updateVehicle.calls.reset();
 
@@ -180,7 +196,7 @@ describe('MapComponent', () => {
         },
       };
 
-      VehicleModalServiceMock.mode.set('edit');
+      VehicleModalServiceMock.formMode.set('edit');
       VehicleModalServiceMock.selectedVehicle.set(selectedVehicle);
 
       vehicleServiceMock.addVehicles.calls.reset();
@@ -204,7 +220,7 @@ describe('MapComponent', () => {
         },
       };
 
-      VehicleModalServiceMock.mode.set('edit');
+      VehicleModalServiceMock.formMode.set('edit');
       VehicleModalServiceMock.selectedVehicle.set(null);
 
       vehicleServiceMock.addVehicles.calls.reset();
@@ -228,7 +244,7 @@ describe('MapComponent', () => {
         },
       };
 
-      VehicleModalServiceMock.mode.set('create');
+      VehicleModalServiceMock.formMode.set('create');
       VehicleModalServiceMock.close.calls.reset();
 
       await component.saveVehicle(vehicle as VehicleInterface);
@@ -262,7 +278,7 @@ describe('MapComponent', () => {
       vehicleServiceMock.vehicles.set([])
       fixture.detectChanges();
 
-      expect(vehicleServiceMock.vehicles.length).toBe(0);
+      expect(vehicleServiceMock.vehicles().length).toBe(0);
       
       const vehicleEmptyStateComponent = fixture.nativeElement.querySelector('app-vehicle-empty-state');
       expect(vehicleEmptyStateComponent).toBeTruthy();
@@ -279,7 +295,7 @@ describe('MapComponent', () => {
 
 
     it('should render vehicle form modal when modal is open', () => {
-      VehicleModalServiceMock.isOpen.set(true);
+      VehicleModalServiceMock.activeModal.set(VehicleModalState.VehicleForm);
       fixture.detectChanges();
 
       const vehicleFormModalComponent = fixture.nativeElement.querySelector('app-vehicle-form-modal');
@@ -287,7 +303,7 @@ describe('MapComponent', () => {
     });
 
     it('should call saveVehicle when form modal emits submit', () => {
-      VehicleModalServiceMock.isOpen.set(true);
+      VehicleModalServiceMock.activeModal.set(VehicleModalState.VehicleForm);
       fixture.detectChanges();
 
       spyOn(component, 'saveVehicle');
@@ -307,7 +323,7 @@ describe('MapComponent', () => {
     });
 
     it('should close modal when form modal emits cancel', () => {
-      VehicleModalServiceMock.isOpen.set(true);
+      VehicleModalServiceMock.activeModal.set(VehicleModalState.VehicleForm);
       fixture.detectChanges();
 
       component.vehicleModal.close();
