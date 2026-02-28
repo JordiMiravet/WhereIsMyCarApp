@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
+import { of } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
+
+import { EventInterface } from '../../interfaces/event';
+import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
 import { CalendarViewComponent } from './calendar-view';
 import { EventService } from '../../services/event-service';
 import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
-import { signal } from '@angular/core';
-import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
-import { EventInterface } from '../../interfaces/event';
-import { of } from 'rxjs';
 
 describe('CalendarViewComponent', () => {
   let component: CalendarViewComponent;
@@ -27,7 +29,10 @@ describe('CalendarViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CalendarViewComponent],
+      imports: [
+        CalendarViewComponent, 
+        HttpClientModule
+      ],
       providers: [
         { provide: EventService, useValue: mockEventService },
         { provide: VehicleService, useValue: mockVehicleService }

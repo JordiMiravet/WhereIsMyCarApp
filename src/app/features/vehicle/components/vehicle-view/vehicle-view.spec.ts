@@ -31,7 +31,7 @@ const geolocationServiceMock = {
   getCurrentLocation: jasmine.createSpy('getCurrentLocation')
 };
 
-fdescribe('VehicleViewComponent', () => {
+describe('VehicleViewComponent', () => {
   let component: VehicleViewComponent;
   let fixture: ComponentFixture<VehicleViewComponent>;
 

@@ -3,13 +3,12 @@ import { provideHttpClient } from '@angular/common/http';
 
 import * as L from 'leaflet';
 
-import { MapService } from '../../services/map-service';
 import { MapViewComponent } from './map-view';
 
+import { MapService } from '../../services/map-service';
 import { VehicleService } from '../../../vehicle/services/vehicle-service/vehicle-service';
-import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
-
 import { GeolocationService } from '../../../../shared/services/geolocation/geolocation-service';
+import { VehicleInterface } from '../../../vehicle/interfaces/vehicle';
 
 describe('MapViewComponent', () => {
   let component: MapViewComponent;

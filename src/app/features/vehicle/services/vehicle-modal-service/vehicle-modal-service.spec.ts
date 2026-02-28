@@ -1,19 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { VehicleModalService } from './vehicle-modal-service';
 import { VehicleInterface } from '../../interfaces/vehicle';
-/*
-describe('VehicleModalService', () => {
+import { VehicleModalState } from '../../enum/vehicle-modal-state.enum';
+
+fdescribe('VehicleModalService', () => {
   let service: VehicleModalService;
 
-  const mockVehicle : VehicleInterface = {
+  const mockVehicle: VehicleInterface = {
     name: 'Ferrari',
     model: 'F8 Tributo',
     plate: '4558XKJ',
     location: {
-      lat: 41.48644688584013, 
+      lat: 41.48644688584013,
       lng: 2.3107555554463137
     }
-  }
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
@@ -21,20 +22,18 @@ describe('VehicleModalService', () => {
   });
 
   describe('service creation', () => {
-
     it('should be created', () => {
       expect(service).toBeTruthy();
     });
-
   });
 
   describe('initial state', () => {
-    it('should initialize isOpen as false', () => {
-      expect(service.isOpen()).toBe(false);
+    it('should initialize activeModal as Closed', () => {
+      expect(service.activeModal()).toBe(VehicleModalState.Closed);
     });
 
-    it('should initialize mode as "create"', () => {
-      expect(service.mode()).toBe('create');
+    it('should initialize formMode as "create"', () => {
+      expect(service.formMode()).toBe('create');
     });
 
     it('should initialize selectedVehicle as null', () => {
@@ -46,20 +45,20 @@ describe('VehicleModalService', () => {
     it('should open modal in create mode', () => {
       service.openCreate();
 
-      expect(service.mode()).toBe('create');
+      expect(service.formMode()).toBe('create');
       expect(service.selectedVehicle()).toBe(null);
-      expect(service.isOpen()).toBe(true);
+      expect(service.activeModal()).toBe(VehicleModalState.VehicleForm);
     });
 
     it('should override edit state when openCreate is called after openEdit', () => {
       service.openEdit(mockVehicle);
-      expect(service.mode()).toBe('edit');
+      expect(service.formMode()).toBe('edit');
 
       service.openCreate();
-      expect(service.mode()).toBe('create');
 
+      expect(service.formMode()).toBe('create');
       expect(service.selectedVehicle()).toBe(null);
-      expect(service.isOpen()).toBe(true)
+      expect(service.activeModal()).toBe(VehicleModalState.VehicleForm);
     });
   });
 
@@ -67,30 +66,47 @@ describe('VehicleModalService', () => {
     it('should open modal in edit mode with selected vehicle', () => {
       service.openEdit(mockVehicle);
 
-      expect(service.mode()).toBe('edit');
+      expect(service.formMode()).toBe('edit');
       expect(service.selectedVehicle()).toBe(mockVehicle);
-      expect(service.isOpen()).toBe(true);
+      expect(service.activeModal()).toBe(VehicleModalState.VehicleForm);
     });
 
     it('should replace selected vehicle when openEdit is called again', () => {
-      const mockVehicle2 : VehicleInterface = {
+      const mockVehicle2: VehicleInterface = {
         name: 'Pagani',
         model: 'Huayra',
         plate: '5669JKX',
         location: {
-          lat: 42.48644688584013, 
+          lat: 42.48644688584013,
           lng: 3.3107555554463137
         }
-      }
-      
+      };
+
       service.openEdit(mockVehicle);
       expect(service.selectedVehicle()).toBe(mockVehicle);
-      expect(service.mode()).toBe('edit');
+      expect(service.formMode()).toBe('edit');
 
       service.openEdit(mockVehicle2);
+
       expect(service.selectedVehicle()).toBe(mockVehicle2);
-      expect(service.mode()).toBe('edit');
-      expect(service.isOpen()).toBe(true);
+      expect(service.formMode()).toBe('edit');
+      expect(service.activeModal()).toBe(VehicleModalState.VehicleForm);
+    });
+  });
+
+  describe('openConfirmDelete behavior', () => {
+    it('should open confirm delete modal with selected vehicle', () => {
+      service.openConfirmDelete(mockVehicle);
+
+      expect(service.selectedVehicle()).toBe(mockVehicle);
+      expect(service.activeModal()).toBe(VehicleModalState.ConfirmDelete);
+    });
+
+    it('should not modify formMode when opening confirm delete', () => {
+      service.openEdit(mockVehicle);
+      service.openConfirmDelete(mockVehicle);
+
+      expect(service.formMode()).toBe('edit');
     });
   });
 
@@ -99,7 +115,7 @@ describe('VehicleModalService', () => {
       service.openCreate();
       service.close();
 
-      expect(service.isOpen()).toBe(false);
+      expect(service.activeModal()).toBe(VehicleModalState.Closed);
     });
 
     it('should clear selected vehicle when closing modal', () => {
@@ -107,14 +123,13 @@ describe('VehicleModalService', () => {
       service.close();
 
       expect(service.selectedVehicle()).toBe(null);
-
     });
 
-    it('should not modify mode when closing modal', () => {
+    it('should not modify formMode when closing modal', () => {
       service.openEdit(mockVehicle);
       service.close();
 
-      expect(service.mode()).toBe('edit')
+      expect(service.formMode()).toBe('edit');
     });
   });
 
@@ -122,23 +137,22 @@ describe('VehicleModalService', () => {
     it('should allow reopening modal after closing', () => {
       service.openCreate();
       service.close();
-      expect(service.isOpen()).toBe(false);
+      expect(service.activeModal()).toBe(VehicleModalState.Closed);
 
       service.openCreate();
-      expect(service.isOpen()).toBe(true);
+      expect(service.activeModal()).toBe(VehicleModalState.VehicleForm);
     });
 
     it('should correctly switch from create to edit mode', () => {
       service.openCreate();
-      expect(service.mode()).toBe('create');
+      expect(service.formMode()).toBe('create');
       expect(service.selectedVehicle()).toBe(null);
-      expect(service.isOpen()).toBe(true);
+      expect(service.activeModal()).toBe(VehicleModalState.VehicleForm);
 
       service.openEdit(mockVehicle);
-      expect(service.mode()).toBe('edit');
+      expect(service.formMode()).toBe('edit');
       expect(service.selectedVehicle()).toBe(mockVehicle);
-      expect(service.isOpen()).toBe(true);
+      expect(service.activeModal()).toBe(VehicleModalState.VehicleForm);
     });
   });
 });
-*/
