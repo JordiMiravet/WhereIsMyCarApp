@@ -6,7 +6,8 @@ import { VehicleService } from '../../features/vehicle/services/vehicle-service/
 import { VehicleModalService } from '../../features/vehicle/services/vehicle-modal-service/vehicle-modal-service';
 
 import { VehicleInterface } from '../../features/vehicle/interfaces/vehicle';
-/*
+import { GeolocationService } from '../../shared/services/geolocation/geolocation-service';
+
 const vehicleServiceMock = {
   vehicles: signal<VehicleInterface[]>([]),
   loadVehicles: jasmine.createSpy('loadVehicles'),
@@ -317,4 +318,3 @@ describe('MapComponent', () => {
   });
 
 });
-*/

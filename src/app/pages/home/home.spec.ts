@@ -19,20 +19,16 @@ describe('HomeComponent', () => {
   });
 
   describe('Component creation', () => {
-
     it('should create', () => {
       expect(component).toBeTruthy();
     });
-
   });
 
  describe('Template rendering', () => {
-
     it('should render vehicle view component', () => {
       const vehicleViewComponent = fixture.nativeElement.querySelector('app-vehicle-view'); 
       expect(vehicleViewComponent).toBeTruthy()
     });
-
   });
 
 });

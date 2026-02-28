@@ -3,7 +3,7 @@ import { VehicleModalService } from './vehicle-modal-service';
 import { VehicleInterface } from '../../interfaces/vehicle';
 import { VehicleModalState } from '../../enum/vehicle-modal-state.enum';
 
-fdescribe('VehicleModalService', () => {
+describe('VehicleModalService', () => {
   let service: VehicleModalService;
 
   const mockVehicle: VehicleInterface = {

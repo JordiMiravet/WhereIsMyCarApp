@@ -1,45 +1,47 @@
 import { Routes } from '@angular/router';
 import { canActivate, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
-import { RegisterComponent } from './features/auth/register/register';
-import { LoginComponent } from './features/auth/login/login';
-
-import { HomeComponent } from './pages/home/home';
-import { MapComponent } from './pages/map/map';
-import { CalendarComponent } from './pages/calendar/calendar';
-import { GraphicsComponent } from './pages/graphics/graphics';
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['/login']);
 
 export const routes: Routes = [
-    {
-        path: 'register',
-        component: RegisterComponent
-    },
-    {
-        path: 'login',
-        component: LoginComponent
-    },
-    {
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./features/auth/register/register').then(m => m.RegisterComponent)
+  },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./features/auth/login/login').then(m => m.LoginComponent)
+  },
+  {
+    path: '',
+    ...canActivate(redirectUnauthorizedToLogin),
+    children: [
+      {
         path: '',
-        component: HomeComponent,
-        ...canActivate(() => redirectUnauthorizedTo(['/login']))
-    },
-    {
+        loadComponent: () =>
+          import('./pages/home/home').then(m => m.HomeComponent)
+      },
+      {
         path: 'map',
-        component: MapComponent,
-        ...canActivate(() => redirectUnauthorizedTo(['/login']))
-    },
-    {
+        loadComponent: () =>
+          import('./pages/map/map').then(m => m.MapComponent)
+      },
+      {
         path: 'calendar',
-        component: CalendarComponent,
-        ...canActivate(() => redirectUnauthorizedTo(['/login']))
-    },
-    {
+        loadComponent: () =>
+          import('./pages/calendar/calendar').then(m => m.CalendarComponent)
+      },
+      {
         path: 'graphics',
-        component: GraphicsComponent,
-        ...canActivate(() => redirectUnauthorizedTo(['/login']))
-    },
-    {
-        path: '**',
-        redirectTo: ''
-    }
+        loadComponent: () =>
+          import('./pages/graphics/graphics').then(m => m.GraphicsComponent)
+      }
+    ]
+  },
+  {
+    path: '**',
+    redirectTo: ''
+  }
 ];
